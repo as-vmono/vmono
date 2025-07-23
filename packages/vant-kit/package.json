@@ -1,0 +1,22 @@
+{
+  "name": "@vmono-seed/vant-kit",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "A project that includes common components from the H5 project (dependent on vant) and some utility functions",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "astfn",
+  "license": "ISC",
+  "devDependencies": {
+    "@vmono-seed/ts-config": "workspace:*",
+    "@vmono-seed/eslint-config": "workspace:*",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.5",
+    "vue": "^3.5.17",
+    "vue-tsc": "^3.0.3"
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "*.{js?(x),ts?(x),vue,json}": ["npm run format", "npm run lint"],
+  "*.{html,css,less,scss}": ["npm run format"]
+}

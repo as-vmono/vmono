@@ -1,0 +1,23 @@
+{
+  "name": "vmono-seed",
+  "version": "0.0.0",
+  "type": "module",
+  "author": "astfn",
+  "description": "A Monorepo project template for creating Vue tool libraries",
+  "scripts": {
+    "prepare": "husky install",
+    "format": "prettier --config .prettierrc . --write",
+    "lint": "eslint --config eslint.config.js"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "devDependencies": {
+    "@vmono-seed/eslint-config": "workspace:*",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "eslint": "^9.12.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
+    "prettier": "^3.6.2"
+  }
+}

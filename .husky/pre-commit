@@ -1,0 +1,3 @@
+echo "🛫 lint-staged 正在执行 🛫"
+npx lint-staged --quiet
+echo "🎉 lint-staged 检测完毕,通过校验 🎉"
