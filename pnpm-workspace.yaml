@@ -1,4 +1,5 @@
 packages:
   - 'internal/*'
   - 'packages/*'
-  - 'docs'
+  - 'vuepress-docs'
+  - 'vitepress-docs'

@@ -1,0 +1,4 @@
+{
+  "extends": "@vmono-seed/ts-config/tsconfig.node.json",
+  "include": ["vite.config.ts"]
+}

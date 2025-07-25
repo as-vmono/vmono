@@ -1,0 +1,23 @@
+{
+  "name": "vitepress-docs",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@vmono-seed/tools": "workspace:*",
+    "@vmono-seed/vant-kit": "workspace:*",
+    "less": "^4.4.0",
+    "vitepress": "^1.6.3"
+  },
+  "dependencies": {
+    "@vitepress-demo-preview/component": "^2.5.1",
+    "@vitepress-demo-preview/plugin": "^1.4.0"
+  }
+}

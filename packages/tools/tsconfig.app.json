@@ -8,5 +8,5 @@
     // 输出类型文件
     "declaration": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "*.d.ts"]
+  "include": ["src/**/*.ts", "*.d.ts"]
 }

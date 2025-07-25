@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# docs cache
+**/.vitepress/cache
+**/.vuepress/.cache
+**/.vuepress/.temp

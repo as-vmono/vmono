@@ -1,12 +1,8 @@
-# 技术栈
+# 技术栈 
 
-vue3 + vite + vuepress (monorepo)
+vue3 + vite + 文档产出框架（内置 vitePress、vuePress）的 monorepo 项目
 
 内容：公共的组件、方法、hooks
-
-vmono-seed
-
-- as-vant-kit
 
 # 使用手册
 
@@ -36,7 +32,7 @@ vmono-seed
       packages:
         - 'internal/*'
         - 'packages/*'
-        - 'docs'
+        - 'vuepress-docs'
       ```
 
    2. internal 用于放一些公共的内部配置
@@ -44,9 +40,8 @@ vmono-seed
       - ts-config
    3. packages 就是维护的工具包
       - 目前统一放在 vant-kit 目录中，后续可以将工具函数单独抽出去。
-   4. docs
+   4. vuepress-docs
       - 用于文档产出，使用 vuepress 构建
-
 4. 创建对应的包目录
    1. ```JSON
       vmono-seed/
@@ -55,9 +50,9 @@ vmono-seed
       │   ├── ts-config/             # 通用的 ts 规则配置
       │
       ├── packages/
-      │   ├── vant-kit/            # Vue 工具库（组件 + Hook + 方法）
+      │   ├── vant-kit/              # Vue 工具库（组件 + Hook + 方法）
       │
-      ├── docs/                      # VuePress 文档站点
+      ├── vuepress-docs/             # VuePress 文档站点
       │
       ├── pnpm-workspace.yaml        # pnpm Monorepo 配置
       ├── package.json
@@ -65,11 +60,11 @@ vmono-seed
       ```
 5. 进入 vant-kit 工具包，初始化 vite 项目
    1. ```Bash
-      cd packages/vue-utils
+      cd packages/vant-kit
       pnpm init
       ```
 
-   2. 修改部分字段
+   2.  修改部分字段
 
    3. ```SQL
       {
@@ -85,25 +80,25 @@ vmono-seed
       }
       ```
 
-   4. 安装依赖
+   4.  安装依赖
 
    5. ```Bash
       pnpm add -D typescript vite @vitejs/plugin-vue vue vue-tsc
       ```
 
-   6. 创建 `vite.config.ts` （顺便创建下入口文件 index.ts 做预留)
+   6.  创建 `vite.config.ts` （顺便创建下入口文件 index.ts 做预留)
 
    7. ```JavaScript
       import { defineConfig } from 'vite';
       import vue from '@vitejs/plugin-vue';
-
+      
       export default defineConfig({
         plugins: [vue()],
         build: {
           lib: {
             entry: './src/index.ts',
             name: 'VueUtils',
-            fileName: (format) => `vue-utils.${format}.js`,
+            fileName: (format) => `vant-kit.${format}.js`,
           },
           rollupOptions: {
             external: ['vue'],
@@ -116,7 +111,6 @@ vmono-seed
         },
       });
       ```
-
 6. Placeholder
 
 ## 配置 tsconfig
@@ -198,7 +192,7 @@ pnpm init
 }
 ```
 
-新建 tsconfig.node.json 文件
+新建 tsconfig.node.json  文件
 
 ```JSON
 {
@@ -456,11 +450,11 @@ export const genVueLintConfigArr = ({ customRules } = {}) => {
 
 分别在全局、子包中执行以下步骤
 
-1. 在 package.json 的 devDependencies 中添加 "@vmono-seed/eslint-config": "workspace:\*" ，并执行 pnpm i下载
+1. 在 package.json 的 devDependencies 中添加 "@vmono-seed/eslint-config": "workspace:*" ，并执行 pnpm i下载
 2. 新建 eslint.config.js 文件，引入公共配置，并复用
    1. ```JavaScript
       import eslintConfig from '@vmono-seed/eslint-config';
-
+      
       export default eslintConfig;
       ```
 
@@ -632,3 +626,199 @@ dist-ssr
 *.gitignore text eol=lf
 *.editorconfig text eol=lf
 ```
+
+# Vue 组件包
+
+模板中以 vant-kit 为例子
+
+与之前直接开发 vite web 应用不同，我们现在要构建的是库，所以 vit.config.ts 中的打包配置要遵循库模式
+
+## 必要的基础配置
+
+vite.config
+
+```JavaScript
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import path from 'path';
+import unpluginComponents from 'unplugin-vue-components/vite';
+import { VantResolver } from '@vant/auto-import-resolver';
+
+export default defineConfig({
+  plugins: [
+    vue(),
+    // 全局自动引入 vant 组件
+    unpluginComponents({ resolvers: [VantResolver()] }),
+  ],
+  build: {
+    lib: {
+      //打包时的入口文件
+      entry: path.resolve(__dirname, './src/index.ts'),
+      //应用名
+      name: 'vant-kit',
+      //构建产物文件名，js 产物默认有两种 es、umd (format 的值)
+      fileName: (format) => `vant-kit.${format}.js`,
+    },
+    rollupOptions: {
+      external: ['vue'],
+      output: {
+        globals: {
+          vue: 'Vue',
+        },
+      },
+    },
+  },
+});
+```
+
+package.json
+
+```JSON
+{
+  // 外部默认识别的文件入口
+  "main": "dist/vant-kit.umd.js",
+  // esm 模块规范默认识别的文件入口
+  "module": "dist/vant-kit.es.js",
+  // 类型声明文件的识别入口
+  "types": "dist/index.d.ts",
+  // 在发布 npm 包时，包含的文件/目录有哪些
+  "files": [
+    "dist"
+  ],
+}
+```
+
+Css 支持
+
+https://cn.vitejs.dev/guide/build.html#css-support
+
+在 package.json 中配置 exports
+
+```JSON
+  "exports": {
+    ".": {
+      "import": "./dist/vant-kit.es.js",
+      "require": "./dist/vant-kit.umd.cjs"
+    },
+    "./style.css": "./dist/vant-kit.css"
+  },
+```
+
+外部使用该库时，需要引入样式文件，加载该库的样式
+
+```JSON
+import '@vmono-seed/vant-kit/style.css';
+```
+
+## 构建产物
+
+### 输出类型文件
+
+https://github.com/qmhc/unplugin-dts
+
+注意下文档中提到的  @microsoft/api-extractor  这个包，用于解决构建时的问题
+
+**安装依赖**
+
+```Bash
+pnpm add -D unplugin-dts@beta @microsoft/api-extractor
+```
+
+**配置 vite.config.ts**
+
+这里注意下 unplugin-dts/vite 用的是 CommonJs 规范，使用 ESM 规范导入时，虽然不影响打包(vite 已处理)，但是 ts 类型会提示没有默认导出项。
+
+1. 改成  * as dts  虽然 ts 没有报错，但是打包会失败，此时 vite 会真的按照 ESM 规范导入该包内容
+2. 因此最后采取用 ts 跳过校验的注释
+
+```JavaScript
+// @ts-expect-error 默认导出类型有问题，忽略 ts 校验
+import dts from 'unplugin-dts/vite';
+
+export default defineConfig({
+  ……,
+  plugins: [
+    ……,
+    dts({ tsconfigPath: './tsconfig.app.json' }),
+  ],
+});
+```
+
+## 开发体验相关
+
+### 组件自动引入
+
+安装依赖
+
+```Bash
+pnpm add -D unplugin-vue-components @vant/auto-import-resolver
+```
+
+配置 vite.config.ts
+
+```JavaScript
+import unpluginComponents from 'unplugin-vue-components/vite';
+import { VantResolver } from '@vant/auto-import-resolver';
+
+export default defineConfig({
+  ……,
+  plugins: [
+    ……,
+    // 全局自动引入 vant 组件
+    unpluginComponents({ resolvers: [VantResolver()] }),
+  ],
+});
+```
+
+# Vue 工具包
+
+在 vue 组件包（模板中以 vant-kit 为例子）目录同级，创建 tools 目录，用于构建 vue 工具包，包含公共函数、hook 等偏向纯逻辑类的工具。
+
+同理也要注意，与之前直接开发 vite web 应用不同，我们现在要构建的是库，所以 vit.config.ts 中的打包配置要遵循库模式
+
+主要构件流程和 Vue 组件包的差不多，相对更简单，因为不需要注入 vant，里面都是 ts 方法。也不需要处理 css。
+
+# VitePress（待完善）
+
+https://vitepress.dev/guide/getting-started
+
+1. vue3 setup 写法（本身支持）
+2. 代码 demo 示例 
+   1. https://github.com/xinlei3166/vitepress-theme-demoblock
+   2. https://github.com/flingyp/vitepress-demo-preview
+
+## vitepress-demo-preview
+
+关于代码 demo 演示，目前使用 vitepress-demo-preview 插件。
+
+因为相较于 vitepress-theme-demoblock 来说，优点如下：
+
+- 不在 md 里面编写 vue 逻辑，虽然 vitePress 支持直接在 md 中编写类 SFC 语法，但是代码提示、格式化等等开发体验肯定不如直接编写 vue 组件
+- 通过在 md 中直接引入 vue 组件，即可出现代码示例和复制示例代码的功能。
+
+```Bash
+<preview path="./Test.vue" title="Test" description="Test component description content"></preview>
+```
+
+## vs-code-intellisense-support
+
+https://vitepress.dev/guide/using-vue#vs-code-intellisense-support
+
+## 集成工具库样式
+
+我们需要为工具库编写文档，就涉及到使用工具库中的组件，由于工具库(该项目以 vant-kit 为例)需要引入 css，才能让工具组件的样式正常体现，因此我们需要在 vitePress 中找个地方引入这个 css ，并且全局使用工具库组件时，都不必重复导入工具库的 css 。
+
+https://vitepress.dev/guide/extending-default-theme#customizing-css
+
+# VuePress
+
+在 vuepress-docs目录下创建 VuePress 项目，实现工具库的文档产出。
+
+进入 vuepress-docs 目录，初始化项目
+
+```Bash
+cd docs
+pnpm init
+```
+
+https://vuepress.vuejs.org/zh/guide/getting-started.html#%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BA
