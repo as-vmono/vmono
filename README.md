@@ -780,9 +780,11 @@ export default defineConfig({
 
 # Vant-cli (H5 cpn & doc)
 
-https://github.com/youzan/vant/blob/main/packages/vant-cli/README.zh-CN.md
+在项目中的 vant-kit-engineering 目录
 
 ## 为何使用？
+
+https://github.com/youzan/vant/blob/main/packages/vant-cli/README.zh-CN.md
 
 是 vant 官方维护的 cli 项目，能够轻松构建 vue 组件库。
 
@@ -828,7 +830,7 @@ github 也有相关未关闭的 issue
 
 这里我主要解决的是 issue 13047 ，个人参照 vant 库的源码配置进行微调后，解决问题
 
-### tsconfig.json：
+### tsconfig.json
 
 1. https://github.com/youzan/vant/blob/main/packages/vant/tsconfig.json
 2. https://github.com/youzan/vant/blob/main/tsconfig.json
@@ -879,6 +881,33 @@ github 也有相关未关闭的 issue
   ]
 }
 ```
+
+### shim.d.ts
+
+新增完上面的配置，会发现 tsconfig.json 第一行有 ts 告警信息
+
+在配置文件“……/vant-kit-engineering/tsconfig.json”中找不到任何输入。指定的 "include" 路径为“["src/**/*","docs/**/*","test/**/*"]”，"exclude" 路径为“["**/node_modules","**/.*/"]”。ts JSON schema for the TypeScript compiler's configuration file
+
+表示 TypeScript 编译器没有找到任何符合 `include` 规则的 `.ts` 或 `.vue` 文件。
+
+我们需要声明一个 `xxx-shim.d.ts` 的类型声明文件，作用是告诉 TypeScript：`.vue` 文件是“合法的模块”，可以被导入（`import`），并且它的默认导出是一个 Vue 组件。
+
+文件名称没有强制约束，但我们就参照 vant 库源码，叫 `vue-sfc-shim.d.ts`
+
+```TypeScript
+declare module '*.vue' {
+  import { DefineComponent } from 'vue';
+  const Component: DefineComponent;
+  export default Component;
+}
+```
+
+**为什么叫 “shim”？**
+
+- “Shim” 是计算机术语，意思是 一个小型的兼容层，用来让不兼容的东西“适配”在一起。
+- 在这里，`.vue` 文件和 TypeScript 本来不兼容， `xxx-shim.d.ts` 就是一个“胶水层”，让 TS 能“假装” `.vue` 是一个合法模块。
+
+所以叫  `xxx-shim.d.ts`，意思是“为 Vue 文件提供的类型适配层”。
 
 ## css 开发(坑点)
 
