@@ -1,0 +1,51 @@
+{
+  "name": "@vmono-seed/vant-kit",
+  "version": "1.0.0",
+  "description": "A project that includes common components from the H5 project (dependent on vant) and some utility functions",
+  "main": "lib/@vmono-seed/vant-kit.js",
+  "module": "es/index.js",
+  "style": "lib/index.css",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "es"
+  ],
+  "scripts": {
+    "dev": "vant-cli dev",
+    "lint": "vant-cli lint",
+    "build": "vant-cli build",
+    "build:site": "vant-cli build-site",
+    "release:site": "pnpm build:site && npx gh-pages -d site-dist"
+  },
+  "author": "astfn",
+  "peerDependencies": {
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "@microsoft/api-extractor": "^7.52.9",
+    "@types/lodash": "^4.17.20",
+    "@vant/cli": "^7.0.0",
+    "@vmono-seed/ts-config": "workspace:*",
+    "sass": "^1.49.7",
+    "unplugin-dts": "1.0.0-beta.0",
+    "vue": "^3.3.4"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@vant"
+    ]
+  },
+  "prettier": {
+    "singleQuote": true
+  },
+  "browserslist": [
+    "Chrome >= 51",
+    "iOS >= 10"
+  ],
+  "dependencies": {
+    "@vmono-seed/tools": "workspace:*",
+    "lodash": "^4.17.21",
+    "vant": "^4.9.21"
+  }
+}

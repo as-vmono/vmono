@@ -39,7 +39,7 @@ vue3 + vite + 文档产出框架（内置 vitePress、vuePress）的 monorepo �
       - eslint-config
       - ts-config
    3. packages 就是维护的工具包
-      - 目前统一放在 vant-kit 目录中，后续可以将工具函数单独抽出去。
+      - 目前统一放在 cpn-kit 目录中，后续可以将工具函数单独抽出去。
    4. vuepress-docs
       - 用于文档产出，使用 vuepress 构建
 4. 创建对应的包目录
@@ -50,7 +50,7 @@ vue3 + vite + 文档产出框架（内置 vitePress、vuePress）的 monorepo �
       │   ├── ts-config/             # 通用的 ts 规则配置
       │
       ├── packages/
-      │   ├── vant-kit/              # Vue 工具库（组件 + Hook + 方法）
+      │   ├── cpn-kit/              # Vue 工具库（组件 + Hook + 方法）
       │
       ├── vuepress-docs/             # VuePress 文档站点
       │
@@ -58,9 +58,9 @@ vue3 + vite + 文档产出框架（内置 vitePress、vuePress）的 monorepo �
       ├── package.json
       └── README.md
       ```
-5. 进入 vant-kit 工具包，初始化 vite 项目
+5. 进入 cpn-kit 工具包，初始化 vite 项目
    1. ```Bash
-      cd packages/vant-kit
+      cd packages/cpn-kit
       pnpm init
       ```
 
@@ -68,7 +68,7 @@ vue3 + vite + 文档产出框架（内置 vitePress、vuePress）的 monorepo �
 
    3. ```SQL
       {
-        "name": "@vmono-seed/vant-kit",
+        "name": "@vmono-seed/cpn-kit",
         "version": "0.0.0",
         "type": "module",
         "description": "A project that includes common components from the H5 project (dependent on vant) and some utility functions",
@@ -98,7 +98,7 @@ vue3 + vite + 文档产出框架（内置 vitePress、vuePress）的 monorepo �
           lib: {
             entry: './src/index.ts',
             name: 'VueUtils',
-            fileName: (format) => `vant-kit.${format}.js`,
+            fileName: (format) => `cpn-kit.${format}.js`,
           },
           rollupOptions: {
             external: ['vue'],
@@ -119,7 +119,7 @@ vue3 + vite + 文档产出框架（内置 vitePress、vuePress）的 monorepo �
 
 可以配置在全局，也可以配置在各个子包中。如果都配置了，则以当前包的为准。
 
-由于在项目根层级中，目前不需要编写额外的 ts 代码，所以目前只在子包 (vant-kit) 中配置即可
+由于在项目根层级中，目前不需要编写额外的 ts 代码，所以目前只在子包 (cpn-kit) 中配置即可
 
 ### 配置复用
 
@@ -216,11 +216,11 @@ pnpm init
 
 #### 使用配置
 
-进入 vant-kit 包，先把抽离的 tsconfig 依赖添加到 package.json 中，并执行 pnpm i 进行下载
+进入 cpn-kit 包，先把抽离的 tsconfig 依赖添加到 package.json 中，并执行 pnpm i 进行下载
 
 ```JSON
 {
-  "name": "@vmono-seed/vant-kit",
+  "name": "@vmono-seed/cpn-kit",
    ……,
   "devDependencies": {
     "@vmono-seed/ts-config": "workspace:*",
@@ -265,7 +265,7 @@ pnpm init
 }
 ```
 
-到这里就把 vant-kit 包的 tsconfig 配置完了，如果后续新增其它子包，可遵循相同的配置过程。
+到这里就把 cpn-kit 包的 tsconfig 配置完了，如果后续新增其它子包，可遵循相同的配置过程。
 
 ## 配置 eslint
 
@@ -629,7 +629,7 @@ dist-ssr
 
 # Vue 组件包
 
-模板中以 vant-kit 为例子
+模板中以 cpn-kit 为例子
 
 与之前直接开发 vite web 应用不同，我们现在要构建的是库，所以 vit.config.ts 中的打包配置要遵循库模式
 
@@ -655,9 +655,9 @@ export default defineConfig({
       //打包时的入口文件
       entry: path.resolve(__dirname, './src/index.ts'),
       //应用名
-      name: 'vant-kit',
+      name: 'cpn-kit',
       //构建产物文件名，js 产物默认有两种 es、umd (format 的值)
-      fileName: (format) => `vant-kit.${format}.js`,
+      fileName: (format) => `cpn-kit.${format}.js`,
     },
     rollupOptions: {
       external: ['vue'],
@@ -676,9 +676,9 @@ package.json
 ```JSON
 {
   // 外部默认识别的文件入口
-  "main": "dist/vant-kit.umd.js",
+  "main": "dist/cpn-kit.umd.js",
   // esm 模块规范默认识别的文件入口
-  "module": "dist/vant-kit.es.js",
+  "module": "dist/cpn-kit.es.js",
   // 类型声明文件的识别入口
   "types": "dist/index.d.ts",
   // 在发布 npm 包时，包含的文件/目录有哪些
@@ -697,17 +697,17 @@ https://cn.vitejs.dev/guide/build.html#css-support
 ```JSON
   "exports": {
     ".": {
-      "import": "./dist/vant-kit.es.js",
-      "require": "./dist/vant-kit.umd.cjs"
+      "import": "./dist/cpn-kit.es.js",
+      "require": "./dist/cpn-kit.umd.cjs"
     },
-    "./style.css": "./dist/vant-kit.css"
+    "./style.css": "./dist/cpn-kit.css"
   },
 ```
 
 外部使用该库时，需要引入样式文件，加载该库的样式
 
 ```JSON
-import '@vmono-seed/vant-kit/style.css';
+import '@vmono-seed/cpn-kit/style.css';
 ```
 
 ## 构建产物
@@ -772,11 +772,135 @@ export default defineConfig({
 
 # Vue 工具包
 
-在 vue 组件包（模板中以 vant-kit 为例子）目录同级，创建 tools 目录，用于构建 vue 工具包，包含公共函数、hook 等偏向纯逻辑类的工具。
+在 vue 组件包（模板中以 cpn-kit 为例子）目录同级，创建 tools 目录，用于构建 vue 工具包，包含公共函数、hook 等偏向纯逻辑类的工具。
 
 同理也要注意，与之前直接开发 vite web 应用不同，我们现在要构建的是库，所以 vit.config.ts 中的打包配置要遵循库模式
 
 主要构件流程和 Vue 组件包的差不多，相对更简单，因为不需要注入 vant，里面都是 ts 方法。也不需要处理 css。
+
+# Vant-cli (H5 cpn & doc)
+
+https://github.com/youzan/vant/blob/main/packages/vant-cli/README.zh-CN.md
+
+## 为何使用？
+
+是 vant 官方维护的 cli 项目，能够轻松构建 vue 组件库。
+
+- 内置文档工程，和手机端 demo 演示
+- 支持组件库、文档的独立打包。
+  - 自动根据目录结构生成构建产物
+
+如果你要基于 vant 封装一套自己的组件库，那这肯定是不二之选。
+
+## 基础配置修改
+
+1. 删除 git 相关配置
+   1. .gitignore 配置文件
+   2.  husky 相关配置
+      1. nano-staged（package.json）
+2. 更新包管理器选项（因为我们的项目是 pnpm 创建的 monorepo，为了相关指令能正常使用，要把包管理器切换为 pnpm）
+   1.  vant.config.mjs
+
+   2. ```YAML
+      export default {
+        ……
+        build: {
+          packageManager: 'pnpm',
+          ……
+        }
+      };
+      ```
+3. 更新描述、作者 (package.json)
+   1. ```Bash
+      {
+         ……
+        "description": "A project that includes common components from the H5 project (dependent on vant) and some utility functions",
+        "author": "astfn"
+      }
+      ```
+
+## ts 开发(坑点)
+
+github 也有相关未关闭的 issue
+
+1. https://github.com/youzan/vant/issues/13047
+2. https://github.com/youzan/vant/issues/12912
+
+这里我主要解决的是 issue 13047 ，个人参照 vant 库的源码配置进行微调后，解决问题
+
+### tsconfig.json：
+
+1. https://github.com/youzan/vant/blob/main/packages/vant/tsconfig.json
+2. https://github.com/youzan/vant/blob/main/tsconfig.json
+
+组合到项目中相当于
+
+```JSON
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    "strict": true,
+    "target": "ES2015",
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "lib": ["esnext", "dom"],
+
+    "allowJs": true,
+    "noImplicitThis": true,
+    "types": ["vue/jsx"],
+  },
+  "include": ["src/**/*", "docs/**/*", "test/**/*"],
+  "exclude": ["**/node_modules", "**/.*/"]
+}
+```
+
+在 compilerOptions 中新增配置 "noImplicitAny": false 更符合个人开发习惯
+
+### tsconfig.declaration.json
+
+```JSON
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "declarationDir": ".",
+    "emitDeclarationOnly": true
+  },
+  "include": ["es/**/*", "lib/**/*"],
+  "exclude": [
+    "**/node_modules",
+    "**/test/**/*",
+    "**/demo/**/*",
+    "**/vue-lazyload/*"
+  ]
+}
+```
+
+## css 开发(坑点)
+
+基于 vant 进行二开，就需要依赖 vant 的 css，通常我们会在一个类似入口文件的地方统一引入第三方的依赖
+
+相关 github issue
+
+- https://github.com/youzan/vant/blob/main/packages/vant-cli/docs/config.zh-CN.md#buildcssbase
+- https://github.com/youzan/vant/issues/10934
+
+最后只能在每个组件中引入喽😓
+
+```XML
+<style scoped lang="less">
+@import 'vant/lib/index.css';
+……
+</style>
+```
+
+## 站点相关配置
+
+https://github.com/youzan/vant/blob/main/packages/vant-cli/docs/config.zh-CN.md#buildsitepublicpath
 
 # VitePress（待完善）
 
@@ -806,9 +930,21 @@ https://vitepress.dev/guide/using-vue#vs-code-intellisense-support
 
 ## 集成工具库样式
 
-我们需要为工具库编写文档，就涉及到使用工具库中的组件，由于工具库(该项目以 vant-kit 为例)需要引入 css，才能让工具组件的样式正常体现，因此我们需要在 vitePress 中找个地方引入这个 css ，并且全局使用工具库组件时，都不必重复导入工具库的 css 。
+我们需要为工具库编写文档，就涉及到使用工具库中的组件，由于工具库(该项目以 cpn-kit 为例)需要引入 css，才能让工具组件的样式正常体现，因此我们需要在 vitePress 中找个地方引入这个 css ，并且全局使用工具库组件时，都不必重复导入工具库的 css 。
 
 https://vitepress.dev/guide/extending-default-theme#customizing-css
+
+在 .vitepress/theme/index.mts 中引入工具库组件的 css
+
+```JavaScript
+import DefaultTheme from 'vitepress/theme';
+// 引入工具库组件的 css
+import '@vmono-seed/cpn-kit/style.css';
+
+export default {
+  ...DefaultTheme,
+};
+```
 
 # VuePress
 

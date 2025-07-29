@@ -11,12 +11,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@vmono-seed/tools": "workspace:*",
-    "@vmono-seed/vant-kit": "workspace:*",
     "less": "^4.4.0",
     "vitepress": "^1.6.3"
   },
   "dependencies": {
+    "@vmono-seed/tools": "workspace:*",
+    "@vmono-seed/cpn-kit": "workspace:*",
     "@vitepress-demo-preview/component": "^2.5.1",
     "@vitepress-demo-preview/plugin": "^1.4.0"
   }

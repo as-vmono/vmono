@@ -1,20 +1,20 @@
 {
-  "name": "@vmono-seed/vant-kit",
+  "name": "@vmono-seed/cpn-kit",
   "version": "0.0.0",
   "type": "module",
   "description": "A project that includes common components from the H5 project (dependent on vant) and some utility functions",
-  "main": "dist/vant-kit.umd.js",
-  "module": "dist/vant-kit.es.js",
+  "main": "dist/cpn-kit.umd.js",
+  "module": "dist/cpn-kit.es.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
-      "import": "./dist/vant-kit.es.js",
-      "require": "./dist/vant-kit.umd.cjs"
+      "import": "./dist/cpn-kit.es.js",
+      "require": "./dist/cpn-kit.umd.cjs"
     },
-    "./style.css": "./dist/vant-kit.css"
+    "./style.css": "./dist/cpn-kit.css"
   },
   "scripts": {
     "build": "vite build"
@@ -23,7 +23,6 @@
   "author": "astfn",
   "license": "ISC",
   "devDependencies": {
-    "@vmono-seed/tools": "workspace:*",
     "@vmono-seed/eslint-config": "workspace:*",
     "@vmono-seed/ts-config": "workspace:*",
     "@microsoft/api-extractor": "^7.52.9",
@@ -37,6 +36,7 @@
     "vue-tsc": "^3.0.3"
   },
   "dependencies": {
+    "@vmono-seed/tools": "workspace:*",
     "lodash": "^4.17.21",
     "vant": "^4.9.21"
   }

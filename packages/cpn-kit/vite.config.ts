@@ -12,8 +12,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, './src/index.ts'),
-      name: 'vant-kit',
-      fileName: (format) => `vant-kit.${format}.js`,
+      name: 'cpn-kit',
+      fileName: (format) => `cpn-kit.${format}.js`,
     },
     rollupOptions: {
       external: ['vue'],
