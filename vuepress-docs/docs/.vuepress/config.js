@@ -25,6 +25,6 @@ export default defineUserConfig({
   }),
 
   lang: 'zh-CN',
-  title: 'vmono-seed',
-  description: '欢迎来到 vmono-seed 库文档',
+  title: 'vmono',
+  description: '欢迎来到 vmono 库文档',
 });

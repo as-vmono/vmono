@@ -1,5 +1,5 @@
 {
-  "name": "vmono-seed",
+  "name": "vmono",
   "version": "0.0.0",
   "type": "module",
   "author": "astfn",
@@ -12,9 +12,10 @@
   "keywords": [],
   "license": "ISC",
   "devDependencies": {
-    "@vmono-seed/eslint-config": "workspace:*",
+    "@changesets/cli": "^2.29.5",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
+    "@vmono/eslint-config": "workspace:*",
     "eslint": "^9.12.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",

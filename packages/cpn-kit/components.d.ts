@@ -8,7 +8,6 @@ export {};
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    VanField: typeof import('vant/es')['Field']
     VanPicker: typeof import('vant/es')['Picker']
     VanPopup: typeof import('vant/es')['Popup']
     VanSearch: typeof import('vant/es')['Search']

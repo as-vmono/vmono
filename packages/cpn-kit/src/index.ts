@@ -2,7 +2,7 @@
 import 'vant/es/toast/style';
 import 'vant/es/dialog/style';
 
+import ShowAvatar from './ShowAvatar.vue';
 import SinglePicker from './SinglePicker.vue';
-import FieldSinglePicker from './FieldSinglePicker.vue';
 
-export { SinglePicker, FieldSinglePicker };
+export { ShowAvatar, SinglePicker };

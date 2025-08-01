@@ -4,14 +4,14 @@
 
 ```bash
 # 通过 npm
-npm i @vmono-seed/vant-kit
+npm i @vmono/vant-kit
 
 # 通过 yarn
-yarn add @vmono-seed/vant-kit
+yarn add @vmono/vant-kit
 
 # 通过 pnpm
-pnpm add @vmono-seed/vant-kit
+pnpm add @vmono/vant-kit
 
 # 通过 bun
-bun add @vmono-seed/vant-kit
+bun add @vmono/vant-kit
 ```

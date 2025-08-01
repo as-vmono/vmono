@@ -1,5 +1,5 @@
 {
-  "extends": "@vmono-seed/ts-config/tsconfig.app.json",
+  "extends": "@vmono/tsconfig/tsconfig.app.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {

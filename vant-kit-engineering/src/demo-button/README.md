@@ -8,7 +8,7 @@ DemoButton 是一个示例按钮组件
 
 ```js
 import Vue from 'vue';
-import { DemoButton } from '@vmono-seed/vant-kit';
+import { DemoButton } from '@vmono/vant-kit';
 
 Vue.use(DemoButton);
 ```

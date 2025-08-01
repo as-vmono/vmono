@@ -1,23 +1,23 @@
 # 技术栈 
 
-vue3 + vite + 文档产出框架（内置 vitePress、vuePress）的 monorepo 项目
+vue3 + vite + 文档产出框架（内置 vitePress、vuePress、vant-cli）的 monorepo 项目
 
 内容：公共的组件、方法、hooks
 
 # 使用手册
 
-1. 字符串全局替换 vmono-seed -> 你的项目名(将作为所有子包的名称前缀)
+1. 字符串全局替换 vmono -> 你的项目名(将作为所有子包的名称前缀)
 2. 删除 README.pdf、更新 README.md 内容
 
 # 整体框架搭建
 
 ## 项目初始化
 
-1. 创建项目目录 vmono-seed
+1. 创建项目目录 vmono
 2. 运行 pnpm init，编辑部分字段
    1. ```JSON
       {
-        "name": "vmono-seed",
+        "name": "vmono",
         "version": "0.0.0",
         "type": "module",
         "author": "astfn",
@@ -44,7 +44,7 @@ vue3 + vite + 文档产出框架（内置 vitePress、vuePress）的 monorepo �
       - 用于文档产出，使用 vuepress 构建
 4. 创建对应的包目录
    1. ```JSON
-      vmono-seed/
+      vmono/
       ├── internal/
       │   ├── eslint-config/         # 通用的 eslint 配置
       │   ├── ts-config/             # 通用的 ts 规则配置
@@ -68,7 +68,7 @@ vue3 + vite + 文档产出框架（内置 vitePress、vuePress）的 monorepo �
 
    3. ```SQL
       {
-        "name": "@vmono-seed/cpn-kit",
+        "name": "@vmono/cpn-kit",
         "version": "0.0.0",
         "type": "module",
         "description": "A project that includes common components from the H5 project (dependent on vant) and some utility functions",
@@ -91,13 +91,17 @@ vue3 + vite + 文档产出框架（内置 vitePress、vuePress）的 monorepo �
    7. ```JavaScript
       import { defineConfig } from 'vite';
       import vue from '@vitejs/plugin-vue';
+      import path from 'path';
       
       export default defineConfig({
         plugins: [vue()],
         build: {
           lib: {
-            entry: './src/index.ts',
-            name: 'VueUtils',
+            //打包时的入口文件
+            entry: path.resolve(__dirname, './src/index.ts'),
+            //应用名
+            name: '@vmono/cpn-kit',
+            //构建产物文件名，js 产物默认有两种 es、umd (format 的值)
             fileName: (format) => `cpn-kit.${format}.js`,
           },
           rollupOptions: {
@@ -111,7 +115,6 @@ vue3 + vite + 文档产出框架（内置 vitePress、vuePress）的 monorepo �
         },
       });
       ```
-6. Placeholder
 
 ## 配置 tsconfig
 
@@ -143,7 +146,7 @@ pnpm init
 
 ```JSON
 {
-  "name": "@vmono-seed/ts-config",
+  "name": "@vmono/tsconfig",
   "version": "0.0.0",
   "author": "astfn",
   "private": true,
@@ -220,10 +223,10 @@ pnpm init
 
 ```JSON
 {
-  "name": "@vmono-seed/cpn-kit",
+  "name": "@vmono/cpn-kit",
    ……,
   "devDependencies": {
-    "@vmono-seed/ts-config": "workspace:*",
+    "@vmono/tsconfig": "workspace:*",
     ……
   }
 }
@@ -231,36 +234,38 @@ pnpm init
 
 新建 tsconfig.json 文件，同理也将 tsconfig.app.json、tsconfig.node.json 再抽成单独的文件配置
 
-- 复用 @vmono-seed/ts-config 中 tsconfig.json 配置
+- 复用 @vmono/tsconfig 中 tsconfig.json 配置
 
 ```JSON
 {
-  "extends": "@vmono-seed/ts-config/tsconfig.json",
+  "extends": "@vmono/tsconfig/tsconfig.json",
   "files": [],
   "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
 }
 ```
 
-新建 tsconfig.app.json 文件，复用 @vmono-seed/ts-config 中 tsconfig.app.json 配置的同时，再针对该包，新增一些配置
+新建 tsconfig.app.json 文件，复用 @vmono/tsconfig 中 tsconfig.app.json 配置的同时，再针对该包，新增一些配置
 
 ```JSON
 {
-  "extends": "@vmono-seed/ts-config/tsconfig.app.json",
+  "extends": "@vmono/tsconfig/tsconfig.app.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    // 输出类型文件
+    "declaration": true
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "*.d.ts"]
 }
 ```
 
-新建 tsconfig.node.json 文件，复用 @vmono-seed/ts-config 中 tsconfig.node.json 配置的同时，再针对该包，新增一些配置
+新建 tsconfig.node.json 文件，复用 @vmono/tsconfig 中 tsconfig.node.json 配置的同时，再针对该包，新增一些配置
 
 ```JSON
 {
-  "extends": "@vmono-seed/ts-config/tsconfig.node.json",
+  "extends": "@vmono/tsconfig/tsconfig.node.json",
   "include": ["vite.config.ts"]
 }
 ```
@@ -303,7 +308,7 @@ pnpm init
 
 ```JSON
 {
-  "name": "@vmono-seed/eslint-config",
+  "name": "@vmono/eslint-config",
   "version": "0.0.0",
   "author": "astfn",
   "type": "module",
@@ -450,10 +455,10 @@ export const genVueLintConfigArr = ({ customRules } = {}) => {
 
 分别在全局、子包中执行以下步骤
 
-1. 在 package.json 的 devDependencies 中添加 "@vmono-seed/eslint-config": "workspace:*" ，并执行 pnpm i下载
+1. 在 package.json 的 devDependencies 中添加 "@vmono/eslint-config": "workspace:*" ，并执行 pnpm i下载
 2. 新建 eslint.config.js 文件，引入公共配置，并复用
    1. ```JavaScript
-      import eslintConfig from '@vmono-seed/eslint-config';
+      import eslintConfig from '@vmono/eslint-config';
       
       export default eslintConfig;
       ```
@@ -516,7 +521,7 @@ public
 
 ```JSON
 {
-  "name": "vmono-seed",
+  "name": "vmono",
    ……
   "scripts": {
     "prepare": "husky install",
@@ -635,27 +640,23 @@ dist-ssr
 
 ## 必要的基础配置
 
+### 项目基础配置
+
 vite.config
 
 ```JavaScript
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
-import unpluginComponents from 'unplugin-vue-components/vite';
-import { VantResolver } from '@vant/auto-import-resolver';
 
 export default defineConfig({
-  plugins: [
-    vue(),
-    // 全局自动引入 vant 组件
-    unpluginComponents({ resolvers: [VantResolver()] }),
-  ],
+  plugins: [vue()],
   build: {
     lib: {
       //打包时的入口文件
       entry: path.resolve(__dirname, './src/index.ts'),
       //应用名
-      name: 'cpn-kit',
+      name: '@vmono/cpn-kit',
       //构建产物文件名，js 产物默认有两种 es、umd (format 的值)
       fileName: (format) => `cpn-kit.${format}.js`,
     },
@@ -676,9 +677,9 @@ package.json
 ```JSON
 {
   // 外部默认识别的文件入口
-  "main": "dist/cpn-kit.umd.js",
+  "main": "dist/@vmono/cpn-kit.umd.js",
   // esm 模块规范默认识别的文件入口
-  "module": "dist/cpn-kit.es.js",
+  "module": "dist/@vmono/cpn-kit.es.js",
   // 类型声明文件的识别入口
   "types": "dist/index.d.ts",
   // 在发布 npm 包时，包含的文件/目录有哪些
@@ -688,7 +689,7 @@ package.json
 }
 ```
 
-Css 支持
+### Css 支持
 
 https://cn.vitejs.dev/guide/build.html#css-support
 
@@ -697,22 +698,22 @@ https://cn.vitejs.dev/guide/build.html#css-support
 ```JSON
   "exports": {
     ".": {
-      "import": "./dist/cpn-kit.es.js",
-      "require": "./dist/cpn-kit.umd.cjs"
+      "import": "./dist/@vmono/cpn-kit.es.js",
+      "require": "./dist/@vmono/cpn-kit.umd.js"
     },
-    "./style.css": "./dist/cpn-kit.css"
+    "./style.css": "./dist/@vmono/cpn-kit.css"
   },
 ```
 
 外部使用该库时，需要引入样式文件，加载该库的样式
 
 ```JSON
-import '@vmono-seed/cpn-kit/style.css';
+import '@vmono/cpn-kit/style.css';
 ```
 
-## 构建产物
+### Ts 支持
 
-### 输出类型文件
+#### 构建产物输出类型文件
 
 https://github.com/qmhc/unplugin-dts
 
@@ -744,6 +745,37 @@ export default defineConfig({
 });
 ```
 
+#### 实际使用时的类型问题
+
+虽然我们经过上面的配置后，能够正常输出类型文件，但是在打包发布 npm 后，会发现没有类型提示。
+
+因为在 **Css 支持** 时，我们在 package.json 中添加了 **`exports`** 配置项，虽然我们也在 **`exports`** 的同级声明了 **`main`**、**`module`**、**`types`**这些字段，但是在现代较新的打包工具或类型解析器中，**`exports`** 配置项的优先级更高所以在配置  **`exports`** 的同时，也要保留 **`main`**、**`module`**、**`types`**这些字段，用于向后兼容不支持 **`exports`** 的旧版打包工具或类型解析器。
+
+所以我们也要在 **`exports`** 字段中，写入 `types` 配置项
+
+```JSON
+ "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",  //✅ 为了优先匹配到 type 声明，应该放到最前面
+      "import": "./dist/@vmono/cpn-kit.es.js",
+      "require": "./dist/@vmono/cpn-kit.umd.js"
+    },
+    "./style.css": "./dist/@vmono/cpn-kit.css"
+  },
+```
+
+Node.js 和打包工具在解析 `exports` 字段时是**按顺序匹配的**。一旦某个条件匹配成功，就不再继续向下检查。
+
+#### 匹配顺序问题：
+
+1. 所有 ESM 导入（`import from`）都会匹配 `"import"` → ✅ 匹配成功，停止解析
+2. 所有 CJS 调用（`require()`）都会匹配 `"require"` → ✅ 匹配成功，停止解析
+3. `"types"` 放在最后，永远无法被 TypeScript 访问到
+
+⚠️ 所以：TypeScript 根本看不到 `types` 字段，类型提示失效！
+
+🔔 **因此，为了安全的匹配到类型，应该将** `types` **字段放到最前面。**
+
 ## 开发体验相关
 
 ### 组件自动引入
@@ -772,13 +804,16 @@ export default defineConfig({
 
 # Vue 工具包
 
-在 vue 组件包（模板中以 cpn-kit 为例子）目录同级，创建 tools 目录，用于构建 vue 工具包，包含公共函数、hook 等偏向纯逻辑类的工具。
+在 vue 组件包（模板中以 cpn-kit 为例子）目录同级创建
 
-同理也要注意，与之前直接开发 vite web 应用不同，我们现在要构建的是库，所以 vit.config.ts 中的打包配置要遵循库模式
+1. utils 目录，用于构建纯底层，非常通用的工具函数包
+2. vhooks 目录，用于构建 vue 相关 hooks 的工具包。
 
-主要构件流程和 Vue 组件包的差不多，相对更简单，因为不需要注入 vant，里面都是 ts 方法。也不需要处理 css。
+同理也要注意，与之前直接开发 vite web 应用不同，我们现在要构建的是库，所以 vit.config.ts 中的打包配置要遵循库模式。
 
-# Vant-cli (H5 cpn & doc)
+主要构件流程和 Vue 组件包的差不多，但相对更简单，因为不需要注入 vant，里面都是 ts 方法。也不需要处理 css。
+
+# Vant-Cli (H5 cpn & doc)
 
 在项目中的 vant-kit-engineering 目录
 
@@ -968,7 +1003,7 @@ https://vitepress.dev/guide/extending-default-theme#customizing-css
 ```JavaScript
 import DefaultTheme from 'vitepress/theme';
 // 引入工具库组件的 css
-import '@vmono-seed/cpn-kit/style.css';
+import '@vmono/cpn-kit/style.css';
 
 export default {
   ...DefaultTheme,
@@ -987,3 +1022,100 @@ pnpm init
 ```
 
 https://vuepress.vuejs.org/zh/guide/getting-started.html#%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BA
+
+# 子包发布
+
+## 包名
+
+包名 @xxx/xxx 是私域包名，需要付费。
+
+但是可以在 npm 上创建公开的组织，而后就可以按照 @组织名/xxx 的形式发布某个域下的包名
+
+## 语义化版本
+
+https://semver.org/lang/zh-CN/
+
+## 发布流程
+
+### workspace:* 问题
+
+pnpm 构建的 monorepo 项目不能直接像通常项目一样，在对应子包的目录下直接运行 npm pubish 发布后，会有问题
+
+- 这个 `workspace:*` 只在你的 Monorepo 内部有效，不能发布到 npm 上！
+- 当运行 `npm publish` 时，如果 `package.json` 中的依赖还是 `workspace:*`，那么：
+
+> ⚠️ 发布到 npm 的包里，`@eb-h5-toolkit/utils` 的版本是 `"workspace:^"`，而不是 `"1.0.0"` 这样的真实版本。
+
+当别人在外部项目安装你的包时，npm 会尝试解析 `workspace:*`，但 npm 不支持 `workspace:` 协议（只有 pnpm/yarn 支持），所以报错：
+
+```Plain
+Unsupported URL Type "workspace:"
+```
+
+#### 解决方案
+
+**核心原则：**
+
+> 发布到 npm 的包，必须使用真实版本号，不能包含 `workspace:`、`link:`、`file:` 等本地协议。
+
+**正确做法（以 pnpm 为例）**
+
+步骤 1：使用 `pnpm publish` 或自动化工具
+
+不要手动 `cd` 到子包目录然后 `npm publish` ❌
+
+而是使用 Monorepo 友好的发布工具，它们会自动：
+
+- 替换 `workspace:*` 为真实版本号
+- 按依赖顺序发布包
+- 处理版本号递增
+
+ **推荐使用** **`pnpm publish`** **+** **`changesets`**
+
+- 这是目前最主流、最可靠的 Monorepo 发布方案。
+
+#### changesets
+
+1. 安装 changesets
+
+```Plain
+pnpm add -D -w @changesets/cli
+```
+
+1. 初始化
+
+```Plain
+pnpm changeset init
+```
+
+1. 功能开发完毕后，添加变更记录
+
+```Plain
+pnpm changeset
+```
+
+选择要发布的包，填写变更类型（patch/minor/major）
+
+1. 生成版本号并更新 package.json
+
+```Plain
+pnpm changeset version
+```
+
+这会把 `workspace:*` 自动替换为真实版本号，比如 `"@eb-h5-toolkit/utils": "1.0.1"`
+
+1. 发布
+
+```Plain
+pnpm changeset publish
+```
+
+changeset 在发布时，默认尝试私域，所以会发布失败，需要在每个子包内声明是公开库
+
+package.json👇
+
+```JSON
+ "publishConfig": {
+    "access": "public"
+ }
+```

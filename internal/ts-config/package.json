@@ -1,5 +1,5 @@
 {
-  "name": "@vmono-seed/ts-config",
+  "name": "@vmono/tsconfig",
   "version": "0.0.0",
   "author": "astfn",
   "private": true,
@@ -7,5 +7,8 @@
     "tsconfig.json",
     "tsconfig.app.json",
     "tsconfig.node.json"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

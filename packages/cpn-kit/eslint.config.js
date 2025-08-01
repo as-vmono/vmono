@@ -1,3 +1,3 @@
-import eslintConfig from '@vmono-seed/eslint-config';
+import eslintConfig from '@vmono/eslint-config';
 
 export default eslintConfig;

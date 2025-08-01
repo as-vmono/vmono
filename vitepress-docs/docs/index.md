@@ -3,7 +3,7 @@
 layout: home
 
 hero:
-  name: 'vmono-seed'
+  name: 'vmono'
   text: 'A Monorepo project template for creating Vue tool libraries'
   tagline: vite + vue3 + vitepress (monorepo project)
   actions:
@@ -19,9 +19,9 @@ hero:
 
 features:
   - title: Components
-    details: vmono-seed 公共组件
+    details: vmono 公共组件
   - title: Functions
-    details: vmono-seed 工具函数
+    details: vmono 工具函数
   - title: Hooks
-    details: vmono-seed 通用 hooks
+    details: vmono 通用 hooks
 ---

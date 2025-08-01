@@ -4,7 +4,7 @@ import { containerPreview, componentPreview } from '@vitepress-demo-preview/plug
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: 'vmono-seed',
+  title: 'vmono',
   description: 'A VitePress Site',
 
   markdown: {

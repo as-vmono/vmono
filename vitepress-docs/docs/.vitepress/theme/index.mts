@@ -1,5 +1,5 @@
 import DefaultTheme from 'vitepress/theme';
-import '@vmono-seed/cpn-kit/style.css';
+import '@vmono/cpn-kit/style.css';
 import { AntDesignContainer } from '@vitepress-demo-preview/component';
 import '@vitepress-demo-preview/component/dist/style.css';
 

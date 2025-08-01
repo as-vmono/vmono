@@ -1,6 +1,6 @@
 {
-  "name": "@vmono-seed/docs",
-  "version": "1.0.0",
+  "name": "@vmono/vuepress-docs",
+  "version": "0.0.0",
   "description": "",
   "scripts": {
     "dev": "vuepress dev docs",

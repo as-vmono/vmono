@@ -1,50 +1,15 @@
 <template>
-  <SinglePicker
-    v-model="pickerValue"
-    :picker-props="{
-      columns: columns,
-      columnsFieldNames: columnsFieldNames,
-    }"
-    @confirm="({ value }) => setPickerValue(value)"
-  >
-    <template #trigger="{ triggerPopupShow, showValue, selectedOption }">
-      <slot
-        name="trigger"
-        :trigger-popup-show="triggerPopupShow"
-        :show-value="showValue"
-        :selected-option="selectedOption"
-      >
-        <div class="trigger-box">
-          <van-button type="primary" @click="triggerPopupShow"> Picker Trigger(click me)🤪 </van-button>
-          <span>SinglePicker value: {{ showValue }}</span>
-        </div>
-      </slot>
-    </template>
-  </SinglePicker>
+  <demo-block title="基础用法">
+    <BasicUsage />
+  </demo-block>
+  <demo-block title="开启搜索功能">
+    <SearchModeUsage />
+  </demo-block>
 </template>
 
 <script setup lang="ts">
-import { useWrapperRef } from '@vmono-seed/tools';
-import SinglePicker from '../index.vue';
-import { Button as VanButton } from 'vant';
-
-const columns = [
-  { name: 'Ashun', value: '1' },
-  { name: 'astfn', value: '2' },
-];
-const columnsFieldNames = {
-  text: 'name',
-  value: 'value',
-};
-
-const [pickerValue, setPickerValue] = useWrapperRef<string | undefined>(undefined);
+import BasicUsage from './BasicUsage.vue';
+import SearchModeUsage from './SearchModeUsage.vue';
 </script>
 
-<style scoped lang="less">
-.trigger-box {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-</style>
+<style scoped lang="less"></style>

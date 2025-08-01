@@ -9,8 +9,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: './src/index.ts',
-      name: 'vmono-seed-tools',
-      fileName: (format) => `vmono-seed-tools.${format}.js`,
+      name: '@vmono/utils',
+      fileName: (format) => `utils.${format}.js`,
     },
     rollupOptions: {
       external: ['vue'],

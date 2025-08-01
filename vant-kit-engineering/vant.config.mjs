@@ -1,16 +1,16 @@
 export default {
-  name: '@vmono-seed/vant-kit',
+  name: '@vmono/vant-kit',
   build: {
     packageManager: 'pnpm',
     css: {
       preprocessor: 'less',
     },
     site: {
-      publicPath: '/@vmono-seed/vant-kit/',
+      publicPath: '/@vmono/vant-kit/',
     },
   },
   site: {
-    title: '@vmono-seed/vant-kit',
+    title: '@vmono/vant-kit',
     logo: 'https://fastly.jsdelivr.net/npm/@vant/assets/logo.png',
     nav: [
       {

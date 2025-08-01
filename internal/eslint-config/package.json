@@ -1,5 +1,5 @@
 {
-  "name": "@vmono-seed/eslint-config",
+  "name": "@vmono/eslint-config",
   "version": "0.0.0",
   "author": "astfn",
   "type": "module",
@@ -8,6 +8,9 @@
   "files": [
     "index.js"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@eslint/js": "^9.31.0",
     "eslint-config-prettier": "^9.1.0",

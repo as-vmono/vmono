@@ -1,6 +1,6 @@
 {
-  "name": "vitepress-docs",
-  "version": "1.0.0",
+  "name": "@vmono/vitepress-docs",
+  "version": "0.0.0",
   "description": "",
   "scripts": {
     "docs:dev": "vitepress dev docs",
@@ -15,8 +15,9 @@
     "vitepress": "^1.6.3"
   },
   "dependencies": {
-    "@vmono-seed/tools": "workspace:*",
-    "@vmono-seed/cpn-kit": "workspace:*",
+    "@vmono/utils": "workspace:*",
+    "@vmono/vhooks": "workspace:*",
+    "@vmono/cpn-kit": "workspace:*",
     "@vitepress-demo-preview/component": "^2.5.1",
     "@vitepress-demo-preview/plugin": "^1.4.0"
   }

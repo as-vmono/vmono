@@ -1,0 +1,12 @@
+{
+  "extends": "@vmono/tsconfig/tsconfig.app.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    // 输出类型文件
+    "declaration": true
+  },
+  "include": ["src/**/*.ts", "*.d.ts"]
+}

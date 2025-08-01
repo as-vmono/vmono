@@ -4,27 +4,23 @@
 
     <section>
       <p>👇下面引入了工具包的组件 cpn-kit</p>
-
+      <ShowAvatar name="阿顺" />
       <SinglePicker
         v-model="pickerValue"
         :picker-props="{
+          title: '基础用法',
           columns: columns,
           columnsFieldNames: columnsFieldNames,
         }"
-        @confirm="({ value }) => setPickerValue(value)"
+        show-search
+        @search="onSearch"
       >
-        <template #trigger="{ triggerPopupShow, showValue, selectedOption }">
-          <slot
-            name="trigger"
-            :trigger-popup-show="triggerPopupShow"
-            :show-value="showValue"
-            :selected-option="selectedOption"
-          >
-            <div class="trigger-box">
-              <p @click="triggerPopupShow">Picker Trigger(click me)🤪</p>
-              <span>SinglePicker value: {{ showValue }}</span>
-            </div>
-          </slot>
+        <template #trigger="{ triggerPopupShow, showValue }">
+          <div class="trigger-box">
+            <p @click="triggerPopupShow">点击打开选择器🤪</p>
+            <span>show value: {{ showValue }}</span>
+            <span>modelValue: {{ pickerValue }}</span>
+          </div>
         </template>
       </SinglePicker>
     </section>
@@ -32,19 +28,30 @@
 </template>
 
 <script lang="ts" setup>
-import { SinglePicker } from '@vmono-seed/cpn-kit';
-import { useWrapperRef } from '@vmono-seed/tools';
+import { ShowAvatar, SinglePicker } from '@vmono/cpn-kit';
+import { useWrapperRef } from '@vmono/vhooks';
+import { checkStrIsEmpty } from '@vmono/utils';
 
-const columns = [
-  { name: 'Ashun', value: '1' },
-  { name: 'astfn', value: '2' },
+const columnsDataSource = [
+  { name: '选项1', value: '1' },
+  { name: '选项2', value: '2' },
 ];
+const [columns, setColumns] = useWrapperRef(columnsDataSource);
 const columnsFieldNames = {
   text: 'name',
   value: 'value',
 };
+const [pickerValue, _setPickerValue] = useWrapperRef<string | undefined>(undefined);
 
-const [pickerValue, setPickerValue] = useWrapperRef<string | undefined>(undefined);
+const onSearch = (keywords: string) => {
+  if (checkStrIsEmpty(keywords)) {
+    setColumns(columnsDataSource);
+  } else {
+    setColumns(
+      columnsDataSource.filter((item) => item.name.toLocaleLowerCase().includes(keywords.toLocaleLowerCase()))
+    );
+  }
+};
 </script>
 
 <style scoped lang="less">

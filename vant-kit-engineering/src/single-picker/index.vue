@@ -17,14 +17,8 @@
         <template v-for="(_slot, name) in $slots" #[name]="slotData" :key="name">
           <slot :name="name" v-bind="slotData"></slot>
         </template>
-        <template #title>
-          <van-search
-            v-if="showSearch"
-            shape="round"
-            placeholder="请输入搜索关键词"
-            v-model="keywords"
-            @update:model-value="onSearch"
-          />
+        <template v-if="showSearch" #title>
+          <van-search shape="round" placeholder="请输入搜索关键词" v-model="keywords" @update:model-value="onSearch" />
         </template>
       </van-picker>
     </van-popup>
@@ -41,17 +35,20 @@ export default {
 import type { PickerColumn, PickerOption, PickerProps } from 'vant';
 import { computed, watch } from 'vue';
 import { debounce } from 'lodash';
-import { array2Single, useWrapperRef } from '@vmono-seed/tools';
 import { Popup as VanPopup, Picker as VanPicker, Search as VanSearch } from 'vant';
+import { useWrapperRef } from '@vmono/vhooks';
+import { array2Single } from '@vmono/utils';
 
 const Props = withDefaults(
   defineProps<{
     showSearch?: boolean;
+    searchDelay?: number;
     modelValue: any;
     pickerProps: Partial<PickerProps>;
   }>(),
   {
     showSearch: false,
+    searchDelay: 300,
   }
 );
 
@@ -126,27 +123,24 @@ const showValue = computed(() => {
  */
 const onConfirmPicker = (confirmInfo) => {
   const { selectedOptions, selectedValues } = confirmInfo;
+  let option;
   if (computedPickerProps.value?.columns?.length) {
-    const option = array2Single(selectedOptions);
-    Emitter('confirm', option);
-    const newValue = option?.[columnsFieldNames.value.value];
-    updateModelFieldValue(newValue);
-    setPopupShow(false);
+    option = array2Single(selectedOptions);
   } else {
     const selectedValue = array2Single(selectedValues);
-    const option = columnsIdMapDataCache.value?.[selectedValue];
-    Emitter('confirm', option);
-    const newValue = option?.[columnsFieldNames.value.value];
-    updateModelFieldValue(newValue);
-    setPopupShow(false);
+    option = columnsIdMapDataCache.value?.[selectedValue];
   }
+  Emitter('confirm', option);
+  const newValue = option?.[columnsFieldNames.value.value];
+  updateModelFieldValue(newValue);
+  setPopupShow(false);
 };
 
 const [keywords, _] = useWrapperRef<string | undefined>(undefined);
 
 const onSearch = debounce((keywords: string) => {
   Emitter('search', keywords);
-}, 300);
+}, Props.searchDelay);
 
 defineExpose({});
 </script>
