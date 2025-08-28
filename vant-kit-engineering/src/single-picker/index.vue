@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="single-picker">
     <slot
       name="trigger"
       :trigger-popup-show="triggerPopupShow"
@@ -15,7 +15,7 @@
       >
         <!-- 暴露默认支持插槽 -->
         <template v-for="(_slot, name) in $slots" #[name]="slotData" :key="name">
-          <slot :name="name" v-bind="slotData"></slot>
+          <slot :name="name" v-bind="slotData" :key="name"></slot>
         </template>
         <template v-if="showSearch" #title>
           <van-search shape="round" placeholder="请输入搜索关键词" v-model="keywords" @update:model-value="onSearch" />
@@ -29,6 +29,18 @@
 export default {
   name: 'SinglePicker',
 };
+
+export type TSinglePickerProps = {
+  showSearch?: boolean;
+  searchDelay?: number;
+  modelValue: any;
+  pickerProps: Partial<PickerProps>;
+};
+
+export type TConfirmDisabledOptionPayload = {
+  option: any;
+  closePopup: () => void;
+};
 </script>
 
 <script lang="ts" setup>
@@ -39,18 +51,10 @@ import { Popup as VanPopup, Picker as VanPicker, Search as VanSearch } from 'van
 import { useWrapperRef } from '@vmono/vhooks';
 import { array2Single } from '@vmono/utils';
 
-const Props = withDefaults(
-  defineProps<{
-    showSearch?: boolean;
-    searchDelay?: number;
-    modelValue: any;
-    pickerProps: Partial<PickerProps>;
-  }>(),
-  {
-    showSearch: false,
-    searchDelay: 300,
-  }
-);
+const Props = withDefaults(defineProps<TSinglePickerProps>(), {
+  showSearch: false,
+  searchDelay: 300,
+});
 
 const columnsFieldNames = computed(() =>
   Object.assign({ text: 'label', value: 'value' }, Props?.pickerProps?.columnsFieldNames ?? {})
@@ -64,6 +68,7 @@ const computedPickerProps = computed(() =>
 const Emitter = defineEmits<{
   (e: 'search', value: string): void;
   (e: 'confirm', option: any): void;
+  (e: 'confirmDisabledOption', p: TConfirmDisabledOptionPayload): void;
   (e: 'update:modelValue', value: any);
 }>();
 
@@ -129,6 +134,13 @@ const onConfirmPicker = (confirmInfo) => {
   } else {
     const selectedValue = array2Single(selectedValues);
     option = columnsIdMapDataCache.value?.[selectedValue];
+  }
+  if (option.disabled) {
+    Emitter('confirmDisabledOption', {
+      option,
+      closePopup: () => setPopupShow(false),
+    });
+    return;
   }
   Emitter('confirm', option);
   const newValue = option?.[columnsFieldNames.value.value];

@@ -1,0 +1,51 @@
+<template>
+  <span @click="getIdMapData">modelValue: {{ pickerValue }}</span>
+  <FieldMultiPicker
+    ref="FieldMultiPickerRef"
+    v-model="pickerValue"
+    :options="options"
+    :field-names="fieldNames"
+    title="基础用法"
+    tip-txt="这就是基础组件 - MultiPicke"
+    :field-props="{
+      name: 'fieldName',
+      label: '多选',
+      placeholder: '请选择',
+      required: true,
+      rules: [{ required: true, message: '请选择' }],
+    }"
+  />
+</template>
+
+<script setup lang="ts">
+import { useWrapperRef } from '@vmono/vhooks';
+import FieldMultiPicker from '../index.vue';
+import { ref } from 'vue';
+
+const options = [
+  { name: '选项1', value: '1' },
+  { name: '选项2', value: '2', disabled: true },
+  { name: '选项3', value: '3' },
+];
+const fieldNames = {
+  label: 'name',
+  value: 'value',
+};
+const [pickerValue, _setPickerValue] = useWrapperRef<string[]>([]);
+
+const FieldMultiPickerRef = ref<InstanceType<typeof FieldMultiPicker>>();
+const getIdMapData = () => {
+  FieldMultiPickerRef.value?.getOptionsIdMapData?.();
+  // console.log(
+  //   'getIdMapData',
+  //   FieldMultiPickerRef.value?.getOptionsIdMapData?.(),
+  // );
+};
+</script>
+
+<style scoped lang="less">
+.desc {
+  font-size: 12px;
+  text-align: center;
+}
+</style>
