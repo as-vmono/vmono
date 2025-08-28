@@ -1,6 +1,6 @@
 {
   "name": "@vmono/cpn-kit",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "type": "module",
   "description": "A project that includes common components from the H5 project (dependent on vant) and some utility functions",
   "main": "dist/cpn-kit.umd.js",
@@ -25,7 +25,7 @@
   },
   "keywords": [],
   "author": "astfn",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@vmono/eslint-config": "workspace:*",
     "@vmono/tsconfig": "workspace:*",

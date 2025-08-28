@@ -10,7 +10,7 @@
     "lint": "eslint --config eslint.config.js"
   },
   "keywords": [],
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@changesets/cli": "^2.29.5",
     "@commitlint/cli": "^19.8.1",

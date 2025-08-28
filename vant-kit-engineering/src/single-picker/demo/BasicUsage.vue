@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { useWrapperRef } from '@vmono/vhooks';
-import SinglePicker from '../index.vue';
+import { SinglePicker } from '@vmono/vant-kit';
 import { Button as VanButton } from 'vant';
 
 const columns = [

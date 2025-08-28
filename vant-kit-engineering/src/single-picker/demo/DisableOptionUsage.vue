@@ -6,7 +6,9 @@
       columns: columns,
       columnsFieldNames: columnsFieldNames,
     }"
-    @confirm-disabled-option="({}) => showToast('你可以自定义后续操作,回调函数参数类型 TConfirmDisabledOptionPayload')"
+    @confirm-disabled-option="
+      ({}) => showToast('你可以自定义后续操作,回调函数参数类型 TSPConfirmDisabledOptionPayload')
+    "
   >
     <template #trigger="{ triggerPopupShow, showValue }">
       <div class="trigger-box">
@@ -23,7 +25,7 @@
 
 <script setup lang="ts">
 import { useWrapperRef } from '@vmono/vhooks';
-import SinglePicker from '../index.vue';
+import { SinglePicker } from '@vmono/vant-kit';
 import { showToast, Button as VanButton } from 'vant';
 
 const partialDisableCols = [

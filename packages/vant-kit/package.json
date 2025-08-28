@@ -1,0 +1,50 @@
+{
+  "name": "@vmono/vant-kit",
+  "version": "0.0.2",
+  "type": "module",
+  "description": "A project that includes common components from the H5 project (dependent on vant) and some utility functions",
+  "main": "dist/vant-kit.umd.js",
+  "module": "dist/vant-kit.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/vant-kit.es.js",
+      "require": "./dist/vant-kit.umd.js"
+    },
+    "./style.css": "./dist/vant-kit.css"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vite build"
+  },
+  "keywords": [],
+  "author": "astfn",
+  "license": "MIT",
+  "devDependencies": {
+    "@vmono/eslint-config": "workspace:*",
+    "@vmono/tsconfig": "workspace:*",
+    "@microsoft/api-extractor": "^7.52.9",
+    "@vant/auto-import-resolver": "^1.3.0",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "postcss": "^8.5.6",
+    "postcss-prefix-selector": "^2.1.1",
+    "typescript": "^5.8.3",
+    "unplugin-dts": "1.0.0-beta.0",
+    "unplugin-vue-components": "^28.8.0",
+    "vite": "^7.0.5",
+    "vue": "^3.5.17",
+    "vue-tsc": "^3.0.3"
+  },
+  "dependencies": {
+    "@vmono/utils": "workspace:*",
+    "@vmono/vhooks": "workspace:*",
+    "lodash": "^4.17.21",
+    "vant": "^4.9.21"
+  }
+}

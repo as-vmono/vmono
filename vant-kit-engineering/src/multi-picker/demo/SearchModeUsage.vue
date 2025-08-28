@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { useWrapperRef } from '@vmono/vhooks';
-import MultiPicker from '../index.vue';
+import { MultiPicker } from '@vmono/vant-kit';
 import { Button as VanButton } from 'vant';
 import { checkStrIsEmpty } from '@vmono/utils';
 

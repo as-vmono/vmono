@@ -16,4 +16,6 @@ import SearchModeUsage from './SearchModeUsage.vue';
 import DisableOptionUsage from './DisableOptionUsage.vue';
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+@import 'style/demo-common.less';
+</style>

@@ -1,6 +1,6 @@
 {
   "name": "@vmono/eslint-config",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "author": "astfn",
   "type": "module",
   "private": true,

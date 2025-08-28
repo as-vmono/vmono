@@ -24,7 +24,7 @@ vue3 + vite + 文档产出框架（内置 vitePress、vuePress、vant-cli）的 
         "description": "A project that includes common components from the H5 project (dependent on vant) and some utility functions",
         "scripts": {},
         "keywords": [],
-        "license": "ISC",
+        "license": "MIT",
       }
       ```
 3. 创建 monorepo 工作区配置文件：`pnpm-workspace.yaml` 其中配置的包目录，后续可以在整个项目中共享，实时引入最新代码。
@@ -76,7 +76,7 @@ vue3 + vite + 文档产出框架（内置 vitePress、vuePress、vant-cli）的 
         "scripts": {},
         "keywords": [],
         "author": "astfn",
-        "license": "ISC",
+        "license": "MIT",
       }
       ```
 

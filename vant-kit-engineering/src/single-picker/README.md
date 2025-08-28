@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
   import { useWrapperRef } from '@vmono/vhooks';
-  import SinglePicker from '../index.vue';
+  import { SinglePicker } from '@vmono/vant-kit';
   import { Button as VanButton } from 'vant';
 
   const columns = [
@@ -107,7 +107,7 @@
 
 <script setup lang="ts">
   import { useWrapperRef } from '@vmono/vhooks';
-  import SinglePicker from '../index.vue';
+  import { SinglePicker } from '@vmono/vant-kit';
   import { Button as VanButton } from 'vant';
   import { checkStrIsEmpty } from '@vmono/utils';
 
@@ -161,7 +161,7 @@
     @confirm-disabled-option="
       ({}) =>
         showToast(
-          '你可以自定义后续操作,回调函数参数类型 TConfirmDisabledOptionPayload',
+          '你可以自定义后续操作,回调函数参数类型 TSPConfirmDisabledOptionPayload',
         )
     "
   >
@@ -184,7 +184,7 @@
 
 <script setup lang="ts">
   import { useWrapperRef } from '@vmono/vhooks';
-  import SinglePicker from '../index.vue';
+  import { SinglePicker } from '@vmono/vant-kit';
   import { showToast, Button as VanButton } from 'vant';
 
   const partialDisableCols = [
@@ -242,11 +242,11 @@
 
 ### Events
 
-| 事件名                | 说明                           | 回调参数                                                                      |
-| :-------------------- | :----------------------------- | :---------------------------------------------------------------------------- |
-| confirm               | 点击 picker 确认后触发的事件   | option (选中项的全部数据)                                                     |
-| search                | 在搜索框输入时，触发的搜索事件 | keywords                                                                      |
-| confirmDisabledOption | 选中禁用项时，触发的事件       | type TConfirmDisabledOptionPayload = { option: any; closePopup: () => void; } |
+| 事件名                | 说明                           | 回调参数                                                                        |
+| :-------------------- | :----------------------------- | :------------------------------------------------------------------------------ |
+| confirm               | 点击 picker 确认后触发的事件   | option (选中项的全部数据)                                                       |
+| search                | 在搜索框输入时，触发的搜索事件 | keywords                                                                        |
+| confirmDisabledOption | 选中禁用项时，触发的事件       | type TSPConfirmDisabledOptionPayload = { option: any; closePopup: () => void; } |
 
 ### Slots
 

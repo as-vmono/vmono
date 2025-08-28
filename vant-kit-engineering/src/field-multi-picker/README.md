@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
   import { useWrapperRef } from '@vmono/vhooks';
-  import FieldMultiPicker from '../index.vue';
+  import { FieldMultiPicker } from '@vmono/vant-kit';
   import { ref } from 'vue';
 
   const options = [

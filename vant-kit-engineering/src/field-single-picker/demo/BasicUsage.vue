@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { useWrapperRef } from '@vmono/vhooks';
-import FieldSinglePicker from '../index.vue';
+import { FieldSinglePicker } from '@vmono/vant-kit';
 
 const columns = [
   { name: '选项1', value: '1' },

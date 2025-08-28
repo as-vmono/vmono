@@ -50,7 +50,7 @@ export default {
       preprocessor: 'less',
     },
     site: {
-      publicPath: '/v-mono-vant-docs/',
+      publicPath: '/vmono-vant-docs/',
     },
   },
   site: {

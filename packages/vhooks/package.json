@@ -1,6 +1,6 @@
 {
   "name": "@vmono/vhooks",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "type": "module",
   "description": "",
   "main": "dist/vhooks.umd.js",
@@ -17,7 +17,7 @@
   },
   "keywords": [],
   "author": "astfn",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@microsoft/api-extractor": "^7.52.9",
     "@vmono/eslint-config": "workspace:*",
