@@ -1,28 +1,21 @@
 <template>
-  <VantKitCpnWrapper>
-    <slot
-      name="trigger"
-      :trigger-popup-show="triggerPopupShow"
-      :show-value="showValue"
-      :selected-option="selectedOption"
+  <slot name="trigger" :trigger-popup-show="triggerPopupShow" :show-value="showValue" :selected-option="selectedOption">
+  </slot>
+  <van-popup v-model:show="popupShow" position="bottom" round>
+    <van-picker
+      v-bind="computedPickerProps"
+      @confirm="(value: any) => onConfirmPicker(value)"
+      @cancel="setPopupShow(false)"
     >
-    </slot>
-    <van-popup v-model:show="popupShow" position="bottom" round>
-      <van-picker
-        v-bind="computedPickerProps"
-        @confirm="(value: any) => onConfirmPicker(value)"
-        @cancel="setPopupShow(false)"
-      >
-        <!-- 暴露默认支持插槽 -->
-        <template v-for="(_slot, name) in $slots" #[name]="slotData" :key="name">
-          <slot :name="name" v-bind="slotData" :key="name"></slot>
-        </template>
-        <template v-if="showSearch" #title>
-          <van-search shape="round" placeholder="请输入搜索关键词" v-model="keywords" @update:model-value="onSearch" />
-        </template>
-      </van-picker>
-    </van-popup>
-  </VantKitCpnWrapper>
+      <!-- 暴露默认支持插槽 -->
+      <template v-for="(_slot, name) in $slots" #[name]="slotData" :key="name">
+        <slot :name="name" v-bind="slotData" :key="name"></slot>
+      </template>
+      <template v-if="showSearch" #title>
+        <van-search shape="round" placeholder="请输入搜索关键词" v-model="keywords" @update:model-value="onSearch" />
+      </template>
+    </van-picker>
+  </van-popup>
 </template>
 
 <script lang="ts">
@@ -40,7 +33,6 @@ export type TSPConfirmDisabledOptionPayload = {
 </script>
 
 <script lang="ts" setup>
-import VantKitCpnWrapper from '@/common/VantKitCpnWrapper.vue';
 import { PickerProps, PickerOption, PickerColumn } from 'vant';
 import { computed, watch } from 'vue';
 import { debounce } from 'lodash';

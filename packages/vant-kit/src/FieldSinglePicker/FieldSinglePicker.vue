@@ -1,41 +1,38 @@
 <template>
-  <VantKitCpnWrapper>
-    <SinglePicker
-      v-model="modelFieldValue"
-      @update:model-value="(...args) => updateModelFieldValue(...args)"
-      :picker-props="pickerProps"
-      :show-search="showSearch"
-      @search="(...args) => Emitter('search', ...args)"
-      @confirm="(...args) => Emitter('confirm', ...args)"
-      @confirmDisabledOption="(...args) => Emitter('confirmDisabledOption', ...args)"
-    >
-      <!-- 暴露默认支持插槽 -->
-      <template v-for="(_slot, name) in $slots" #[name]="slotData" :key="name">
-        <slot :name="name" v-bind="slotData" :key="name"></slot>
-      </template>
+  <SinglePicker
+    v-model="modelFieldValue"
+    @update:model-value="(...args) => updateModelFieldValue(...args)"
+    :picker-props="pickerProps"
+    :show-search="showSearch"
+    @search="(...args) => Emitter('search', ...args)"
+    @confirm="(...args) => Emitter('confirm', ...args)"
+    @confirmDisabledOption="(...args) => Emitter('confirmDisabledOption', ...args)"
+  >
+    <!-- 暴露默认支持插槽 -->
+    <template v-for="(_slot, name) in $slots" #[name]="slotData" :key="name">
+      <slot :name="name" v-bind="slotData" :key="name"></slot>
+    </template>
 
-      <template #trigger="{ triggerPopupShow, showValue }">
-        <van-field class="hidden" v-bind="computedFieldProps" v-model="modelFieldValue" :is-link="isLink" />
-        <van-field
-          v-bind="computedFieldProps"
-          :is-link="isLink"
-          readonly
-          :name="undefined"
-          v-model="showValue!"
-          @click="
-            () => {
-              if (isViewMode) return;
-              triggerPopupShow();
-            }
-          "
-        />
-      </template>
-    </SinglePicker>
-  </VantKitCpnWrapper>
+    <template #trigger="{ triggerPopupShow, showValue }">
+      <van-field class="hidden" v-bind="computedFieldProps" v-model="modelFieldValue" :is-link="isLink" />
+      <van-field
+        v-bind="computedFieldProps"
+        :is-link="isLink"
+        readonly
+        :name="undefined"
+        v-model="showValue!"
+        @click="
+          () => {
+            if (isViewMode) return;
+            triggerPopupShow();
+          }
+        "
+      />
+    </template>
+  </SinglePicker>
 </template>
 
 <script lang="ts" setup>
-import VantKitCpnWrapper from '@/common/VantKitCpnWrapper.vue';
 import SinglePicker, { TSinglePickerProps, TSPConfirmDisabledOptionPayload } from '@/SinglePicker/SinglePicker.vue';
 import { isNullOrUndefined } from '@vmono/utils';
 import { useWrapperRef } from '@vmono/vhooks';

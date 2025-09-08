@@ -1,5 +1,11 @@
 # @vmono/vant-kit
 
+## 0.0.3
+
+### Patch Changes
+
+- 在 vant-kit 中,将 vant 设置成外部依赖
+
 ## 0.0.2
 
 ### Patch Changes

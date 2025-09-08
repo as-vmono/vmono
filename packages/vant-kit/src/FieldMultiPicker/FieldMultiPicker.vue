@@ -1,35 +1,32 @@
 <template>
-  <VantKitCpnWrapper>
-    <MultiPicker
-      ref="MultiPickerRef"
-      v-bind="Props"
-      :show-search="showSearch"
-      v-model="modelFieldValue"
-      @update:model-value="(...args) => updateModelFieldValue(...args)"
-      @search="(...args) => Emitter('search', ...args)"
-      @toggleCheckbox="(...args) => Emitter('toggleCheckbox', ...args)"
-      @confirm="(...args) => Emitter('confirm', ...args)"
-    >
-      <template #trigger="{ triggerPopupShow, showValue }">
-        <van-field
-          v-bind="computedFieldProps"
-          :is-link="isLink"
-          readonly
-          v-model="showValue!"
-          @click="
-            () => {
-              if (isViewMode) return;
-              triggerPopupShow();
-            }
-          "
-        />
-      </template>
-    </MultiPicker>
-  </VantKitCpnWrapper>
+  <MultiPicker
+    ref="MultiPickerRef"
+    v-bind="Props"
+    :show-search="showSearch"
+    v-model="modelFieldValue"
+    @update:model-value="(...args) => updateModelFieldValue(...args)"
+    @search="(...args) => Emitter('search', ...args)"
+    @toggleCheckbox="(...args) => Emitter('toggleCheckbox', ...args)"
+    @confirm="(...args) => Emitter('confirm', ...args)"
+  >
+    <template #trigger="{ triggerPopupShow, showValue }">
+      <van-field
+        v-bind="computedFieldProps"
+        :is-link="isLink"
+        readonly
+        v-model="showValue!"
+        @click="
+          () => {
+            if (isViewMode) return;
+            triggerPopupShow();
+          }
+        "
+      />
+    </template>
+  </MultiPicker>
 </template>
 
 <script lang="ts" setup>
-import VantKitCpnWrapper from '@/common/VantKitCpnWrapper.vue';
 import MultiPicker, { TConfirmEventPayload, TMultiPickerProps } from '@/MultiPicker/MultiPicker.vue';
 import { isNullOrUndefined } from '@vmono/utils';
 import { useWrapperRef } from '@vmono/vhooks';

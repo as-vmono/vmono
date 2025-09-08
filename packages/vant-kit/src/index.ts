@@ -1,9 +1,4 @@
 /**
- * vant cpn style
- */
-import 'vant/lib/index.css';
-
-/**
  * 组件导出
  */
 // 着色名称头像

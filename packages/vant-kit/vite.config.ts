@@ -4,8 +4,6 @@ import dts from 'unplugin-dts/vite';
 import vue from '@vitejs/plugin-vue';
 import unpluginComponents from 'unplugin-vue-components/vite';
 import { VantResolver } from '@vant/auto-import-resolver';
-import postcssPrefixSelector from 'postcss-prefix-selector';
-import { CommonWrapperClass } from './src/common/constants';
 
 import path from 'path';
 
@@ -23,27 +21,6 @@ export default defineConfig({
     dts({ tsconfigPath: './tsconfig.app.json' }),
   ],
   resolve: { alias: { '@': path.resolve(__dirname, './src/') } },
-  css: {
-    postcss: {
-      plugins: [
-        postcssPrefixSelector({
-          prefix: `.${CommonWrapperClass}`,
-          transform: (_prefix, selector, prefixedSelector) => {
-            // 排除全局选择器
-            if (
-              selector.startsWith(':root') ||
-              selector.startsWith(':host') ||
-              selector === 'html' ||
-              selector === 'body'
-            ) {
-              return selector;
-            }
-            return prefixedSelector;
-          },
-        }),
-      ],
-    },
-  },
   build: {
     lib: {
       entry: path.resolve(__dirname, './src/index.ts'),
@@ -51,10 +28,18 @@ export default defineConfig({
       fileName: (format) => `vant-kit.${format}.js`,
     },
     rollupOptions: {
-      external: ['vue'],
+      /**
+       * 👇 告诉 Rollup：不要打包这些模块
+       *    因为这些模块在使用该库的外部项目中会被提供
+       *    1. 这样可以避免重复打包，减小库的体积
+       *    2. 防止 vant 组件库被多次引入，避免样式冲突
+       */
+      external: ['vue', 'vant'],
       output: {
+        // 👇 将使用该库的外部项目中，需要自行引入的模块映射为全局变量
         globals: {
           vue: 'Vue',
+          vant: 'vant',
         },
       },
     },

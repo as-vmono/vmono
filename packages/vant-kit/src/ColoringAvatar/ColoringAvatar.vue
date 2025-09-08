@@ -1,9 +1,7 @@
 <template>
-  <VantKitCpnWrapper>
-    <div class="coloring-avatar-wrapper">
-      <span class="sub-name" v-if="name">{{ getAvatarName(name) }}</span>
-    </div>
-  </VantKitCpnWrapper>
+  <div class="coloring-avatar-wrapper">
+    <span class="sub-name" v-if="name">{{ getAvatarName(name) }}</span>
+  </div>
 </template>
 
 <script lang="ts">
@@ -21,7 +19,6 @@ function genRandomAvatarBgAttr() {
 }
 </script>
 <script lang="ts" setup>
-import VantKitCpnWrapper from '@/common/VantKitCpnWrapper.vue';
 import { computed } from 'vue';
 
 const Props = withDefaults(defineProps<{ name: string; size?: number; fontSize?: number; bgAttr?: string }>(), {
