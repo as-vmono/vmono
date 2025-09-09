@@ -1,5 +1,11 @@
 # @vmono/vant-kit
 
+## 0.0.4
+
+### Patch Changes
+
+- chore(vant-kit): 支持auto-import;复写van-toast样式;MultiPicker、SinglePicker添加根节点,防止被复用时使用v-bind透传触发warning
+
 ## 0.0.3
 
 ### Patch Changes

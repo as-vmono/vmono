@@ -1,54 +1,61 @@
 <template>
-  <slot
-    name="trigger"
-    :trigger-popup-show="triggerPopupShow"
-    :show-value="showValue"
-    :selected-options="selectedOptions"
-  >
-  </slot>
-  <van-popup v-model:show="popupShow" @click-overlay="handleCancel" position="bottom" round>
-    <van-checkbox-group v-model="checkboxModelValue">
-      <div class="multi-picker-header van-picker__toolbar">
-        <button :class="['van-picker__cancel', 'van-haptics-feedback']" @click="handleCancel">取消</button>
+  <div class="vantkit-multi-picker">
+    <slot
+      name="trigger"
+      :trigger-popup-show="triggerPopupShow"
+      :show-value="showValue"
+      :selected-options="selectedOptions"
+    >
+    </slot>
+    <van-popup v-model:show="popupShow" @click-overlay="handleCancel" position="bottom" round>
+      <van-checkbox-group v-model="checkboxModelValue">
+        <div class="multi-picker-header van-picker__toolbar">
+          <button :class="['van-picker__cancel', 'van-haptics-feedback']" @click="handleCancel">取消</button>
 
-        <div v-if="showSearch">
-          <van-search shape="round" placeholder="请输入搜索关键词" v-model="keywords" @update:model-value="onSearch" />
-        </div>
-        <slot v-else name="title">
-          <div class="van-picker__title van-ellipsis">{{ title }}</div>
-        </slot>
+          <div v-if="showSearch">
+            <van-search
+              shape="round"
+              placeholder="请输入搜索关键词"
+              v-model="keywords"
+              @update:model-value="onSearch"
+            />
+          </div>
+          <slot v-else name="title">
+            <div class="van-picker__title van-ellipsis">{{ title }}</div>
+          </slot>
 
-        <button :class="['van-picker__confirm', 'van-haptics-feedback']" @click="onConfirm">确定</button>
-      </div>
-      <div class="multi-picker-main">
-        <div v-if="tipTxt" class="multi-picker-tip">
-          {{ tipTxt }}
+          <button :class="['van-picker__confirm', 'van-haptics-feedback']" @click="onConfirm">确定</button>
         </div>
-        <van-cell-group class="multi-picker-cell-group" inset>
-          <van-cell
-            v-for="(item, index) in options"
-            clickable
-            :key="item?.[computedFieldNames.value]"
-            :title="item?.[computedFieldNames.label]"
-            @click="toggle(item, index)"
-          >
-            <template #right-icon>
-              <van-checkbox
-                :name="item?.[computedFieldNames.value]"
-                :disabled="item?.disabled"
-                :ref="
-                  (el) => {
-                    (checkboxRefs as any)[index] = el;
-                  }
-                "
-                @click.stop="toggle(item, index)"
-              />
-            </template>
-          </van-cell>
-        </van-cell-group>
-      </div>
-    </van-checkbox-group>
-  </van-popup>
+        <div class="multi-picker-main">
+          <div v-if="tipTxt" class="multi-picker-tip">
+            {{ tipTxt }}
+          </div>
+          <van-cell-group class="multi-picker-cell-group" inset>
+            <van-cell
+              v-for="(item, index) in options"
+              clickable
+              :key="item?.[computedFieldNames.value]"
+              :title="item?.[computedFieldNames.label]"
+              @click="toggle(item, index)"
+            >
+              <template #right-icon>
+                <van-checkbox
+                  :name="item?.[computedFieldNames.value]"
+                  :disabled="item?.disabled"
+                  :ref="
+                    (el) => {
+                      (checkboxRefs as any)[index] = el;
+                    }
+                  "
+                  @click.stop="toggle(item, index)"
+                />
+              </template>
+            </van-cell>
+          </van-cell-group>
+        </div>
+      </van-checkbox-group>
+    </van-popup>
+  </div>
 </template>
 
 <script lang="ts">

@@ -1,6 +1,6 @@
 {
   "name": "@vmono/vant-kit",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
   "description": "A project that includes common components from the H5 project (dependent on vant) and some utility functions",
   "main": "dist/vant-kit.umd.js",
@@ -38,6 +38,7 @@
     "@vmono/tsconfig": "workspace:*",
     "postcss": "^8.5.6",
     "typescript": "^5.8.3",
+    "unplugin-auto-import": "^20.1.0",
     "unplugin-dts": "1.0.0-beta.0",
     "unplugin-vue-components": "^28.8.0",
     "vant": "^4.9.21",
