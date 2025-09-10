@@ -264,15 +264,9 @@ importers:
       sass:
         specifier: ^1.49.7
         version: 1.89.2
-      unplugin-auto-import:
-        specifier: ^20.1.0
-        version: 20.1.0(@vueuse/core@13.5.0(vue@3.5.17(typescript@5.8.3)))
       unplugin-dts:
         specifier: 1.0.0-beta.0
         version: 1.0.0-beta.0(@microsoft/api-extractor@7.52.9(@types/node@24.1.0))(@rspack/core@1.0.14(@swc/helpers@0.5.17))(esbuild@0.25.8)(rollup@4.45.1)(typescript@5.8.3)(vite@5.4.19(@types/node@24.1.0)(less@4.4.0)(sass-embedded@1.89.2)(sass@1.89.2)(terser@5.43.1))(webpack@5.100.2(esbuild@0.23.1))
-      unplugin-vue-components:
-        specifier: ^28.8.0
-        version: 28.8.0(@babel/parser@7.28.0)(vue@3.5.17(typescript@5.8.3))
       vue:
         specifier: ^3.3.4
         version: 3.5.17(typescript@5.8.3)
@@ -6063,7 +6057,7 @@ snapshots:
     dependencies:
       '@rsbuild/core': 1.0.4
       vue-loader: 17.4.2(vue@3.5.17(typescript@5.8.3))(webpack@5.100.2(esbuild@0.23.1))
-      webpack: 5.100.2(esbuild@0.25.8)
+      webpack: 5.100.2(esbuild@0.23.1)
     transitivePeerDependencies:
       - '@swc/core'
       - '@vue/compiler-sfc'
@@ -9160,7 +9154,18 @@ snapshots:
 
   term-size@2.2.1: {}
 
-  terser-webpack-plugin@5.3.14(esbuild@0.23.1)(webpack@5.100.2(esbuild@0.23.1)):
+  terser-webpack-plugin@5.3.14(esbuild@0.23.1)(webpack@5.100.2(esbuild@0.25.8)):
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.29
+      jest-worker: 27.5.1
+      schema-utils: 4.3.2
+      serialize-javascript: 6.0.2
+      terser: 5.43.1
+      webpack: 5.100.2(esbuild@0.23.1)
+    optionalDependencies:
+      esbuild: 0.23.1
+
+  terser-webpack-plugin@5.3.14(esbuild@0.25.8)(webpack@5.100.2(esbuild@0.25.8)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.29
       jest-worker: 27.5.1
@@ -9169,7 +9174,8 @@ snapshots:
       terser: 5.43.1
       webpack: 5.100.2(esbuild@0.25.8)
     optionalDependencies:
-      esbuild: 0.23.1
+      esbuild: 0.25.8
+    optional: true
 
   terser@5.43.1:
     dependencies:
@@ -9336,7 +9342,7 @@ snapshots:
       esbuild: 0.25.8
       rollup: 4.45.1
       vite: 5.4.19(@types/node@24.1.0)(less@4.4.0)(sass-embedded@1.89.2)(sass@1.89.2)(terser@5.43.1)
-      webpack: 5.100.2(esbuild@0.25.8)
+      webpack: 5.100.2(esbuild@0.23.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -9556,7 +9562,7 @@ snapshots:
       chalk: 4.1.2
       hash-sum: 2.0.0
       watchpack: 2.4.4
-      webpack: 5.100.2(esbuild@0.25.8)
+      webpack: 5.100.2(esbuild@0.23.1)
     optionalDependencies:
       vue: 3.5.17(typescript@5.8.3)
 
@@ -9618,6 +9624,38 @@ snapshots:
 
   webpack-virtual-modules@0.6.2: {}
 
+  webpack@5.100.2(esbuild@0.23.1):
+    dependencies:
+      '@types/eslint-scope': 3.7.7
+      '@types/estree': 1.0.8
+      '@types/json-schema': 7.0.15
+      '@webassemblyjs/ast': 1.14.1
+      '@webassemblyjs/wasm-edit': 1.14.1
+      '@webassemblyjs/wasm-parser': 1.14.1
+      acorn: 8.15.0
+      acorn-import-phases: 1.0.4(acorn@8.15.0)
+      browserslist: 4.25.1
+      chrome-trace-event: 1.0.4
+      enhanced-resolve: 5.18.2
+      es-module-lexer: 1.7.0
+      eslint-scope: 5.1.1
+      events: 3.3.0
+      glob-to-regexp: 0.4.1
+      graceful-fs: 4.2.11
+      json-parse-even-better-errors: 2.3.1
+      loader-runner: 4.3.0
+      mime-types: 2.1.35
+      neo-async: 2.6.2
+      schema-utils: 4.3.2
+      tapable: 2.2.2
+      terser-webpack-plugin: 5.3.14(esbuild@0.23.1)(webpack@5.100.2(esbuild@0.25.8))
+      watchpack: 2.4.4
+      webpack-sources: 3.3.3
+    transitivePeerDependencies:
+      - '@swc/core'
+      - esbuild
+      - uglify-js
+
   webpack@5.100.2(esbuild@0.25.8):
     dependencies:
       '@types/eslint-scope': 3.7.7
@@ -9642,13 +9680,14 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.2
       tapable: 2.2.2
-      terser-webpack-plugin: 5.3.14(esbuild@0.23.1)(webpack@5.100.2(esbuild@0.23.1))
+      terser-webpack-plugin: 5.3.14(esbuild@0.25.8)(webpack@5.100.2(esbuild@0.25.8))
       watchpack: 2.4.4
       webpack-sources: 3.3.3
     transitivePeerDependencies:
       - '@swc/core'
       - esbuild
       - uglify-js
+    optional: true
 
   whatwg-encoding@3.1.1:
     dependencies:

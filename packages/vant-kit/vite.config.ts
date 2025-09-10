@@ -22,6 +22,9 @@ export default defineConfig({
     // 自动引入 API
     AutoImport({
       resolvers: [VantResolverRes],
+      eslintrc: {
+        enabled: true,
+      },
     }),
     dts({ tsconfigPath: './tsconfig.app.json' }),
   ],
