@@ -1,9 +1,9 @@
 import eslintConfig from '@vmono/eslint-config';
-import autoImportConfig from './.eslintrc-auto-import.json';
+import autoImportConfig from './.eslintrc-auto-import.js';
 export default [
   ...eslintConfig,
   {
-    files: ['**/*.{ts,vue}'],
+    files: ['**/*ts', '**/*.vue'],
     languageOptions: {
       globals: {
         ...autoImportConfig.globals,

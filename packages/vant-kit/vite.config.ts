@@ -24,6 +24,11 @@ export default defineConfig({
       resolvers: [VantResolverRes],
       eslintrc: {
         enabled: true,
+        /**
+         * 生成后缀名是 .js 而不是默认的 .json
+         * (虽然文档中没有说明可以更改后缀名，但是实际上是可以的，参考 PR 👉 https://github.com/unplugin/unplugin-auto-import/pull/510)
+         */
+        filepath: './.eslintrc-auto-import.js',
       },
     }),
     dts({ tsconfigPath: './tsconfig.app.json' }),
