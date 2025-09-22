@@ -9,7 +9,7 @@ export default [
    * 配置 AutoImport 自动生成的全局变量,防止 lint 报错
    */
   {
-    files: ['**/*ts', '**/*.vue'],
+    files: ['**/*.{ts,vue}'],
     languageOptions: {
       globals: {
         ...autoImportConfig.globals,
