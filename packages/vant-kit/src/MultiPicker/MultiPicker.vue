@@ -12,14 +12,14 @@
         <div class="multi-picker-header van-picker__toolbar">
           <button :class="['van-picker__cancel', 'van-haptics-feedback']" @click="handleCancel">取消</button>
 
-          <div v-if="showSearch">
+          <template v-if="showSearch">
             <van-search
               shape="round"
               placeholder="请输入搜索关键词"
               v-model="keywords"
               @update:model-value="onSearch"
             />
-          </div>
+          </template>
           <slot v-else name="title">
             <div class="van-picker__title van-ellipsis">{{ title }}</div>
           </slot>
@@ -222,7 +222,7 @@ defineExpose({
 <style scoped lang="less">
 .multi-picker-header {
   :deep(.van-search) {
-    width: 250px;
+    flex: 1;
   }
 }
 

@@ -154,6 +154,6 @@ defineExpose({});
 
 <style scoped lang="less">
 :deep(.van-search) {
-  width: 250px;
+  flex: 1;
 }
 </style>
