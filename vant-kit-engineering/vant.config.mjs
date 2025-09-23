@@ -26,7 +26,6 @@ export const nav = [
       },
     ],
   },
-
   {
     title: '表单组件',
     items: [
@@ -37,6 +36,15 @@ export const nav = [
       {
         path: 'field-multi-picker',
         title: 'FieldMultiPicker',
+      },
+    ],
+  },
+  {
+    title: '展示组件',
+    items: [
+      {
+        path: 'coloring-avatar',
+        title: 'ColoringAvatar',
       },
     ],
   },
