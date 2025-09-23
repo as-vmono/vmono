@@ -24,6 +24,10 @@ export const nav = [
         path: 'multi-picker',
         title: 'MultiPicker',
       },
+      {
+        path: 'date-picker',
+        title: 'DatePicker',
+      },
     ],
   },
   {

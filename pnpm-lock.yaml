@@ -245,6 +245,9 @@ importers:
       '@vmono/vhooks':
         specifier: workspace:*
         version: link:../packages/vhooks
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -2663,6 +2666,9 @@ packages:
 
   dayjs@1.11.13:
     resolution: {integrity: sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==}
+
+  dayjs@1.11.18:
+    resolution: {integrity: sha512-zFBQ7WFRvVRhKcWoUh+ZA1g2HVgUbsZm9sbddh8EC5iv93sui8DVVz1Npvz+r6meo9VKfa8NyLWBsQK1VvIKPA==}
 
   de-indent@1.0.2:
     resolution: {integrity: sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==}
@@ -6057,7 +6063,7 @@ snapshots:
     dependencies:
       '@rsbuild/core': 1.0.4
       vue-loader: 17.4.2(vue@3.5.17(typescript@5.8.3))(webpack@5.100.2(esbuild@0.23.1))
-      webpack: 5.100.2(esbuild@0.23.1)
+      webpack: 5.100.2(esbuild@0.25.8)
     transitivePeerDependencies:
       - '@swc/core'
       - '@vue/compiler-sfc'
@@ -7510,6 +7516,8 @@ snapshots:
   dargs@8.1.0: {}
 
   dayjs@1.11.13: {}
+
+  dayjs@1.11.18: {}
 
   de-indent@1.0.2: {}
 
@@ -9154,18 +9162,7 @@ snapshots:
 
   term-size@2.2.1: {}
 
-  terser-webpack-plugin@5.3.14(esbuild@0.23.1)(webpack@5.100.2(esbuild@0.25.8)):
-    dependencies:
-      '@jridgewell/trace-mapping': 0.3.29
-      jest-worker: 27.5.1
-      schema-utils: 4.3.2
-      serialize-javascript: 6.0.2
-      terser: 5.43.1
-      webpack: 5.100.2(esbuild@0.23.1)
-    optionalDependencies:
-      esbuild: 0.23.1
-
-  terser-webpack-plugin@5.3.14(esbuild@0.25.8)(webpack@5.100.2(esbuild@0.25.8)):
+  terser-webpack-plugin@5.3.14(esbuild@0.23.1)(webpack@5.100.2(esbuild@0.23.1)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.29
       jest-worker: 27.5.1
@@ -9174,8 +9171,7 @@ snapshots:
       terser: 5.43.1
       webpack: 5.100.2(esbuild@0.25.8)
     optionalDependencies:
-      esbuild: 0.25.8
-    optional: true
+      esbuild: 0.23.1
 
   terser@5.43.1:
     dependencies:
@@ -9342,7 +9338,7 @@ snapshots:
       esbuild: 0.25.8
       rollup: 4.45.1
       vite: 5.4.19(@types/node@24.1.0)(less@4.4.0)(sass-embedded@1.89.2)(sass@1.89.2)(terser@5.43.1)
-      webpack: 5.100.2(esbuild@0.23.1)
+      webpack: 5.100.2(esbuild@0.25.8)
     transitivePeerDependencies:
       - supports-color
 
@@ -9562,7 +9558,7 @@ snapshots:
       chalk: 4.1.2
       hash-sum: 2.0.0
       watchpack: 2.4.4
-      webpack: 5.100.2(esbuild@0.23.1)
+      webpack: 5.100.2(esbuild@0.25.8)
     optionalDependencies:
       vue: 3.5.17(typescript@5.8.3)
 
@@ -9624,38 +9620,6 @@ snapshots:
 
   webpack-virtual-modules@0.6.2: {}
 
-  webpack@5.100.2(esbuild@0.23.1):
-    dependencies:
-      '@types/eslint-scope': 3.7.7
-      '@types/estree': 1.0.8
-      '@types/json-schema': 7.0.15
-      '@webassemblyjs/ast': 1.14.1
-      '@webassemblyjs/wasm-edit': 1.14.1
-      '@webassemblyjs/wasm-parser': 1.14.1
-      acorn: 8.15.0
-      acorn-import-phases: 1.0.4(acorn@8.15.0)
-      browserslist: 4.25.1
-      chrome-trace-event: 1.0.4
-      enhanced-resolve: 5.18.2
-      es-module-lexer: 1.7.0
-      eslint-scope: 5.1.1
-      events: 3.3.0
-      glob-to-regexp: 0.4.1
-      graceful-fs: 4.2.11
-      json-parse-even-better-errors: 2.3.1
-      loader-runner: 4.3.0
-      mime-types: 2.1.35
-      neo-async: 2.6.2
-      schema-utils: 4.3.2
-      tapable: 2.2.2
-      terser-webpack-plugin: 5.3.14(esbuild@0.23.1)(webpack@5.100.2(esbuild@0.25.8))
-      watchpack: 2.4.4
-      webpack-sources: 3.3.3
-    transitivePeerDependencies:
-      - '@swc/core'
-      - esbuild
-      - uglify-js
-
   webpack@5.100.2(esbuild@0.25.8):
     dependencies:
       '@types/eslint-scope': 3.7.7
@@ -9680,14 +9644,13 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.2
       tapable: 2.2.2
-      terser-webpack-plugin: 5.3.14(esbuild@0.25.8)(webpack@5.100.2(esbuild@0.25.8))
+      terser-webpack-plugin: 5.3.14(esbuild@0.23.1)(webpack@5.100.2(esbuild@0.23.1))
       watchpack: 2.4.4
       webpack-sources: 3.3.3
     transitivePeerDependencies:
       - '@swc/core'
       - esbuild
       - uglify-js
-    optional: true
 
   whatwg-encoding@3.1.1:
     dependencies:

@@ -1,5 +1,3 @@
 export default {
-  globals: {
-    showToast: true,
-  },
+  globals: {},
 };
