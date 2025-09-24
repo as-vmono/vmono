@@ -36,3 +36,5 @@ export {
 export { default as FieldSinglePicker } from './FieldSinglePicker/FieldSinglePicker.vue';
 // 多选表单组件
 export { default as FieldMultiPicker } from './FieldMultiPicker/FieldMultiPicker.vue';
+// 多选表单组件
+export { default as FieldDatePicker } from './FieldDatePicker/FieldDatePicker.vue';

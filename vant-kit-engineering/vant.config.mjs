@@ -41,6 +41,10 @@ export const nav = [
         path: 'field-multi-picker',
         title: 'FieldMultiPicker',
       },
+      {
+        path: 'field-date-picker',
+        title: 'FieldDatePicker',
+      },
     ],
   },
   {
