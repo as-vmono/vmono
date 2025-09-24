@@ -52,7 +52,7 @@ export default defineConfig({
         // 👇 将使用该库的外部项目中，需要自行引入的模块映射为全局变量
         globals: {
           vue: 'Vue',
-          vant: 'vant',
+          vant: 'Vant',
         },
       },
     },
