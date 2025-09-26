@@ -1,5 +1,5 @@
 <template>
-  <van-form ref="FormRef" :validate-trigger="['onBlur', 'onChange', 'onSubmit']">
+  <van-form ref="FormRef">
     <span @click="getIdMapData">modelValue: {{ pickerValue }}</span>
     <FieldMultiPicker
       ref="FieldMultiPickerRef"
@@ -9,26 +9,15 @@
       title="基础用法"
       tip-txt="这就是基础组件 - MultiPicke"
       :field-props="{
-        name: 'fieldName',
+        name: 'multiPicker',
         label: '多选',
         placeholder: '请选择',
         required: true,
         rules: [{ required: true, message: '请选择' }],
       }"
     />
+    <van-button round block type="primary" @click="handleSubmit"> 提交 </van-button>
   </van-form>
-  <van-button
-    type="primary"
-    @click="
-      () => {
-        FormRef?.validate?.().finally(() => {
-          console.log(FormRef?.getValues?.());
-        });
-      }
-    "
-  >
-    验证
-  </van-button>
 </template>
 
 <script setup lang="ts">
@@ -38,6 +27,14 @@ import { ref } from 'vue';
 import { Form as VanForm, Button as VanButton, FormInstance } from 'vant';
 
 const FormRef = ref<FormInstance>();
+const handleSubmit = () => {
+  FormRef.value?.validate().then(() => {
+    // eslint-disable-next-line no-console
+    console.log('getValues', FormRef.value?.getValues?.());
+    // eslint-disable-next-line no-console
+    console.log('真实值', { multiPicker: pickerValue.value });
+  });
+};
 
 const options = [
   { name: '选项1', value: '1' },
