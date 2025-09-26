@@ -1,5 +1,5 @@
 <template>
-  <van-form ref="FormRef" :validate-trigger="['onBlur', 'onChange', 'onSubmit']">
+  <van-form ref="FormRef">
     <p>modelValue:{{ modelValue }}</p>
     <FieldDatePicker
       ref="FieldDatePickerRef"
@@ -15,7 +15,16 @@
       :show-value-formatter="(date) => date?.toLocaleDateString()"
       :picker-props="{ title: '选择' }"
     >
-      <template #columns-top>Ashutefannao</template>
+      <template #columns-top>
+        <div class="columns-bar">
+          <span>这里是 columns-top 插槽内容</span>
+        </div>
+      </template>
+      <template #columns-bottom>
+        <div class="columns-bar">
+          <span>这里是 columns-bottom 插槽内容</span>
+        </div>
+      </template>
     </FieldDatePicker>
 
     <van-field
@@ -57,6 +66,11 @@ const [testFieldModelValue] = useWrapperRef('');
 .trigger-box {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.columns-bar {
+  display: flex;
   justify-content: center;
   align-items: center;
 }
