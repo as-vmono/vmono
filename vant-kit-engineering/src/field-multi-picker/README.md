@@ -22,28 +22,42 @@
 
 ```html
 <template>
-  <span @click="getIdMapData">modelValue: {{ pickerValue }}</span>
-  <FieldMultiPicker
-    ref="FieldMultiPickerRef"
-    v-model="pickerValue"
-    :options="options"
-    :field-names="fieldNames"
-    title="基础用法"
-    tip-txt="这就是基础组件 - MultiPicke"
-    :field-props="{
-      name: 'fieldName',
-      label: '多选',
-      placeholder: '请选择',
-      required: true,
-      rules: [{ required: true, message: '请选择' }],
-    }"
-  />
+  <van-form ref="FormRef">
+    <span @click="getIdMapData">modelValue: {{ pickerValue }}</span>
+    <FieldMultiPicker
+      ref="FieldMultiPickerRef"
+      v-model="pickerValue"
+      :options="options"
+      :field-names="fieldNames"
+      title="基础用法"
+      tip-txt="这就是基础组件 - MultiPicke"
+      :field-props="{
+        name: 'multiPicker',
+        label: '多选',
+        placeholder: '请选择',
+        required: true,
+        rules: [{ required: true, message: '请选择' }],
+      }"
+    />
+    <van-button round block type="primary" @click="handleSubmit">
+      提交
+    </van-button>
+  </van-form>
 </template>
 
 <script setup lang="ts">
   import { useWrapperRef } from '@vmono/vhooks';
   import { FieldMultiPicker } from '@vmono/vant-kit';
   import { ref } from 'vue';
+  import { Form as VanForm, Button as VanButton, FormInstance } from 'vant';
+
+  const FormRef = ref<FormInstance>();
+  const handleSubmit = () => {
+    FormRef.value?.validate().then(() => {
+      // eslint-disable-next-line no-console
+      console.log('submit', FormRef.value?.getValues?.());
+    });
+  };
 
   const options = [
     { name: '选项1', value: '1' },
@@ -58,10 +72,11 @@
 
   const FieldMultiPickerRef = ref<InstanceType<typeof FieldMultiPicker>>();
   const getIdMapData = () => {
-    console.log(
-      'getIdMapData',
-      FieldMultiPickerRef.value?.getOptionsIdMapData?.(),
-    );
+    FieldMultiPickerRef.value?.getOptionsIdMapData?.();
+    // console.log(
+    //   'getIdMapData',
+    //   FieldMultiPickerRef.value?.getOptionsIdMapData?.(),
+    // );
   };
 </script>
 
