@@ -47,12 +47,13 @@ export default defineConfig({
        *    1. 这样可以避免重复打包，减小库的体积
        *    2. 防止 vant 组件库被多次引入，避免样式冲突
        */
-      external: ['vue', 'vant'],
+      external: ['vue', 'vant', /^vant\//],
       output: {
         // 👇 将使用该库的外部项目中，需要自行引入的模块映射为全局变量
         globals: {
           vue: 'Vue',
-          vant: 'vant',
+          vant: 'Vant',
+          'vant/es/utils': 'Vant.utils',
         },
       },
     },
