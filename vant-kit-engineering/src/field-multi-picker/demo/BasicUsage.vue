@@ -30,7 +30,9 @@ const FormRef = ref<FormInstance>();
 const handleSubmit = () => {
   FormRef.value?.validate().then(() => {
     // eslint-disable-next-line no-console
-    console.log('submit', FormRef.value?.getValues?.());
+    console.log('getValues', FormRef.value?.getValues?.());
+    // eslint-disable-next-line no-console
+    console.log('真实值', { multiPicker: pickerValue.value });
   });
 };
 
