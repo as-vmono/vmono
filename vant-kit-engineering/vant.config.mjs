@@ -28,6 +28,10 @@ export const nav = [
         path: 'date-picker',
         title: 'DatePicker',
       },
+      {
+        path: 'date-range-picker',
+        title: 'DateRangePicker',
+      },
     ],
   },
   {

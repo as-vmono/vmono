@@ -28,6 +28,14 @@ export {
   type TDatePickerProps,
   type TDatePickerConfirmPayload,
 } from './DatePicker/DatePicker.vue';
+// 日期范围选择组件
+export {
+  default as DateRangePicker,
+  type TDateRangePickerProps,
+  type TDateRangePickerConfirmPayload,
+  type TDRPickerShowValueFormatterPayload,
+  type TSetDRPickerRealtimeDatePayload,
+} from './DateRangePicker/DateRangePicker.vue';
 
 /**
  * 表单组件

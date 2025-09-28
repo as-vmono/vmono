@@ -1,0 +1,42 @@
+<template>
+  <DateRangePicker
+    v-model="modelValue"
+    :picker-group-props="{ title: 'beforeConfirm' }"
+    :before-confirm="
+      (values) => {
+        const [start, end] = values;
+        if (start == dayjs().format('YYYY-MM-DD') && start === end) {
+          return true;
+        }
+        showFailToast('请选择当前日期');
+        return false;
+      }
+    "
+  >
+    <template #trigger="{ triggerPopupShow, showValue }">
+      <div class="trigger-box">
+        <p>value: {{ modelValue }}</p>
+        <p>showValue: {{ showValue }}</p>
+        <van-button @click="triggerPopupShow"> trigger </van-button>
+      </div>
+    </template>
+  </DateRangePicker>
+</template>
+
+<script setup lang="ts">
+import { useWrapperRef } from '@vmono/vhooks';
+import { DateRangePicker } from '@vmono/vant-kit';
+import { showFailToast, Button as VanButton } from 'vant';
+import dayjs from 'dayjs';
+
+const [modelValue] = useWrapperRef<[string, string]>(['', '']);
+</script>
+
+<style scoped lang="less">
+.trigger-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+</style>

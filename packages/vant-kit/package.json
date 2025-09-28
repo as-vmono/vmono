@@ -49,6 +49,7 @@
   "dependencies": {
     "@vmono/utils": "workspace:*",
     "@vmono/vhooks": "workspace:*",
+    "dayjs": "^1.11.18",
     "lodash": "^4.17.21"
   }
 }
