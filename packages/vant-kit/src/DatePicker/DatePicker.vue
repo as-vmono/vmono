@@ -93,12 +93,13 @@ const [showValue, setShowValue] = useWrapperRef<string>(defaultShowValue);
 watch(
   modelValue,
   (_newValue) => {
-    setShowValue(_newValue || defaultShowValue);
     // 自定义格式化
     if (typeof Props.showValueFormatter === 'function') {
       setShowValue(
         Props.showValueFormatter(modelValue.value ? new Date(modelValue.value) : undefined) || defaultShowValue
       );
+    } else {
+      setShowValue(_newValue || defaultShowValue);
     }
   },
   { immediate: true }
