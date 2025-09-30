@@ -49,11 +49,8 @@ const [pickerValue, _setPickerValue] = useWrapperRef<string[]>([]);
 
 const FieldMultiPickerRef = ref<InstanceType<typeof FieldMultiPicker>>();
 const getIdMapData = () => {
-  FieldMultiPickerRef.value?.getOptionsIdMapData?.();
-  // console.log(
-  //   'getIdMapData',
-  //   FieldMultiPickerRef.value?.getOptionsIdMapData?.(),
-  // );
+  // eslint-disable-next-line no-console
+  console.log('getIdMapData', FieldMultiPickerRef.value?.getOptionsIdMapData?.());
 };
 </script>
 

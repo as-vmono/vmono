@@ -4,6 +4,7 @@
     <FieldDatePicker
       ref="FieldDatePickerRef"
       v-model="modelValue"
+      :picker-props="{ title: '选择' }"
       :field-props="{
         name: 'dateField',
         label: 'FieldDatePicker',
@@ -13,7 +14,6 @@
         rules: [{ required: true, message: '请选择' }],
       }"
       :show-value-formatter="(date) => date?.toLocaleDateString()"
-      :picker-props="{ title: '选择' }"
     >
       <template #columns-top>
         <div class="columns-bar">
@@ -34,30 +34,38 @@
       :rules="[{ required: true, message: '请选择' }]"
     ></van-field>
   </van-form>
-  <van-button
-    type="primary"
-    @click="
-      () => {
-        FormRef?.validate?.().finally(() => {
-          console.log(FormRef?.getValues?.());
-        });
-      }
-    "
-  >
-    验证
-  </van-button>
+  <van-space>
+    <van-button
+      type="primary"
+      @click="
+        () => {
+          FormRef?.validate?.().finally(() => {
+            console.log(FormRef?.getValues?.());
+          });
+        }
+      "
+    >
+      验证表单
+    </van-button>
+    <van-button type="primary" @click="setPickerRealtimeDate"> 切换默认选中时间为当前日期 </van-button>
+  </van-space>
 </template>
 
 <script lang="ts" setup>
 import { useWrapperRef } from '@vmono/vhooks';
 import { ref } from 'vue';
 import { FieldDatePicker } from '@vmono/vant-kit';
-import { Form as VanForm, Field as VanField, Button as VanButton, FormInstance } from 'vant';
+import { Form as VanForm, Field as VanField, Button as VanButton, Space as VanSpace, FormInstance } from 'vant';
+import dayjs from 'dayjs';
 
 const FormRef = ref<FormInstance>();
 
 const [modelValue] = useWrapperRef('');
 const FieldDatePickerRef = ref<InstanceType<typeof FieldDatePicker>>();
+
+const setPickerRealtimeDate = () => {
+  FieldDatePickerRef.value?.setPickerRealtimeDate?.(dayjs().format('YYYY-MM-DD'));
+};
 
 const [testFieldModelValue] = useWrapperRef('');
 </script>
