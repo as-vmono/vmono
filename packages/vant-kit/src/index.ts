@@ -46,3 +46,5 @@ export { default as FieldSinglePicker } from './FieldSinglePicker/FieldSinglePic
 export { default as FieldMultiPicker } from './FieldMultiPicker/FieldMultiPicker.vue';
 // 多选表单组件
 export { default as FieldDatePicker } from './FieldDatePicker/FieldDatePicker.vue';
+// 日期范围表单组件
+export { default as FieldDateRangePicker } from './FieldDateRangePicker/FieldDateRangePicker.vue';
