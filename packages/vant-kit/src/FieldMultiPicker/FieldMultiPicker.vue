@@ -73,9 +73,7 @@ const updateModelFieldValue = (newValue: any[] = []) => {
 
 const MultiPickerRef = ref<InstanceType<typeof MultiPicker>>();
 defineExpose({
-  getOptionsIdMapData() {
-    return MultiPickerRef.value?.getOptionsIdMapData?.();
-  },
+  getOptionsIdMapData: computed(() => MultiPickerRef.value?.getOptionsIdMapData),
 });
 </script>
 

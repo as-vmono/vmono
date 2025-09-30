@@ -77,7 +77,7 @@ const updateModelFieldValue = (newValue) => {
 
 const DatePickerRef = ref<InstanceType<typeof DatePicker>>();
 defineExpose({
-  setPickerRealtimeDate: DatePickerRef?.value?.setPickerRealtimeDate,
+  setPickerRealtimeDate: computed(() => DatePickerRef?.value?.setPickerRealtimeDate),
 });
 </script>
 
