@@ -10,6 +10,8 @@ export { default as ColoringAvatar } from './ColoringAvatar/ColoringAvatar.vue';
 /**
  * 基础组件
  */
+// 脱敏文本组件
+export { default as MaskTxt, type TMaskTxtProps } from './MaskTxt/MaskTxt.vue';
 // 单选组件
 export {
   default as SinglePicker,
@@ -40,6 +42,8 @@ export {
 /**
  * 表单组件
  */
+// 脱敏文本表单组件
+export { default as FieldMaskTxt, type TFieldMaskTxtProps } from './FieldMaskTxt/FieldMaskTxt.vue';
 // 单选表单组件
 export { default as FieldSinglePicker } from './FieldSinglePicker/FieldSinglePicker.vue';
 // 多选表单组件

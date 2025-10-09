@@ -17,6 +17,10 @@ export const nav = [
     title: '基础组件',
     items: [
       {
+        path: 'mask-txt',
+        title: 'MaskTxt',
+      },
+      {
         path: 'single-picker',
         title: 'SinglePicker',
       },
@@ -37,6 +41,10 @@ export const nav = [
   {
     title: '表单组件',
     items: [
+      {
+        path: 'field-mask-txt',
+        title: 'FieldMaskTxt',
+      },
       {
         path: 'field-single-picker',
         title: 'FieldSinglePicker',
