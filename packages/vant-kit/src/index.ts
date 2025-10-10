@@ -10,6 +10,8 @@ export { default as ColoringAvatar } from './ColoringAvatar/ColoringAvatar.vue';
 /**
  * 基础组件
  */
+// 复制文本触发器组件
+export { default as CopyTxtTrigger, type TCopyTxtTriggerProps } from './CopyTxtTrigger/CopyTxtTrigger.vue';
 // 脱敏文本组件
 export { default as MaskTxt, type TMaskTxtProps } from './MaskTxt/MaskTxt.vue';
 // 单选组件

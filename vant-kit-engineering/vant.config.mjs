@@ -17,6 +17,10 @@ export const nav = [
     title: '基础组件',
     items: [
       {
+        path: 'copy-txt-trigger',
+        title: 'CopyTxtTrigger',
+      },
+      {
         path: 'mask-txt',
         title: 'MaskTxt',
       },
