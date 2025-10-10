@@ -33,6 +33,7 @@
 </template>
 
 <script lang="ts" setup>
+import { CommonFieldProps } from '@/common/constants';
 import SinglePicker, { TSinglePickerProps, TSPConfirmDisabledOptionPayload } from '@/SinglePicker/SinglePicker.vue';
 import { isNullOrUndefined } from '@vmono/utils';
 import { useWrapperRef } from '@vmono/vhooks';
@@ -51,11 +52,7 @@ const Props = withDefaults(
 );
 
 const computedFieldProps = computed(() => {
-  const defaultProps: typeof Props.fieldProps = {
-    inputAlign: 'right',
-    errorMessageAlign: 'right',
-  };
-  return Object.assign(Props?.fieldProps ?? {}, defaultProps);
+  return { ...CommonFieldProps, ...(Props?.fieldProps ?? {}) };
 });
 
 const isViewMode = computed(() => computedFieldProps.value?.readonly || computedFieldProps.value?.disabled || false);

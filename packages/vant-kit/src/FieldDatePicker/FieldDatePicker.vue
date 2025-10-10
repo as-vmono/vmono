@@ -39,6 +39,7 @@ import type { FieldProps } from 'vant';
 import { useWrapperRef } from '@vmono/vhooks';
 import DatePicker, { TDatePickerConfirmPayload, TDatePickerProps } from '../DatePicker/DatePicker.vue';
 import { isNullOrUndefined } from '@vmono/utils';
+import { CommonFieldProps } from '@/common/constants';
 
 const Props = defineProps<
   TDatePickerProps & {
@@ -47,11 +48,7 @@ const Props = defineProps<
 >();
 
 const computedFieldProps = computed(() => {
-  const defaultProps: typeof Props.fieldProps = {
-    inputAlign: 'right',
-    errorMessageAlign: 'right',
-  };
-  return Object.assign(Props?.fieldProps ?? {}, defaultProps);
+  return { ...CommonFieldProps, ...(Props?.fieldProps ?? {}) };
 });
 const isViewMode = computed(() => computedFieldProps.value?.readonly || computedFieldProps.value?.disabled || false);
 const isLink = computed(() => {

@@ -46,6 +46,10 @@ export const nav = [
         title: 'FieldMaskTxt',
       },
       {
+        path: 'field-switch-btn',
+        title: 'FieldSwitchBtn',
+      },
+      {
         path: 'field-single-picker',
         title: 'FieldSinglePicker',
       },

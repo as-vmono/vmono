@@ -27,6 +27,7 @@
 </template>
 
 <script lang="ts" setup>
+import { CommonFieldProps } from '@/common/constants';
 import MultiPicker, { TConfirmEventPayload, TMultiPickerProps } from '@/MultiPicker/MultiPicker.vue';
 import { isNullOrUndefined } from '@vmono/utils';
 import { useWrapperRef } from '@vmono/vhooks';
@@ -40,11 +41,7 @@ const Props = defineProps<
 >();
 
 const computedFieldProps = computed(() => {
-  const defaultProps: typeof Props.fieldProps = {
-    inputAlign: 'right',
-    errorMessageAlign: 'right',
-  };
-  return Object.assign(Props?.fieldProps ?? {}, defaultProps);
+  return { ...CommonFieldProps, ...(Props?.fieldProps ?? {}) };
 });
 
 const isViewMode = computed(() => computedFieldProps.value?.readonly || computedFieldProps.value?.disabled || false);

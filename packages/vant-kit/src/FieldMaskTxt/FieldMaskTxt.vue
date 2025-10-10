@@ -48,6 +48,7 @@ export type TFieldMaskTxtProps = {
 
 <script lang="ts" setup>
 import { useMaskedField, IUseMaskedFieldOptions } from '@/common';
+import { CommonFieldProps } from '@/common/constants';
 import { useWrapperRef } from '@vmono/vhooks';
 
 import { FieldProps } from 'vant';
@@ -73,13 +74,9 @@ watch(showValue, setShowFieldValue);
  * computed Props
  */
 const computedFieldProps = computed(() => {
-  const defaultProps: typeof Props.fieldProps = {
-    inputAlign: 'right',
-    errorMessageAlign: 'right',
-  };
   const genFieldRulesRes = Props?.genFieldRules({ isPlaintextVisible: isPlaintextVisible.value });
   const rules = (genFieldRulesRes?.length ? genFieldRulesRes : Props?.fieldProps?.rules) ?? [];
-  return { ...defaultProps, ...(Props?.fieldProps ?? {}), rules };
+  return { ...CommonFieldProps, ...(Props?.fieldProps ?? {}), rules };
 });
 
 const computedRealFieldProps = computed(() => {

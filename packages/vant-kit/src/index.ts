@@ -44,6 +44,8 @@ export {
  */
 // 脱敏文本表单组件
 export { default as FieldMaskTxt, type TFieldMaskTxtProps } from './FieldMaskTxt/FieldMaskTxt.vue';
+// 开关按钮表单组件
+export { default as FieldSwitchBtn, type TFieldSwitchBtnProps } from './FieldSwitchBtn/FieldSwitchBtn.vue';
 // 单选表单组件
 export { default as FieldSinglePicker } from './FieldSinglePicker/FieldSinglePicker.vue';
 // 多选表单组件
