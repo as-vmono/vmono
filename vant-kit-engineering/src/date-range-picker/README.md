@@ -25,6 +25,8 @@
 - 打开收起逻辑的编写
 - 对所选项 `真实值`、`展示值` 的隔离和处理
 
+>提供表单组件版本 [FieldDateRangePicker](./#/field-date-range-picker)
+
 ## 代码演示
 
 ### 基础用法

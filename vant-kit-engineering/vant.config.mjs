@@ -21,10 +21,6 @@ export const nav = [
         title: 'CopyTxtTrigger',
       },
       {
-        path: 'mask-txt',
-        title: 'MaskTxt',
-      },
-      {
         path: 'single-picker',
         title: 'SinglePicker',
       },
@@ -39,6 +35,15 @@ export const nav = [
       {
         path: 'date-range-picker',
         title: 'DateRangePicker',
+      },
+    ],
+  },
+  {
+    title: '业务组件',
+    items: [
+      {
+        path: 'mask-txt',
+        title: 'MaskTxt',
       },
     ],
   },
@@ -90,7 +95,7 @@ export default {
       preprocessor: 'less',
     },
     site: {
-      publicPath: '/vmono-vant-docs/',
+      publicPath: '/vant-kit-doc/',
     },
   },
   site: {

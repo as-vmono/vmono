@@ -19,6 +19,8 @@
 - 打开收起逻辑的编写
 - 对所选项的 `真实值`、`展示值` 的处理
 
+>提供表单组件版本 [FieldSinglePicker](./#/field-single-picker)
+
 ## 代码演示
 
 ### 基础用法
