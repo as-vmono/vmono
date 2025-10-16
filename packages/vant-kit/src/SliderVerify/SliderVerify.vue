@@ -392,8 +392,8 @@ const validate = async (captchaConfig: TCurrentCaptchaConfig) => {
           checkVerifyRes,
           close,
         });
-        Emitter('verifyFailed', { checkVerifyCodePayload, checkVerifyRes });
       } else {
+        Emitter('verifyFailed', { checkVerifyCodePayload, checkVerifyRes });
         reset();
       }
     }
