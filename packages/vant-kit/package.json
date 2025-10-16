@@ -1,6 +1,6 @@
 {
   "name": "@vmono/vant-kit",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "type": "module",
   "description": "A project that includes common components from the H5 project (dependent on vant) and some utility functions",
   "main": "dist/vant-kit.umd.js",

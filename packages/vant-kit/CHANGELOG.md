@@ -1,5 +1,19 @@
 # @vmono/vant-kit
 
+## 0.0.5
+
+### Patch Changes
+
+- - 现有组件优化、公共配置抽离
+  - 新增组件：
+    - ColoringAvatar
+    - DatePicker、FieldDatePicker
+    - DateRangePicker、FieldDateRangePicker
+    - MaskTxt、FieldMaskTxt
+    - CopyTxtTrigger
+    - SliderVerify
+  - 一些工程问题解决
+
 ## 0.0.4
 
 ### Patch Changes

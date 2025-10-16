@@ -1,6 +1,6 @@
 {
   "name": "@vmono/vantkit-doc",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A project that includes common components from the H5 project (dependent on vant) and some utility functions",
   "main": "lib/index.js",
   "module": "es/index.js",
