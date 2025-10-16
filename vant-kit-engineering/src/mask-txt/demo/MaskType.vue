@@ -1,6 +1,6 @@
 <template>
   <demo-block title="自带一些内置脱敏策略">
-    <section>
+    <section class="demo-section">
       <SinglePicker
         v-model="maskType"
         :picker-props="{
@@ -15,7 +15,7 @@
           </van-button>
         </template>
       </SinglePicker>
-      <span class="desc">设置初始值: 加密且脱敏</span>
+      <span class="demo-section-desc">设置初始值: 加密且脱敏</span>
       <van-field label="明文" placeholder="请输入" v-model="dataSourcePlainTxt" />
       <van-field disabled label="密文" v-model="dataSourceCipherTxt" placeholder="输入明文, 制造密文" />
       <mask-txt v-if="render" :preset="commonPreset" mask-id="maskId" :mask-txt="dataSourceCipherTxt" />
@@ -77,18 +77,5 @@ const commonPreset: ComputedRef<TMaskTxtProps['preset']> = computed(() => ({
 </script>
 
 <style scoped lang="less">
-section {
-  padding: 0px 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-
-  .desc {
-    font-size: 12px;
-    align-self: flex-start;
-    color: #aaa;
-  }
-}
+//
 </style>

@@ -42,6 +42,10 @@ export const nav = [
     title: '业务组件',
     items: [
       {
+        path: 'slider-verify',
+        title: 'SliderVerify',
+      },
+      {
         path: 'mask-txt',
         title: 'MaskTxt',
       },

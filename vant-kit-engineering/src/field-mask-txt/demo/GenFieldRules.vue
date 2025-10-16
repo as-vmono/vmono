@@ -1,8 +1,8 @@
 <template>
   <demo-block title="根据脱敏状态定制 rules">
     <van-form ref="FormRef" :validate-trigger="['onBlur', 'onChange']">
-      <section>
-        <span class="desc">设置初始值: 加密且脱敏</span>
+      <section class="demo-section">
+        <span class="demo-section-desc">设置初始值: 加密且脱敏</span>
         <van-field label="明文" placeholder="请输入" v-model="dataSourcePlainTxt" />
         <van-field disabled label="密文" v-model="dataSourceCipherTxt" placeholder="输入明文, 制造密文" />
         <p>modelValue:</p>
@@ -89,18 +89,5 @@ const handleSubmit = () => {
 </script>
 
 <style scoped lang="less">
-section {
-  padding: 0px 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-
-  .desc {
-    font-size: 12px;
-    align-self: flex-start;
-    color: #aaa;
-  }
-}
+//
 </style>

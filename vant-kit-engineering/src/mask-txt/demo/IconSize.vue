@@ -1,6 +1,6 @@
 <template>
   <demo-block title="自定义图标大小">
-    <section>
+    <section class="demo-section">
       <mask-txt icon-size="30" :preset="commonPreset" mask-id="maskId" :mask-txt="dataSourceCipherTxt" />
     </section>
   </demo-block>
@@ -38,18 +38,5 @@ const commonPreset: TMaskTxtProps['preset'] = {
 </script>
 
 <style scoped lang="less">
-section {
-  padding: 0px 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-
-  .desc {
-    font-size: 12px;
-    align-self: flex-start;
-    color: #aaa;
-  }
-}
+//
 </style>

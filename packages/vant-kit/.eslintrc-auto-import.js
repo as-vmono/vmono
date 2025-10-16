@@ -1,3 +1,5 @@
 export default {
-  globals: {},
+  globals: {
+    showFailToast: true,
+  },
 };
