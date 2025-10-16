@@ -54,11 +54,12 @@ const Props = withDefaults(defineProps<TSinglePickerProps>(), {
 const columnsFieldNames = computed(() =>
   Object.assign({ text: 'label', value: 'value' }, Props?.pickerProps?.columnsFieldNames ?? {})
 );
-const computedPickerProps = computed(() =>
-  Object.assign(Props?.pickerProps ?? {}, {
+const computedPickerProps = computed(() => {
+  return {
     columnsFieldNames: columnsFieldNames.value,
-  })
-);
+    ...(Props?.pickerProps ?? {}),
+  };
+});
 
 const Emitter = defineEmits<{
   (e: 'search', value: string): void;
