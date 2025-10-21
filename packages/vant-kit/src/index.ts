@@ -2,6 +2,11 @@
 import './global.less';
 
 /**
+ * other
+ */
+export * from './common';
+
+/**
  * 展示组件
  */
 // 着色名称头像
