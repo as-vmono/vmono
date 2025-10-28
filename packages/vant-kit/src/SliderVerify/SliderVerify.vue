@@ -42,6 +42,11 @@ export type TCurrentCaptchaConfig = {
   movePercent: number;
 };
 
+export type TFormatedCurrentCaptchaConfig = TCurrentCaptchaConfig & {
+  startSlidingTime: string;
+  endSlidingTime: string;
+};
+
 // getVerifyCode 函数的类型
 export type TVerifyCodeDatasource = {
   id: string;
@@ -60,7 +65,7 @@ export type TVerifyCodeDatasource = {
 // checkVerifyCode 函数类型
 export type TCheckSliderVerifyCodeFuncPayload = {
   id: string;
-  captchaInfo: TCurrentCaptchaConfig;
+  captchaInfo: TFormatedCurrentCaptchaConfig;
 };
 export type TCheckSliderVerifyCodeFuncRes = {
   matching: boolean;
@@ -128,6 +133,7 @@ import { useWrapperRef } from '@vmono/vhooks';
 import SlideTriggerImg from '@/assets/sliderVerify/slideTrigger.png';
 import CloseImg from '@/assets/sliderVerify/close.png';
 import RefreshImg from '@/assets/sliderVerify/refresh.png';
+import dayjs from 'dayjs';
 
 const Props = defineProps<TSliderVerifyProps>();
 
@@ -188,6 +194,13 @@ const genCaptchaConfigInitValue = (): TCurrentCaptchaConfig => {
   };
 };
 let currentCaptchaConfig: TCurrentCaptchaConfig = genCaptchaConfigInitValue();
+const getFormatedCurrentCaptchaConfig = (): TFormatedCurrentCaptchaConfig => {
+  return Object.assign({}, currentCaptchaConfig, {
+    startSlidingTime: dayjs(currentCaptchaConfig.startSlidingTime).format('YYYY-MM-DD HH:mm:ss'),
+    endSlidingTime: dayjs(currentCaptchaConfig.endSlidingTime).format('YYYY-MM-DD HH:mm:ss'),
+  });
+};
+
 const initCurrentCaptchaConfig = () => {
   currentCaptchaConfig = genCaptchaConfigInitValue();
 };
@@ -339,7 +352,7 @@ const slide_end = async (e: TEvent) => {
     ],
   });
   // 触发验证逻辑
-  await validate(currentCaptchaConfig);
+  await validate();
 };
 
 // 滑动开始
@@ -365,11 +378,11 @@ onUnmounted(() => {
 });
 
 // 验证逻辑
-const validate = async (captchaConfig: TCurrentCaptchaConfig) => {
+const validate = async () => {
   try {
     const checkVerifyCodePayload: TCheckSliderVerifyCodeFuncPayload = {
       id: verifyCodeDatasource.value?.id,
-      captchaInfo: captchaConfig,
+      captchaInfo: getFormatedCurrentCaptchaConfig(),
     };
     const checkVerifyRes = await Props?.checkVerifyCode?.(checkVerifyCodePayload);
     if (checkVerifyRes.matching) {
