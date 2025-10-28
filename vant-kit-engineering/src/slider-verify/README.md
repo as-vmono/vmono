@@ -48,58 +48,58 @@
 </template>
 
 <script setup lang="ts">
-import {
-  SliderVerify,
-  TCheckSliderVerifyCodeFuncPayload,
-  TCheckSliderVerifyCodeFuncRes,
-  TVerifyCodeDatasource,
-} from '@vmono/vant-kit';
-import { ref } from 'vue';
-import { Button as VanButton, Switch as VanSwitch } from 'vant';
+  import {
+    SliderVerify,
+    TCheckSliderVerifyCodeFuncPayload,
+    TCheckSliderVerifyCodeFuncRes,
+    TVerifyCodeDatasource,
+  } from '@vmono/vant-kit';
+  import { ref } from 'vue';
+  import { Button as VanButton, Switch as VanSwitch } from 'vant';
 
-const SliderVerifyRef = ref<InstanceType<typeof SliderVerify>>();
+  const SliderVerifyRef = ref<InstanceType<typeof SliderVerify>>();
 
-const isVerifySuccess = ref(true);
+  const isVerifySuccess = ref(true);
 
-// 模拟接口调用
-const getVerifyCode = (): Promise<TVerifyCodeDatasource> => {
-  const res = {
-    id: 'bf576c727a9c46b2897d790204bbf40a',
-    captcha: {
-      type: 'SLIDER',
-      backgroundImage: 'xxx',
-      templateImage: 'xxx',
-      backgroundImageTag: 'default',
-      templateImageTag: 'default',
-      backgroundImageWidth: 590,
-      backgroundImageHeight: 360,
-      templateImageWidth: 110,
-      templateImageHeight: 360,
-      data: null,
-    },
+  // 模拟接口调用
+  const getVerifyCode = (): Promise<TVerifyCodeDatasource> => {
+    const res = {
+      id: 'bf576c727a9c46b2897d790204bbf40a',
+      captcha: {
+        type: 'SLIDER',
+        backgroundImage: 'xxx',
+        templateImage: 'xxx',
+        backgroundImageTag: 'default',
+        templateImageTag: 'default',
+        backgroundImageWidth: 590,
+        backgroundImageHeight: 360,
+        templateImageWidth: 110,
+        templateImageHeight: 360,
+        data: null,
+      },
+    };
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(res);
+      }, 1000);
+    });
   };
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(res);
-    }, 1000);
-  });
-};
 
-const checkVerifyCode = (
-  p: TCheckSliderVerifyCodeFuncPayload,
-): Promise<TCheckSliderVerifyCodeFuncRes> => {
-  return new Promise((resolve) => {
-    // eslint-disable-next-line no-console
-    console.log('checkVerifyCode payload', p);
-    setTimeout(() => {
-      resolve({ matching: isVerifySuccess.value, smsSendKey: '12345678' });
-    }, 500);
-  });
-};
+  const checkVerifyCode = (
+    p: TCheckSliderVerifyCodeFuncPayload,
+  ): Promise<TCheckSliderVerifyCodeFuncRes> => {
+    return new Promise((resolve) => {
+      // eslint-disable-next-line no-console
+      console.log('checkVerifyCode payload', p);
+      setTimeout(() => {
+        resolve({ matching: isVerifySuccess.value, smsSendKey: '12345678' });
+      }, 500);
+    });
+  };
 </script>
 
 <style scoped lang="less">
-//
+  //
 </style>
 ```
 
@@ -132,64 +132,64 @@ props.processingClose
 </template>
 
 <script setup lang="ts">
-import {
-  SliderVerify,
-  TCheckSliderVerifyCodeFuncPayload,
-  TCheckSliderVerifyCodeFuncRes,
-  TSliderVerifyProcessingCloseFuncPayload,
-  TVerifyCodeDatasource,
-} from '@vmono/vant-kit';
-import { ref } from 'vue';
-import { showToast, Button as VanButton } from 'vant';
+  import {
+    SliderVerify,
+    TCheckSliderVerifyCodeFuncPayload,
+    TCheckSliderVerifyCodeFuncRes,
+    TSliderVerifyProcessingCloseFuncPayload,
+    TVerifyCodeDatasource,
+  } from '@vmono/vant-kit';
+  import { ref } from 'vue';
+  import { showToast, Button as VanButton } from 'vant';
 
-const SliderVerifyRef = ref<InstanceType<typeof SliderVerify>>();
+  const SliderVerifyRef = ref<InstanceType<typeof SliderVerify>>();
 
-// 模拟接口调用
-const getVerifyCode = (): Promise<TVerifyCodeDatasource> => {
-  const res = {
-    id: 'bf576c727a9c46b2897d790204bbf40a',
-    captcha: {
-      type: 'SLIDER',
-      backgroundImage: 'xxx',
-      templateImage: 'xxx',
-      backgroundImageTag: 'default',
-      templateImageTag: 'default',
-      backgroundImageWidth: 590,
-      backgroundImageHeight: 360,
-      templateImageWidth: 110,
-      templateImageHeight: 360,
-      data: null,
-    },
+  // 模拟接口调用
+  const getVerifyCode = (): Promise<TVerifyCodeDatasource> => {
+    const res = {
+      id: 'bf576c727a9c46b2897d790204bbf40a',
+      captcha: {
+        type: 'SLIDER',
+        backgroundImage: 'xxx',
+        templateImage: 'xxx',
+        backgroundImageTag: 'default',
+        templateImageTag: 'default',
+        backgroundImageWidth: 590,
+        backgroundImageHeight: 360,
+        templateImageWidth: 110,
+        templateImageHeight: 360,
+        data: null,
+      },
+    };
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(res);
+      }, 1000);
+    });
   };
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(res);
-    }, 1000);
-  });
-};
 
-const checkVerifyCode = (
-  p: TCheckSliderVerifyCodeFuncPayload,
-): Promise<TCheckSliderVerifyCodeFuncRes> => {
-  return new Promise((resolve) => {
-    // eslint-disable-next-line no-console
-    console.log('checkVerifyCode payload', p);
-    setTimeout(() => {
-      resolve({ matching: false, smsSendKey: '12345678' });
-    }, 500);
-  });
-};
+  const checkVerifyCode = (
+    p: TCheckSliderVerifyCodeFuncPayload,
+  ): Promise<TCheckSliderVerifyCodeFuncRes> => {
+    return new Promise((resolve) => {
+      // eslint-disable-next-line no-console
+      console.log('checkVerifyCode payload', p);
+      setTimeout(() => {
+        resolve({ matching: false, smsSendKey: '12345678' });
+      }, 500);
+    });
+  };
 
-const processingClose = (p: TSliderVerifyProcessingCloseFuncPayload) => {
-  const { close } = p;
-  let delay = 2;
-  showToast(`${delay}s 后关闭`);
-  setTimeout(close, delay * 1000);
-};
+  const processingClose = (p: TSliderVerifyProcessingCloseFuncPayload) => {
+    const { close } = p;
+    let delay = 2;
+    showToast(`${delay}s 后关闭`);
+    setTimeout(close, delay * 1000);
+  };
 </script>
 
 <style scoped lang="less">
-//
+  //
 </style>
 ```
 
@@ -228,110 +228,108 @@ props.processingVerifyFailed
 </template>
 
 <script setup lang="ts">
-import {
-  SliderVerify,
-  TCheckSliderVerifyCodeFuncPayload,
-  TCheckSliderVerifyCodeFuncRes,
-  TProcessingSliderVerifyFailedFuncPayload,
-  TProcessingSliderVerifySuccessFuncPayload,
-  TVerifyCodeDatasource,
-} from '@vmono/vant-kit';
-import { ref } from 'vue';
-import {
-  showConfirmDialog,
-  showToast,
-  Button as VanButton,
-  Switch as VanSwitch,
-} from 'vant';
+  import {
+    SliderVerify,
+    TCheckSliderVerifyCodeFuncPayload,
+    TCheckSliderVerifyCodeFuncRes,
+    TProcessingSliderVerifyFailedFuncPayload,
+    TProcessingSliderVerifySuccessFuncPayload,
+    TVerifyCodeDatasource,
+  } from '@vmono/vant-kit';
+  import { ref } from 'vue';
+  import {
+    showConfirmDialog,
+    showToast,
+    Button as VanButton,
+    Switch as VanSwitch,
+  } from 'vant';
 
-const SliderVerifyRef = ref<InstanceType<typeof SliderVerify>>();
+  const SliderVerifyRef = ref<InstanceType<typeof SliderVerify>>();
 
-const isVerifySuccess = ref(true);
+  const isVerifySuccess = ref(true);
 
-// 模拟接口调用
-const getVerifyCode = (): Promise<TVerifyCodeDatasource> => {
-  const res = {
-    id: 'bf576c727a9c46b2897d790204bbf40a',
-    captcha: {
-      type: 'SLIDER',
-      backgroundImage: 'xxx',
-      templateImage: 'xxx',
-      backgroundImageTag: 'default',
-      templateImageTag: 'default',
-      backgroundImageWidth: 590,
-      backgroundImageHeight: 360,
-      templateImageWidth: 110,
-      templateImageHeight: 360,
-      data: null,
-    },
+  // 模拟接口调用
+  const getVerifyCode = (): Promise<TVerifyCodeDatasource> => {
+    const res = {
+      id: 'bf576c727a9c46b2897d790204bbf40a',
+      captcha: {
+        type: 'SLIDER',
+        backgroundImage: 'xxx',
+        templateImage: 'xxx',
+        backgroundImageTag: 'default',
+        templateImageTag: 'default',
+        backgroundImageWidth: 590,
+        backgroundImageHeight: 360,
+        templateImageWidth: 110,
+        templateImageHeight: 360,
+        data: null,
+      },
+    };
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(res);
+      }, 1000);
+    });
   };
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(res);
-    }, 1000);
-  });
-};
 
-const checkVerifyCode = (
-  _p: TCheckSliderVerifyCodeFuncPayload,
-): Promise<TCheckSliderVerifyCodeFuncRes> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ matching: isVerifySuccess.value, smsSendKey: '12345678' });
-    }, 500);
-  });
-};
+  const checkVerifyCode = (
+    _p: TCheckSliderVerifyCodeFuncPayload,
+  ): Promise<TCheckSliderVerifyCodeFuncRes> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({ matching: isVerifySuccess.value, smsSendKey: '12345678' });
+      }, 500);
+    });
+  };
 
-const processingVerifySuccess = (
-  p: TProcessingSliderVerifySuccessFuncPayload,
-) => {
-  const { checkVerifyCodePayload, checkVerifyRes, close } = p;
-  showConfirmDialog({
-    title: '验证结果',
-    message: `matching: ${checkVerifyRes.matching}`,
-  })
-    .then(() => {
-      let delay = 2;
-      showToast(`${delay}s 后关闭`);
-      setTimeout(close, delay * 1000);
+  const processingVerifySuccess = (
+    p: TProcessingSliderVerifySuccessFuncPayload,
+  ) => {
+    const { checkVerifyCodePayload, checkVerifyRes, close } = p;
+    showConfirmDialog({
+      title: '验证结果',
+      message: `matching: ${checkVerifyRes.matching}`,
     })
-    .catch(() => {
-      SliderVerifyRef.value?.reset?.();
+      .then(() => {
+        let delay = 2;
+        showToast(`${delay}s 后关闭`);
+        setTimeout(close, delay * 1000);
+      })
+      .catch(() => {
+        SliderVerifyRef.value?.reset?.();
+      })
+      .finally(() => {
+        // eslint-disable-next-line no-console
+        console.log(checkVerifyCodePayload);
+      });
+  };
+  const processingVerifyFailed = (
+    p: TProcessingSliderVerifyFailedFuncPayload,
+  ) => {
+    const { checkVerifyCodePayload, checkVerifyRes, close } = p;
+    showConfirmDialog({
+      title: '验证结果',
+      message: `matching: ${checkVerifyRes.matching}`,
     })
-    .finally(() => {
-      // eslint-disable-next-line no-console
-      console.log(checkVerifyCodePayload);
-    });
-};
-const processingVerifyFailed = (
-  p: TProcessingSliderVerifyFailedFuncPayload,
-) => {
-  const { checkVerifyCodePayload, checkVerifyRes, close } = p;
-  showConfirmDialog({
-    title: '验证结果',
-    message: `matching: ${checkVerifyRes.matching}`,
-  })
-    .then(() => {
-      let delay = 1;
-      showToast(`${delay}s 后关闭`);
-      setTimeout(close, delay * 1000);
-    })
-    .catch(() => {
-      SliderVerifyRef.value?.reset?.();
-    })
-    .finally(() => {
-      // eslint-disable-next-line no-console
-      console.log(checkVerifyCodePayload);
-    });
-};
+      .then(() => {
+        let delay = 1;
+        showToast(`${delay}s 后关闭`);
+        setTimeout(close, delay * 1000);
+      })
+      .catch(() => {
+        SliderVerifyRef.value?.reset?.();
+      })
+      .finally(() => {
+        // eslint-disable-next-line no-console
+        console.log(checkVerifyCodePayload);
+      });
+  };
 </script>
 
 <style scoped lang="less">
-//
+  //
 </style>
 ```
-
-
 
 ## API
 
@@ -341,13 +339,13 @@ const processingVerifyFailed = (
 TSliderVerifyProps
 ```
 
-| 参数                    | 说明                         | 类型                                                         | 默认值 |
-| :---------------------- | :--------------------------- | :----------------------------------------------------------- | :----- |
-| getVerifyCode           | 获取验证码数据源函数         | `() => Promise<TVerifyCodeDatasource>`                       | -      |
+| 参数                    | 说明                         | 类型                                                                               | 默认值 |
+| :---------------------- | :--------------------------- | :--------------------------------------------------------------------------------- | :----- |
+| getVerifyCode           | 获取验证码数据源函数         | `() => Promise<TVerifyCodeDatasource>`                                             | -      |
 | checkVerifyCode         | 验证码校验函数               | `(p: TCheckSliderVerifyCodeFuncPayload) => Promise<TCheckSliderVerifyCodeFuncRes>` | -      |
-| processingClose         | 自定义处理点击按钮关闭的逻辑 | `(p: TSliderVerifyProcessingCloseFuncPayload) => any`        | -      |
-| processingVerifySuccess | 自定义处理验证成功逻辑       | `(p: TProcessingSliderVerifySuccessFuncPayload) => any`      | -      |
-| processingVerifyFailed  | 自定义处理验证失败逻辑       | `(p: TProcessingSliderVerifyFailedFuncPayload) => any`       | -      |
+| processingClose         | 自定义处理点击按钮关闭的逻辑 | `(p: TSliderVerifyProcessingCloseFuncPayload) => any`                              | -      |
+| processingVerifySuccess | 自定义处理验证成功逻辑       | `(p: TProcessingSliderVerifySuccessFuncPayload) => any`                            | -      |
+| processingVerifyFailed  | 自定义处理验证失败逻辑       | `(p: TProcessingSliderVerifyFailedFuncPayload) => any`                             | -      |
 
 ```ts
 export type TCurrentCaptchaConfig = {
@@ -368,6 +366,11 @@ export type TCurrentCaptchaConfig = {
   movePercent: number;
 };
 
+export type TFormatedCurrentCaptchaConfig = TCurrentCaptchaConfig & {
+  startSlidingTime: string;
+  endSlidingTime: string;
+};
+
 // getVerifyCode 函数的类型
 export type TVerifyCodeDatasource = {
   id: string;
@@ -386,7 +389,7 @@ export type TVerifyCodeDatasource = {
 // checkVerifyCode 函数类型
 export type TCheckSliderVerifyCodeFuncPayload = {
   id: string;
-  captchaInfo: TCurrentCaptchaConfig;
+  captchaInfo: TFormatedCurrentCaptchaConfig;
 };
 export type TCheckSliderVerifyCodeFuncRes = {
   matching: boolean;
@@ -417,11 +420,15 @@ export type TSliderVerifyProps = {
   // 获取验证码数据源函数
   getVerifyCode: () => Promise<TVerifyCodeDatasource>;
   // 验证码校验函数
-  checkVerifyCode: (p: TCheckSliderVerifyCodeFuncPayload) => Promise<TCheckSliderVerifyCodeFuncRes>;
+  checkVerifyCode: (
+    p: TCheckSliderVerifyCodeFuncPayload,
+  ) => Promise<TCheckSliderVerifyCodeFuncRes>;
   // 自定义处理点击按钮关闭的逻辑
   processingClose?: (p: TSliderVerifyProcessingCloseFuncPayload) => any;
   // 自定义处理验证成功逻辑
-  processingVerifySuccess?: (p: TProcessingSliderVerifySuccessFuncPayload) => any;
+  processingVerifySuccess?: (
+    p: TProcessingSliderVerifySuccessFuncPayload,
+  ) => any;
   // 自定义处理验证失败逻辑
   processingVerifyFailed?: (p: TProcessingSliderVerifyFailedFuncPayload) => any;
 };
