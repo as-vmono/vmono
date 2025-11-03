@@ -44,8 +44,9 @@ const defaultOptions: TSwitchOptions = [
 
 <script lang="ts" setup>
 import { CommonFieldProps } from '@/common/constants';
+import { useWrapperRef } from '@vmono/vhooks';
 import { FieldProps } from 'vant';
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 
 const Props = defineProps<TFieldSwitchBtnProps>();
 
@@ -72,17 +73,13 @@ const updateModelValue = (newValue: any) => {
   const option = getOptByValue(computedOptions.value, newValue)!;
   Emitter('change', option);
 };
-const modelFieldValue = computed({
-  get: () => Props.modelValue,
-  set: (val) => updateModelValue(val),
-});
-const setModelFieldValue = (newValue: any) => {
-  modelFieldValue.value = newValue;
-};
+
+const [modelFieldValue, setModelFieldValue] = useWrapperRef<any>(Props.modelValue);
+watch(() => Props.modelValue, setModelFieldValue, { immediate: true });
 
 const handleChange = (newValue: any) => {
   if (isViewMode.value || newValue === Props.modelValue) return;
-  setModelFieldValue(newValue);
+  updateModelValue(newValue);
 };
 
 // 用于展示的表单值
