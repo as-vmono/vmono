@@ -1,8 +1,7 @@
 <template>
   <MultiPicker
+    v-bind="computedMultiPickerProps"
     ref="MultiPickerRef"
-    v-bind="Props"
-    :show-search="showSearch"
     v-model="modelFieldValue"
     @update:model-value="(...args) => updateModelFieldValue(...args)"
     @search="(...args) => Emitter('search', ...args)"
@@ -26,6 +25,12 @@
   </MultiPicker>
 </template>
 
+<script lang="ts">
+export type TFieldMultiPickerProps = TMultiPickerProps & {
+  fieldProps: Partial<Omit<FieldProps, 'modelValue'>>;
+};
+</script>
+
 <script lang="ts" setup>
 import { CommonFieldProps } from '@/common/constants';
 import MultiPicker, { TConfirmEventPayload, TMultiPickerProps } from '@/MultiPicker/MultiPicker.vue';
@@ -34,11 +39,7 @@ import { useWrapperRef } from '@vmono/vhooks';
 import type { FieldProps } from 'vant';
 import { computed, ref, watch } from 'vue';
 
-const Props = defineProps<
-  TMultiPickerProps & {
-    fieldProps: Partial<Omit<FieldProps, 'modelValue'>>;
-  }
->();
+const Props = defineProps<TFieldMultiPickerProps>();
 
 const computedFieldProps = computed(() => {
   return { ...CommonFieldProps, ...(Props?.fieldProps ?? {}) };
@@ -51,6 +52,12 @@ const isLink = computed(() => {
   } else {
     return computedFieldProps.value?.isLink;
   }
+});
+
+const computedMultiPickerProps = computed((): TMultiPickerProps => {
+  const multiPickerProps = { ...(Props ?? {}) };
+  delete (multiPickerProps as any).fieldProps;
+  return multiPickerProps;
 });
 
 const Emitter = defineEmits<{

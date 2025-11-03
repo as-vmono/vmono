@@ -15,6 +15,7 @@
         required: true,
         rules: [{ required: true, message: '请选择' }],
       }"
+      :processing-fallback-show-value="processingFallbackShowValue"
     />
     <van-button round block type="primary" @click="handleSubmit"> 提交 </van-button>
   </van-form>
@@ -41,16 +42,22 @@ const options = [
   { name: '选项2', value: '2', disabled: true },
   { name: '选项3', value: '3' },
 ];
+const defaultSelectedOptions = [options?.[2], { name: '选项4', value: '4' }];
+
 const fieldNames = {
   label: 'name',
   value: 'value',
 };
-const [pickerValue, _setPickerValue] = useWrapperRef<string[]>([]);
+const [pickerValue, _setPickerValue] = useWrapperRef<string[]>(defaultSelectedOptions.map((item) => item.value));
 
 const FieldMultiPickerRef = ref<InstanceType<typeof FieldMultiPicker>>();
 const getIdMapData = () => {
   // eslint-disable-next-line no-console
   console.log('getIdMapData', FieldMultiPickerRef.value?.getOptionsIdMapData?.());
+};
+
+const processingFallbackShowValue = () => {
+  return defaultSelectedOptions.map((item) => item.name);
 };
 </script>
 

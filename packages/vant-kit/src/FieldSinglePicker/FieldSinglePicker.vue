@@ -1,9 +1,8 @@
 <template>
   <SinglePicker
+    v-bind="computedSinglePickerProps"
     v-model="modelFieldValue"
     @update:model-value="(...args) => updateModelFieldValue(...args)"
-    :picker-props="pickerProps"
-    :show-search="showSearch"
     @search="(...args) => Emitter('search', ...args)"
     @confirm="(...args) => Emitter('confirm', ...args)"
     @confirmDisabledOption="(...args) => Emitter('confirmDisabledOption', ...args)"
@@ -32,6 +31,12 @@
   </SinglePicker>
 </template>
 
+<script lang="ts">
+export type TFieldSinglePickerProps = TSinglePickerProps & {
+  fieldProps: Partial<Omit<FieldProps, 'modelValue'>>;
+};
+</script>
+
 <script lang="ts" setup>
 import { CommonFieldProps } from '@/common/constants';
 import SinglePicker, { TSinglePickerProps, TSPConfirmDisabledOptionPayload } from '@/SinglePicker/SinglePicker.vue';
@@ -40,16 +45,7 @@ import { useWrapperRef } from '@vmono/vhooks';
 import type { FieldProps } from 'vant';
 import { computed, watch } from 'vue';
 
-const Props = withDefaults(
-  defineProps<
-    TSinglePickerProps & {
-      fieldProps: Partial<Omit<FieldProps, 'modelValue'>>;
-    }
-  >(),
-  {
-    showSearch: false,
-  }
-);
+const Props = defineProps<TFieldSinglePickerProps>();
 
 const computedFieldProps = computed(() => {
   return { ...CommonFieldProps, ...(Props?.fieldProps ?? {}) };
@@ -62,6 +58,12 @@ const isLink = computed(() => {
   } else {
     return computedFieldProps.value?.isLink;
   }
+});
+
+const computedSinglePickerProps = computed((): TSinglePickerProps => {
+  const singlePickerProps = { ...(Props ?? {}) };
+  delete (singlePickerProps as any).fieldProps;
+  return singlePickerProps;
 });
 
 const Emitter = defineEmits<{

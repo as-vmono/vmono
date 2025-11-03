@@ -9,6 +9,8 @@
 - 支持自定义触发器
 - 支持开启搜索功能
 - 自定义文本提示信息
+- 默认自动补丁未匹配到的 value
+  - 也支持自定义处理逻辑
 
 **对开发者的解脱**
 
@@ -160,21 +162,90 @@
 </style>
 ```
 
+### 处理 id 未匹配到选项时展示的值
+
+如果 id 在数据源列表中未匹配到对应的 option
+
+* 默认自动补丁未匹配到的 value
+
+如果需要特殊处理这种情况下的补丁逻辑，可以传入 processingFallbackOpts
+
+>常用于数据回显时的处理
+
+```html
+<template>
+  <MultiPicker
+    v-model="pickerValue"
+    :options="options"
+    :field-names="fieldNames"
+    :processing-fallback-show-value="processingFallbackShowValue"
+  >
+    <template #trigger="{ triggerPopupShow, showValue }">
+      <div class="trigger-box">
+        <van-button type="primary" @click="triggerPopupShow">
+          trigger
+        </van-button>
+        <p>show value: {{ showValue }}</p>
+        <p>modelValue: {{ pickerValue }}</p>
+      </div>
+    </template>
+  </MultiPicker>
+</template>
+
+<script setup lang="ts">
+import { useWrapperRef } from '@vmono/vhooks';
+import { MultiPicker } from '@vmono/vant-kit';
+import { Button as VanButton } from 'vant';
+
+const options = [
+  { name: '选项1', value: '1' },
+  { name: '选项2', value: '2', disabled: true },
+  { name: '选项3', value: '3' },
+];
+
+const defaultSelectedOptions = [options?.[2], { name: '选项4', value: '4' }];
+
+const fieldNames = {
+  label: 'name',
+  value: 'value',
+};
+const [pickerValue, _setPickerValue] = useWrapperRef<string[]>(
+  defaultSelectedOptions.map((item) => item.value),
+);
+
+const processingFallbackShowValue = () => {
+  return defaultSelectedOptions.map((item) => item.name);
+};
+</script>
+
+<style scoped lang="less">
+.trigger-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+</style>
+```
+
+
+
 ## API
 
 ### Props
 
 TMultiPickerProps
 
-| 参数         | 说明               | 类型                                                                                   | 默认值                             |
-| ------------ | ------------------ | -------------------------------------------------------------------------------------- | ---------------------------------- |
-| v-model      | 当前选中项对应的值 | string[]                                                                               | -                                  |
-| options      | 选项               | Array<{ label: string; value: string; disabled?: boolean }> (label、value支持属性别名) | -                                  |
-| fieldNames   | 字段别名           | { label?: string; value?: string; }                                                    | { label: 'label', value: 'value' } |
-| title        | 标题               | string                                                                                 | -                                  |
-| tipTxt       | 文本提示信息       | string                                                                                 | -                                  |
-| show-search  | 是否显示搜索框     | boolean                                                                                | false                              |
-| search-delay | 搜索防抖时间(ms)   | number                                                                                 | 300                                |
+| 参数                           | 说明                           | 类型                                                         | 默认值                             |
+| ------------------------------ | ------------------------------ | ------------------------------------------------------------ | ---------------------------------- |
+| v-model                        | 当前选中项对应的值             | string[]                                                     | -                                  |
+| options                        | 选项                           | Array<{ label: string; value: string; disabled?: boolean }> (label、value支持属性别名) | -                                  |
+| fieldNames                     | 字段别名                       | { label?: string; value?: string; }                          | { label: 'label', value: 'value' } |
+| title                          | 标题                           | string                                                       | -                                  |
+| tipTxt                         | 文本提示信息                   | string                                                       | -                                  |
+| show-search                    | 是否显示搜索框                 | boolean                                                      | false                              |
+| search-delay                   | 搜索防抖时间(ms)               | number                                                       | 300                                |
+| processing-fallback-show-value | 处理 id 未匹配到选项时展示的值 | `processingFallbackShowValue?: () => string[]`               | -                                  |
 
 ### Events
 

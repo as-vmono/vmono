@@ -10,6 +10,7 @@
     <van-popup v-model:show="popupShow" position="bottom" round>
       <van-picker
         v-bind="computedPickerProps"
+        :columns="showColumns"
         @confirm="(value: any) => onConfirmPicker(value)"
         @cancel="setPopupShow(false)"
       >
@@ -26,11 +27,18 @@
 </template>
 
 <script lang="ts">
+type TColumnsIdMapDataCache = {
+  string: (PickerOption | PickerColumn)[];
+};
+export type TSPProcessingFallbackOptPayload = {
+  prePathValue: any;
+};
 export type TSinglePickerProps = {
-  showSearch?: boolean;
-  searchDelay?: number;
   modelValue: any;
   pickerProps: Partial<PickerProps>;
+  processingFallbackOpt?: (p: TSPProcessingFallbackOptPayload) => any;
+  showSearch?: boolean;
+  searchDelay?: number;
 };
 
 export type TSPConfirmDisabledOptionPayload = {
@@ -44,9 +52,10 @@ import { PickerProps, PickerOption, PickerColumn } from 'vant';
 import { computed, watch } from 'vue';
 import { debounce } from 'lodash';
 import { useWrapperRef } from '@vmono/vhooks';
-import { array2Single } from '@vmono/utils';
+import { array2Single, isNullOrUndefined, single2Array } from '@vmono/utils';
 
 const Props = withDefaults(defineProps<TSinglePickerProps>(), {
+  processingFallbackOpt: undefined,
   showSearch: false,
   searchDelay: 300,
 });
@@ -82,11 +91,21 @@ const updateModelFieldValue = (newValue) => {
 };
 
 /**
+ * showColumns
+ */
+const [showColumns, setShowColumns] = useWrapperRef<PickerProps['columns']>(computedPickerProps.value.columns ?? []);
+watch(
+  () => computedPickerProps.value?.columns,
+  (columns) => {
+    setShowColumns(columns! ?? []);
+  },
+  { immediate: true }
+);
+
+/**
  * idMapData 缓存
  */
-const [columnsIdMapDataCache, setColumnsIdMapDataCache] = useWrapperRef<{
-  string: (PickerOption | PickerColumn)[];
-}>({} as any);
+const [columnsIdMapDataCache, setColumnsIdMapDataCache] = useWrapperRef<TColumnsIdMapDataCache>({} as any);
 const patchColumnsIdMapDataCache = (columns: (PickerOption | PickerColumn)[]) => {
   const newColumns = { ...(columnsIdMapDataCache.value ?? {}) };
   columns.forEach((item) => {
@@ -106,10 +125,28 @@ watch(
 /**
  * selectedOption
  */
-const [selectedOption, setSelectedOption] = useWrapperRef<string>('');
+const [selectedOption, setSelectedOption] = useWrapperRef<any>(undefined);
 watch(
   [modelFieldValue, columnsIdMapDataCache],
   ([newValue, columnsIdMapData]) => {
+    /**
+     *  处理缓存不存在的列: 更新 idMapDataCache 和 showColumns
+     */
+    const matchedOpt = columnsIdMapData?.[newValue];
+    if (isNullOrUndefined(matchedOpt)) {
+      let patchOpt: any = {
+        [columnsFieldNames.value.value]: newValue,
+        [columnsFieldNames.value.text]: newValue,
+      };
+      if (Props.processingFallbackOpt) {
+        patchOpt = Props.processingFallbackOpt({ prePathValue: newValue });
+      }
+
+      const patchColumns = single2Array(patchOpt);
+      patchColumnsIdMapDataCache(patchColumns);
+      setShowColumns([...showColumns.value, ...patchColumns]);
+    }
+    // 更新选中项
     setSelectedOption(columnsIdMapData?.[newValue]);
   },
   { immediate: true }

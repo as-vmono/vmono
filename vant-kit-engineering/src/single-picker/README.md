@@ -12,6 +12,8 @@
 - 支持自定义触发器
 - 支持开启搜索功能
 - 禁用选项逻辑增强
+- 默认自动补丁未匹配到的 value
+  - 也支持自定义处理逻辑
 
 **对开发者的解脱**
 
@@ -231,16 +233,161 @@
 </style>
 ```
 
+### 处理 id 未匹配到选项时展示的值
+
+如果 id 在数据源列表中未匹配到对应的 option
+
+* 默认自动补丁未匹配到的 value
+
+如果需要特殊处理这种情况下的补丁逻辑，可以传入 processingFallbackOpt
+
+>常用于数据回显和展示搜索框时的情况处理
+
+```html
+<template>
+  <section class="demo-section">
+    <span class="demo-section-desc">默认自动补丁未匹配到的 value</span>
+    <SinglePicker
+      v-model="pickerValue"
+      :picker-props="{
+        title: 'fallbackShowValue',
+        columns: columns,
+        columnsFieldNames: columnsFieldNames,
+      }"
+    >
+      <template #trigger="{ triggerPopupShow, showValue }">
+        <div class="trigger-box">
+          <van-button type="primary" @click="triggerPopupShow">
+            trigger
+          </van-button>
+          <p>show value: {{ showValue }}</p>
+          <p>modelValue: {{ pickerValue }}</p>
+        </div>
+      </template>
+    </SinglePicker>
+  </section>
+
+  <section class="demo-section">
+    <span class="demo-section-desc">自定义补丁规则</span>
+    <SinglePicker
+      v-model="pickerValue"
+      :picker-props="{
+        title: 'fallbackShowValue',
+        columns: columns,
+        columnsFieldNames: columnsFieldNames,
+      }"
+      :processing-fallback-opt="processingFallbackOpt"
+      show-search
+      @search="onSearch"
+    >
+      <template #trigger="{ triggerPopupShow, showValue }">
+        <div class="trigger-box">
+          <van-button type="primary" @click="triggerPopupShow">
+            trigger
+          </van-button>
+          <p>show value: {{ showValue }}</p>
+          <p>modelValue: {{ pickerValue }}</p>
+        </div>
+      </template>
+    </SinglePicker>
+  </section>
+</template>
+
+<script setup lang="ts">
+import { useWrapperRef } from '@vmono/vhooks';
+import { SinglePicker, TSPProcessingFallbackOptPayload } from '@vmono/vant-kit';
+import { Button as VanButton } from 'vant';
+import { checkStrIsEmpty } from '@vmono/utils';
+
+const defaultSelectedOptions = { name: '选项3', value: '3' };
+
+const columnsDataSource = [
+  { name: '选项1', value: '1' },
+  { name: '选项2', value: '2' },
+];
+const [columns, setColumns] = useWrapperRef(columnsDataSource);
+const columnsFieldNames = {
+  text: 'name',
+  value: 'value',
+};
+
+const [pickerValue, _setPickerValue] = useWrapperRef<string | undefined>(
+  defaultSelectedOptions.value,
+);
+
+const processingFallbackOpt = (p: TSPProcessingFallbackOptPayload) => {
+  const { prePathValue } = p;
+  if (prePathValue == defaultSelectedOptions.value) {
+    return {
+      [columnsFieldNames.text]: defaultSelectedOptions.name,
+      [columnsFieldNames.value]: defaultSelectedOptions.value,
+    };
+  }
+  return {
+    [columnsFieldNames.text]: prePathValue,
+    [columnsFieldNames.value]: prePathValue,
+  };
+};
+
+const onSearch = (keywords: string) => {
+  if (checkStrIsEmpty(keywords)) {
+    setColumns(columnsDataSource);
+  } else {
+    setColumns(
+      columnsDataSource.filter((item) =>
+        item.name.toLocaleLowerCase().includes(keywords.toLocaleLowerCase()),
+      ),
+    );
+  }
+};
+</script>
+
+<style scoped lang="less">
+.trigger-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+</style>
+```
+
+
+
 ## API
 
 ### Props
 
-| 参数         | 说明                                                                            | 类型                 | 默认值 |
-| ------------ | ------------------------------------------------------------------------------- | -------------------- | ------ |
-| v-model      | 当前选中项对应的值                                                              | string \| undefinerd | -      |
-| picker-props | [vant Picker 组件的 props](https://vant-ui.github.io/vant/#/zh-CN/picker#props) |                      |        |
-| show-search  | 是否显示搜索框                                                                  | boolean              | false  |
-| search-delay | 搜索防抖时间(ms)                                                                | number               | 300    |
+`TSinglePickerProps`
+
+| 参数                    | 说明                                                         | 类型                                           | 默认值 |
+| ----------------------- | ------------------------------------------------------------ | ---------------------------------------------- | ------ |
+| v-model                 | 当前选中项对应的值                                           | string \| undefinerd                           | -      |
+| picker-props            | [vant Picker 组件的 props](https://vant-ui.github.io/vant/#/zh-CN/picker#props) |                                                |        |
+| processing-fallback-opt | 处理 id 未匹配到选项时展示的值                               | `(p: TSPProcessingFallbackOptsPayload) => any` | -      |
+| show-search             | 是否显示搜索框                                               | boolean                                        | false  |
+| search-delay            | 搜索防抖时间(ms)                                             | number                                         | 300    |
+
+```ts
+type TColumnsIdMapDataCache = {
+  string: (PickerOption | PickerColumn)[];
+};
+export type TSPProcessingFallbackOptPayload = {
+  prePathValue: any;
+};
+export type TSinglePickerProps = {
+  modelValue: any;
+  pickerProps: Partial<PickerProps>;
+  processingFallbackOpt?: (p: TSPProcessingFallbackOptPayload) => any;
+  showSearch?: boolean;
+  searchDelay?: number;
+};
+
+export type TSPConfirmDisabledOptionPayload = {
+  option: any;
+  closePopup: () => void;
+};
+```
 
 ### Events
 

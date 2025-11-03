@@ -15,13 +15,13 @@
         <template v-for="(_slot, name) in $slots" #[name]="slotData" :key="name">
           <slot :name="name" v-bind="slotData" :key="name"> </slot>
         </template>
-        <van-date-picker v-bind="computedPickerProps" v-model="currentStartDate">
+        <van-date-picker v-bind="startPickerProps" v-model="currentStartDate">
           <!-- 暴露 date-picker 默认支持的插槽(开始时间) 实测 data-picker 的插槽无效(被 picker-group 挤占) -->
           <template v-for="(_slot, name) in $slots" #[name]="slotData" :key="name">
             <slot :name="`${name}-start`" v-bind="slotData" :key="`${name}-start`"> </slot>
           </template>
         </van-date-picker>
-        <van-date-picker v-bind="computedPickerProps" v-model="currentEndDate">
+        <van-date-picker v-bind="endPickerProps" v-model="currentEndDate">
           <!-- 暴露 date-picker 默认支持的插槽(结束时间) 实测 data-picker 的插槽无效(被 picker-group 挤占) -->
           <template v-for="(_slot, name) in $slots" #[name]="slotData" :key="name">
             <slot :name="`${name}-end`" v-bind="slotData" :key="`${name}-end`"></slot>
@@ -44,7 +44,10 @@ export type TDRPickerShowValueFormatterPayload = { startDate?: Date; endDate?: D
 export type TDateRangePickerProps = {
   modelValue: string[];
   pickerProps?: Partial<DatePickerProps>;
+  startPickerProps?: Partial<DatePickerProps>;
+  endPickerProps?: Partial<DatePickerProps>;
   pickerGroupProps?: Partial<PickerGroupProps>;
+  showDateRangeDelimiter?: string;
   showValueFormatter?: (p: TDRPickerShowValueFormatterPayload) => string | undefined;
   beforeConfirm?: (newValues: TDateRangePickerProps['modelValue']) => boolean;
 };
@@ -58,6 +61,8 @@ import dayjs from 'dayjs';
 
 const Props = defineProps<TDateRangePickerProps>();
 
+const showDateRangeDelimiter = computed(() => Props.showDateRangeDelimiter || defaultShowDateRangeDelimiter);
+
 const defaultColumnsFormatter = (type, option) => {
   if (type === 'year') {
     option.text += '年';
@@ -70,11 +75,25 @@ const defaultColumnsFormatter = (type, option) => {
   }
   return option;
 };
-const computedPickerProps = computed(() => {
+const computedPickerCommonProps = computed(() => {
   const pickerProps = Props?.pickerProps || {};
   const formatter = pickerProps?.formatter || defaultColumnsFormatter;
   const columnsType = Props?.pickerProps?.columnsType || ['year', 'month', 'day'];
   return { ...pickerProps, formatter, columnsType };
+});
+
+const startPickerProps = computed(() => {
+  return {
+    ...computedPickerCommonProps.value,
+    ...(Props.startPickerProps ?? {}),
+  };
+});
+
+const endPickerProps = computed(() => {
+  return {
+    ...computedPickerCommonProps.value,
+    ...(Props.endPickerProps ?? {}),
+  };
 });
 
 const computedPickerGroupProps = computed(() => {
@@ -110,7 +129,7 @@ const [showValue, setShowValue] = useWrapperRef<string>(defaultShowValue);
  */
 const limitValueByColumnsType = (value: string[]) => {
   // 默认值 ['year', 'month', 'day']
-  const columnsType = computedPickerProps.value?.columnsType;
+  const columnsType = computedPickerCommonProps.value?.columnsType;
   value.length = columnsType.length;
   return value;
 };
@@ -140,7 +159,7 @@ watch(
       setCurrentFormatedEndDate(formatEndStr);
       // 更新 showValue
       const isEmpty = !formatStartStr && !formatEndStr;
-      setShowValue(isEmpty ? defaultShowValue : `${formatStartStr} ${defaultShowDateRangeDelimiter} ${formatEndStr}`);
+      setShowValue(isEmpty ? defaultShowValue : `${formatStartStr} ${showDateRangeDelimiter.value} ${formatEndStr}`);
     }
   },
   { immediate: true }

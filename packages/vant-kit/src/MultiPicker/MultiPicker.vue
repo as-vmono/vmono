@@ -32,7 +32,7 @@
           </div>
           <van-cell-group class="multi-picker-cell-group" inset>
             <van-cell
-              v-for="(item, index) in options"
+              v-for="(item, index) in showOptions"
               clickable
               :key="item?.[computedFieldNames.value]"
               :title="item?.[computedFieldNames.label]"
@@ -68,6 +68,8 @@ type TFieldNames = {
   value: string;
 };
 
+export type TMPProcessingFallbackOptsPayload = { prePathValues: any[] };
+
 export type TMultiPickerProps = {
   // ids
   modelValue: any[];
@@ -82,6 +84,8 @@ export type TMultiPickerProps = {
   // 搜索功能
   showSearch?: boolean;
   searchDelay?: number;
+  // 处理 id 未匹配到选项时展示的值
+  processingFallbackOpts?: (p: TMPProcessingFallbackOptsPayload) => any[];
 };
 
 export type TConfirmEventPayload = { values: any[]; options: any[] };
@@ -93,6 +97,7 @@ import { debounce } from 'lodash';
 import { useWrapperRef } from '@vmono/vhooks';
 
 import { ref } from 'vue';
+import { isNullOrUndefined } from '@vmono/utils';
 
 const Props = withDefaults(defineProps<TMultiPickerProps>(), {
   showSearch: false,
@@ -101,6 +106,7 @@ const Props = withDefaults(defineProps<TMultiPickerProps>(), {
   title: undefined,
   fieldNames: undefined,
   tipTxt: undefined,
+  processingFallbackOpts: undefined,
 });
 
 const computedFieldNames = computed(() => Object.assign({ label: 'label', value: 'value' }, Props?.fieldNames ?? {}));
@@ -126,6 +132,12 @@ watch(
 );
 
 /**
+ * 展示的 options
+ */
+const [showOptions, setShowOptions] = useWrapperRef<any[]>(Props.options ?? []);
+watch(() => Props.options, setShowOptions, { immediate: true });
+
+/**
  * value 映射的选项信息
  */
 const genIdMapOptionData = (options: any[]): IdMapData => {
@@ -137,13 +149,13 @@ const genIdMapOptionData = (options: any[]): IdMapData => {
   return res;
 };
 
-const [optionsIdMapData, _setOptionsIdMapData] = useWrapperRef<IdMapData>(genIdMapOptionData(Props.options));
+const [optionsIdMapData, _setOptionsIdMapData] = useWrapperRef<IdMapData>(genIdMapOptionData(showOptions.value));
 const patchIdMapOptionData = (newOptions) => {
   newOptions?.forEach?.((item) => {
-    optionsIdMapData[item[computedFieldNames.value.value]] = item;
+    optionsIdMapData.value[item[computedFieldNames.value.value]] = item;
   });
 };
-watch(() => Props.options, patchIdMapOptionData, { immediate: true });
+watch(showOptions, patchIdMapOptionData, { immediate: true });
 
 const [selectedOptions, setSelectedOptions] = useWrapperRef<any[]>([]);
 const handleUpdateModelValue = (values: any[]) => {
@@ -155,6 +167,33 @@ const handleUpdateModelValue = (values: any[]) => {
  * 根据 modelValue 回显 showModelValue
  */
 const updateShowModelValueByModelValue = () => {
+  // 补丁 idMapData 与 showOptions
+  let prePathValues: any[] = [];
+  for (let i = 0; i < Props?.modelValue?.length; i++) {
+    const newValue = Props.modelValue[i];
+    const matchedOption = optionsIdMapData.value?.[newValue];
+    if (isNullOrUndefined(matchedOption)) {
+      prePathValues.push(newValue);
+    }
+  }
+
+  if (prePathValues.length) {
+    let patchOpts: any[] = [];
+    if (Props.processingFallbackOpts) {
+      patchOpts = Props.processingFallbackOpts({ prePathValues });
+    } else {
+      patchOpts = prePathValues.map((value) => {
+        return {
+          [computedFieldNames.value.value]: value,
+          [computedFieldNames.value.label]: value,
+        };
+      });
+    }
+
+    setShowOptions([...showOptions.value, ...patchOpts]);
+    patchIdMapOptionData(showOptions.value);
+  }
+
   setShowValue(
     Props.modelValue?.map?.((item) => optionsIdMapData.value?.[item]?.[computedFieldNames.value?.label])?.join?.('、')
   );
