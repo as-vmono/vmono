@@ -31,7 +31,7 @@ type TColumnsIdMapDataCache = {
   string: (PickerOption | PickerColumn)[];
 };
 export type TSPProcessingFallbackOptPayload = {
-  prePathValue: any;
+  prePatchValue: any;
 };
 export type TSinglePickerProps = {
   modelValue: any;
@@ -139,7 +139,7 @@ watch(
         [columnsFieldNames.value.text]: newValue,
       };
       if (Props.processingFallbackOpt) {
-        patchOpt = Props.processingFallbackOpt({ prePathValue: newValue });
+        patchOpt = Props.processingFallbackOpt({ prePatchValue: newValue });
       }
 
       const patchColumns = single2Array(patchOpt);

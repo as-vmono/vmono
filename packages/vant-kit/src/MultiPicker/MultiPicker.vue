@@ -68,7 +68,7 @@ type TFieldNames = {
   value: string;
 };
 
-export type TMPProcessingFallbackOptsPayload = { prePathValues: any[] };
+export type TMPProcessingFallbackOptsPayload = { prePatchValues: any[] };
 
 export type TMultiPickerProps = {
   // ids
@@ -168,21 +168,21 @@ const handleUpdateModelValue = (values: any[]) => {
  */
 const updateShowModelValueByModelValue = () => {
   // 补丁 idMapData 与 showOptions
-  let prePathValues: any[] = [];
+  let prePatchValues: any[] = [];
   for (let i = 0; i < Props?.modelValue?.length; i++) {
     const newValue = Props.modelValue[i];
     const matchedOption = optionsIdMapData.value?.[newValue];
     if (isNullOrUndefined(matchedOption)) {
-      prePathValues.push(newValue);
+      prePatchValues.push(newValue);
     }
   }
 
-  if (prePathValues.length) {
+  if (prePatchValues.length) {
     let patchOpts: any[] = [];
     if (Props.processingFallbackOpts) {
-      patchOpts = Props.processingFallbackOpts({ prePathValues });
+      patchOpts = Props.processingFallbackOpts({ prePatchValues });
     } else {
-      patchOpts = prePathValues.map((value) => {
+      patchOpts = prePatchValues.map((value) => {
         return {
           [computedFieldNames.value.value]: value,
           [computedFieldNames.value.label]: value,

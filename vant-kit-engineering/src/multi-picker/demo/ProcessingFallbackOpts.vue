@@ -51,8 +51,8 @@ const fieldNames = {
 const [pickerValue, _setPickerValue] = useWrapperRef<string[]>(defaultSelectedOptions.map((item) => item.value));
 
 const processingFallbackOpts = (p: TMPProcessingFallbackOptsPayload) => {
-  const { prePathValues } = p;
-  return prePathValues.map((value) => {
+  const { prePatchValues } = p;
+  return prePatchValues.map((value) => {
     const matchedOption = defaultSelectedOptions.find((item) => item.value === value);
     if (matchedOption) {
       return {

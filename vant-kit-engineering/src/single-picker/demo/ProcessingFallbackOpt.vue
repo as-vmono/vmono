@@ -64,16 +64,16 @@ const columnsFieldNames = {
 const [pickerValue, _setPickerValue] = useWrapperRef<string | undefined>(defaultSelectedOptions.value);
 
 const processingFallbackOpt = (p: TSPProcessingFallbackOptPayload) => {
-  const { prePathValue } = p;
-  if (prePathValue == defaultSelectedOptions.value) {
+  const { prePatchValue } = p;
+  if (prePatchValue == defaultSelectedOptions.value) {
     return {
       [columnsFieldNames.text]: defaultSelectedOptions.name,
       [columnsFieldNames.value]: defaultSelectedOptions.value,
     };
   }
   return {
-    [columnsFieldNames.text]: prePathValue,
-    [columnsFieldNames.value]: prePathValue,
+    [columnsFieldNames.text]: prePatchValue,
+    [columnsFieldNames.value]: prePatchValue,
   };
 };
 
