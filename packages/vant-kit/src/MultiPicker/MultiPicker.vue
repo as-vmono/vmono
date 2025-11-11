@@ -123,13 +123,7 @@ const [popupShow, setPopupShow] = useWrapperRef<boolean>(false);
 const [showValue, setShowValue] = useWrapperRef<string>('');
 // checkbox实时绑定的选项值
 const [checkboxModelValue, setCheckboxModelValue] = useWrapperRef<any[]>([]);
-watch(
-  Props.modelValue,
-  (newValue) => {
-    setCheckboxModelValue(newValue);
-  },
-  { immediate: true }
-);
+watch(Props.modelValue, setCheckboxModelValue, { immediate: true });
 
 /**
  * 展示的 options
@@ -166,42 +160,39 @@ const handleUpdateModelValue = (values: any[]) => {
 /**
  * 根据 modelValue 回显 showModelValue
  */
-const updateShowModelValueByModelValue = () => {
-  // 补丁 idMapData 与 showOptions
-  let prePatchValues: any[] = [];
-  for (let i = 0; i < Props?.modelValue?.length; i++) {
-    const newValue = Props.modelValue[i];
-    const matchedOption = optionsIdMapData.value?.[newValue];
-    if (isNullOrUndefined(matchedOption)) {
-      prePatchValues.push(newValue);
-    }
-  }
-
-  if (prePatchValues.length) {
-    let patchOpts: any[] = [];
-    if (Props.processingFallbackOpts) {
-      patchOpts = Props.processingFallbackOpts({ prePatchValues });
-    } else {
-      patchOpts = prePatchValues.map((value) => {
-        return {
-          [computedFieldNames.value.value]: value,
-          [computedFieldNames.value.label]: value,
-        };
-      });
-    }
-
-    setShowOptions([...showOptions.value, ...patchOpts]);
-    patchIdMapOptionData(showOptions.value);
-  }
-
-  setShowValue(
-    Props.modelValue?.map?.((item) => optionsIdMapData.value?.[item]?.[computedFieldNames.value?.label])?.join?.('、')
-  );
-};
 watch(
-  [optionsIdMapData, () => Props.modelValue],
-  () => {
-    updateShowModelValueByModelValue();
+  [() => Props.modelValue, optionsIdMapData],
+  ([newValues, optsIdMapData]) => {
+    // 收集需要补丁的 values
+    let prePatchValues: any[] = [];
+    for (let i = 0; i < newValues?.length; i++) {
+      const newValue = newValues[i];
+      const matchedOption = optsIdMapData?.[newValue];
+      if (!isNullOrUndefined(newValue) && isNullOrUndefined(matchedOption)) {
+        prePatchValues.push(newValue);
+      }
+    }
+    // 补丁操作
+    if (prePatchValues.length) {
+      let patchOpts: any[] = [];
+      if (Props.processingFallbackOpts) {
+        patchOpts = Props.processingFallbackOpts({ prePatchValues });
+      } else {
+        patchOpts = prePatchValues.map((value) => {
+          return {
+            [computedFieldNames.value.value]: value,
+            [computedFieldNames.value.label]: value,
+          };
+        });
+      }
+
+      setShowOptions([...showOptions.value, ...patchOpts]);
+      patchIdMapOptionData(showOptions.value);
+    }
+
+    setShowValue(
+      newValues?.map?.((item) => optionsIdMapData.value?.[item]?.[computedFieldNames.value?.label])?.join?.('、')
+    );
   },
   { immediate: true }
 );

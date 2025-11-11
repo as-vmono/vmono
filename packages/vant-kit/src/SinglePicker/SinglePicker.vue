@@ -132,8 +132,7 @@ watch(
     /**
      *  处理缓存不存在的列: 更新 idMapDataCache 和 showColumns
      */
-    const matchedOpt = columnsIdMapData?.[newValue];
-    if (isNullOrUndefined(matchedOpt)) {
+    if (!isNullOrUndefined(newValue) && isNullOrUndefined(columnsIdMapData?.[newValue])) {
       let patchOpt: any = {
         [columnsFieldNames.value.value]: newValue,
         [columnsFieldNames.value.text]: newValue,
