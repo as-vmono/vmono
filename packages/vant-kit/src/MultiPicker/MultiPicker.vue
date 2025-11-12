@@ -10,7 +10,9 @@
     <van-popup v-model:show="popupShow" @click-overlay="handleCancel" position="bottom" round>
       <van-checkbox-group v-model="checkboxModelValue">
         <div class="multi-picker-header van-picker__toolbar">
-          <button :class="['van-picker__cancel', 'van-haptics-feedback']" @click="handleCancel">取消</button>
+          <button type="button" :class="['van-picker__cancel', 'van-haptics-feedback']" @click="handleCancel">
+            取消
+          </button>
 
           <template v-if="showSearch">
             <van-search
@@ -24,7 +26,9 @@
             <div class="van-picker__title van-ellipsis">{{ title }}</div>
           </slot>
 
-          <button :class="['van-picker__confirm', 'van-haptics-feedback']" @click="onConfirm">确定</button>
+          <button type="button" :class="['van-picker__confirm', 'van-haptics-feedback']" @click="onConfirm">
+            确定
+          </button>
         </div>
         <div class="multi-picker-main">
           <div v-if="tipTxt" class="multi-picker-tip">
