@@ -1,15 +1,37 @@
-import { maskShowStr, TMaskShowStrPayload } from '@vmono/utils';
+import { BankCardRule, EmailRule, IdRule, maskShowStr, PhoneRule, TMaskShowStrPayload } from '@vmono/utils';
 import { useWrapperRef } from '@vmono/vhooks';
 import { watch, computed, ComputedRef } from 'vue';
 
 // 内置脱敏策略类型
 export type TMaskType = 'id' | 'phone' | 'bankCard' | 'email';
 // 内置策略配置表
-const MASK_PRESETS: Record<TMaskType, Omit<TMaskShowStrPayload, 'str'>> = {
-  id: { front: 4, end: 4 }, // 身份证：保留前后4位
-  phone: { front: 3, end: 4 }, // 手机号：3+4
-  bankCard: { front: 6, end: 4 }, // 银行卡：前6后4
-  email: { front: 2, end: 2 }, // 邮箱：保留前后2字符
+const MASK_PRESETS: Record<
+  TMaskType,
+  {
+    pattern: RegExp;
+    maskRule: Omit<TMaskShowStrPayload, 'str'>;
+  }
+> = {
+  id: {
+    pattern: IdRule.pattern,
+    // 身份证：保留前后4位
+    maskRule: { front: 4, end: 4 },
+  },
+  phone: {
+    pattern: PhoneRule.pattern,
+    // 手机号：保留前3后4位
+    maskRule: { front: 3, end: 4 },
+  },
+  bankCard: {
+    pattern: BankCardRule.pattern,
+    // 银行卡：保留前6后4位
+    maskRule: { front: 6, end: 4 },
+  },
+  email: {
+    pattern: EmailRule.pattern,
+    // 邮箱：保留前3后4位
+    maskRule: { front: 3, end: 4 },
+  },
 };
 
 export interface IUseMaskedFieldOptions {
@@ -54,29 +76,56 @@ export function useMaskedField(options: IUseMaskedFieldOptions) {
   // 密文值
   const [cipherValue, setCipherValue] = useWrapperRef(modelValue.value);
 
+  // 明文是否包含占位符
+  const plaintextIsContainPlaceholder = computed(() => plainTextValue.value?.includes?.(placeholder));
+
   // 展示值
   const showValue = computed(() => {
     const plainTxt = plainTextValue.value;
-    // 展示明文状态
+    /**
+     * 展示明文数据
+     */
     if (isPlaintextVisible.value) {
       return plainTxt;
     }
-    // 展示脱敏数据: 脱敏策略优先级：自定义 > 内置类型 > 默认（兜底）
-    // 1. 自定义策略
+    /**
+     * 展示脱敏数据:
+     * 1. 如果明文包含占位符，则直接展示(此时是后端数据源,前端不干预)
+     * 2. 不包含占位符，则使用内置脱敏策略 -- 脱敏策略优先级：自定义 > 内置类型 > 默认（兜底）
+     *    内置脱敏策略的作用：
+     *      1. 兼容前端模拟后端脱敏过程的场景 (例如分步表单场景：在第一步填写完毕后(基于后端数据编辑)，在第二步确认信息时(不可编辑)也要默认关闭小眼睛(展示脱敏数据)，保证交互一致性。
+     *         第二步的表单数据已经是纯前端(用户填写)的数据了，所以要前端处理脱敏的展示
+     *      2. 为后端兜底：后端直接返回了未脱敏数据
+     */
+    // 1. 包含占位符
+    if (plaintextIsContainPlaceholder.value) {
+      return plainTxt;
+    }
+    // 2. 自定义策略
     if (maskStrategy) {
       return maskStrategy(plainTxt);
     }
+    // 3. 内置策略类型
     try {
-      // 2. 内置策略类型
+      // 指定策略
       if (maskType && MASK_PRESETS[maskType]) {
-        const preset = MASK_PRESETS[maskType];
+        const maskRule = MASK_PRESETS[maskType]?.maskRule;
         return maskShowStr({
-          ...preset,
+          ...maskRule,
           str: plainTxt,
           placeholder,
         });
       }
-      //3. 默认策略（兜底）：保留前后3位
+      // 未指定定策略: 尝试正则匹配
+      const matchedMaskPreset = Object.values(MASK_PRESETS).find((preset) => preset.pattern.test(plainTxt));
+      if (matchedMaskPreset) {
+        return maskShowStr({
+          ...matchedMaskPreset?.maskRule,
+          str: plainTxt,
+          placeholder,
+        });
+      }
+      //4. 前置逻辑都未走到,转移默认策略（兜底）：保留前后3位
       return maskShowStr({
         str: plainTxt,
         front: 3,
@@ -93,7 +142,7 @@ export function useMaskedField(options: IUseMaskedFieldOptions) {
   // 1. 有 maskId
   // 2. 明文包含 placeholder
   const canUseBackendUnmask = computed(() => {
-    return !!maskId.value && plainTextValue.value?.includes?.(placeholder);
+    return !!maskId.value && plaintextIsContainPlaceholder.value;
   });
 
   // === 初始化 ===
