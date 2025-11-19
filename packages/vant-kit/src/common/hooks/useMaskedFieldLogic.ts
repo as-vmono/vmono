@@ -76,6 +76,9 @@ export function useMaskedField(options: IUseMaskedFieldOptions) {
   // 密文值
   const [cipherValue, setCipherValue] = useWrapperRef(modelValue.value);
 
+  // 来源于后端脱敏数据的缓存（showValue优先展示）
+  const [backendDesensitizationStr, setBackendDesensitizationStr] = useWrapperRef('');
+
   // 明文是否包含占位符
   const plaintextIsContainPlaceholder = computed(() => plainTextValue.value?.includes?.(placeholder));
 
@@ -97,6 +100,11 @@ export function useMaskedField(options: IUseMaskedFieldOptions) {
      *         第二步的表单数据已经是纯前端(用户填写)的数据了，所以要前端处理脱敏的展示
      *      2. 为后端兜底：后端直接返回了未脱敏数据
      */
+
+    // 如果缓存的后端脱敏数据存在，则直接展示(防止第一次点击小眼睛成功脱敏后，明文数据不包含 placeholder，下次打开小眼睛导致直接命中前端兜底脱敏策略，而前端兜底脱敏策略不一定能满足对应数据的定制脱敏规则)
+    if (backendDesensitizationStr.value) {
+      return backendDesensitizationStr.value;
+    }
     // 1. 包含占位符
     if (plaintextIsContainPlaceholder.value) {
       return plainTxt;
@@ -182,6 +190,7 @@ export function useMaskedField(options: IUseMaskedFieldOptions) {
       let plainText: string;
 
       if (canUseBackendUnmask.value) {
+        setBackendDesensitizationStr(plainTextValue.value);
         const cipherFromBackend = await fetchPlaintext(maskId.value);
         setCipherValue(cipherFromBackend);
         plainText = decrypt(cipherFromBackend);
