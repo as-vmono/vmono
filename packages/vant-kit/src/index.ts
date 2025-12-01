@@ -42,12 +42,19 @@ export { default as FieldSwitchBtn } from './FieldSwitchBtn/FieldSwitchBtn.vue';
 export type * from './FieldSwitchBtn/FieldSwitchBtn.vue';
 // 单选表单组件
 export { default as FieldSinglePicker } from './FieldSinglePicker/FieldSinglePicker.vue';
+export type * from './FieldSinglePicker/FieldSinglePicker.vue';
 // 多选表单组件
 export { default as FieldMultiPicker } from './FieldMultiPicker/FieldMultiPicker.vue';
+export type * from './FieldMultiPicker/FieldMultiPicker.vue';
 // 多选表单组件
 export { default as FieldDatePicker } from './FieldDatePicker/FieldDatePicker.vue';
+export type * from './FieldDatePicker/FieldDatePicker.vue';
 // 日期范围表单组件
 export { default as FieldDateRangePicker } from './FieldDateRangePicker/FieldDateRangePicker.vue';
+export type * from './FieldDateRangePicker/FieldDateRangePicker.vue';
+// 文本域表单组件
+export { default as FieldTextarea } from './FieldTextarea/FieldTextarea.vue';
+export type * from './FieldTextarea/FieldTextarea.vue';
 
 /**
  * 业务组件

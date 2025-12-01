@@ -28,6 +28,12 @@
   </DateRangePicker>
 </template>
 
+<script lang="ts">
+export type TFieldDateRangePickerProps = TDateRangePickerProps & {
+  fieldProps: Partial<Omit<FieldProps, 'modelValue'>>;
+};
+</script>
+
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
 import type { FieldProps } from 'vant';
@@ -39,11 +45,7 @@ import { isNullOrUndefined } from '@vmono/utils';
 import { useWrapperRef } from '@vmono/vhooks';
 import { CommonFieldProps } from '@/common/constants';
 
-const Props = defineProps<
-  TDateRangePickerProps & {
-    fieldProps: Partial<Omit<FieldProps, 'modelValue'>>;
-  }
->();
+const Props = defineProps<TFieldDateRangePickerProps>();
 
 const computedFieldProps = computed(() => {
   return { ...CommonFieldProps, ...(Props?.fieldProps ?? {}) };

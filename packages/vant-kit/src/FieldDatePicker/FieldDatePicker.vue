@@ -33,6 +33,12 @@
   </DatePicker>
 </template>
 
+<script lang="ts">
+export type TFieldDatePickerProps = TDatePickerProps & {
+  fieldProps: Partial<Omit<FieldProps, 'modelValue'>>;
+};
+</script>
+
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
 import type { FieldProps } from 'vant';
@@ -41,11 +47,7 @@ import DatePicker, { TDatePickerConfirmPayload, TDatePickerProps } from '../Date
 import { isNullOrUndefined } from '@vmono/utils';
 import { CommonFieldProps } from '@/common/constants';
 
-const Props = defineProps<
-  TDatePickerProps & {
-    fieldProps: Partial<Omit<FieldProps, 'modelValue'>>;
-  }
->();
+const Props = defineProps<TFieldDatePickerProps>();
 
 const computedFieldProps = computed(() => {
   return { ...CommonFieldProps, ...(Props?.fieldProps ?? {}) };

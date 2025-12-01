@@ -78,6 +78,10 @@ export const nav = [
         path: 'field-date-range-picker',
         title: 'FieldDateRangePicker',
       },
+      {
+        path: 'field-text-area',
+        title: 'FieldTextArea',
+      },
     ],
   },
   {

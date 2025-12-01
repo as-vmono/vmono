@@ -1,6 +1,6 @@
 import { FieldProps } from 'vant';
 
 export const CommonFieldProps: Partial<FieldProps> = Object.freeze({
-  inputAlign: 'right',
+  inputAlign: 'left',
   errorMessageAlign: 'right',
 });
