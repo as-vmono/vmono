@@ -257,6 +257,8 @@ defineExpose({
 .multi-picker-header {
   :deep(.van-search) {
     flex: 1;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
