@@ -36,6 +36,7 @@
 
 <script lang="ts">
 export type TFieldMaskTxtProps = {
+  hideEyeIcon?: boolean;
   maskId: string;
   modelValue: any;
   fieldProps: Partial<Omit<FieldProps, 'modelValue'>>;
@@ -55,17 +56,26 @@ import { FieldProps } from 'vant';
 import { computed, watch } from 'vue';
 
 const Props = withDefaults(defineProps<TFieldMaskTxtProps>(), {
+  hideEyeIcon: false,
   genFieldRules: () => [],
   realFieldProps: () => ({}),
   loading: false,
 });
 
 // === 使用 useMaskedField 封装核心脱敏逻辑 ===
-const { showValue, isPlaintextVisible, fetchPlaintextLoading, revealPlaintext, updateModelValue } = useMaskedField({
+const {
+  showValue,
+  isPlaintextVisible,
+  setIsPlaintextVisible,
+  fetchPlaintextLoading,
+  revealPlaintext,
+  updateModelValue,
+} = useMaskedField({
   ...Props.preset,
   maskId: computed(() => Props.maskId),
   modelValue: computed(() => Props.modelValue),
 });
+watch(() => Props.hideEyeIcon, setIsPlaintextVisible, { immediate: true });
 
 const [showFieldValue, setShowFieldValue] = useWrapperRef(showValue.value);
 watch(showValue, setShowFieldValue);

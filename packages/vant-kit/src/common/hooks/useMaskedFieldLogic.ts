@@ -234,6 +234,7 @@ export function useMaskedField(options: IUseMaskedFieldOptions) {
     fetchPlaintextLoading,
     canUseBackendUnmask,
     // API
+    setIsPlaintextVisible,
     revealPlaintext,
     hidePlaintext,
     toggleVisibility,

@@ -8,6 +8,7 @@
         <p>modelValue:</p>
         {{ filedValue }}
         <FieldMaskTxt
+          :hide-eye-icon="hiddenEyeIcon"
           :preset="commonPreset"
           mask-id="maskId"
           v-model="filedValue"
@@ -22,7 +23,11 @@
             rules: [],
           }"
         />
+        <van-button size="small" @click="() => setHiddenEyeIcon(!hiddenEyeIcon)">
+          hiddenEyeIcon:{{ hiddenEyeIcon }}
+        </van-button>
       </section>
+
       <van-button round block type="primary" @click="handleSubmit"> 提交 </van-button>
     </van-form>
   </demo-block>
@@ -34,6 +39,8 @@ import { useWrapperRef } from '@vmono/vhooks';
 import { Form as VanForm, Field as VanField, Button as VanButton, FormInstance } from 'vant';
 import { getAesCryptoTool, IdRule } from '@vmono/utils';
 import { computed, ref, watch } from 'vue';
+
+const [hiddenEyeIcon, setHiddenEyeIcon] = useWrapperRef(false);
 
 const { AES_Encrypt, AES_Dencrypt } = getAesCryptoTool({
   key: '12345678',
