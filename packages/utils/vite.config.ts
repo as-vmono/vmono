@@ -5,20 +5,18 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [dts({ tsconfigPath: './tsconfig.app.json' })],
-  resolve: { alias: { '@': path.resolve(__dirname, './src/') } },
+  resolve: { alias: { '@': path.resolve(__dirname, 'src') } },
   build: {
+    // 兼容低版本浏览器
+    target: 'es2015',
     lib: {
       entry: './src/index.ts',
-      name: '@vmono/utils',
+      // 👇 name 仅用于 UMD 全局变量名，必须是合法 JS 标识符
+      name: 'vmonoUtils',
       fileName: (format) => `utils.${format}.js`,
     },
     rollupOptions: {
-      external: ['vue'],
-      output: {
-        globals: {
-          vue: 'Vue',
-        },
-      },
+      external: [],
     },
   },
 });
