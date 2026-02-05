@@ -7,7 +7,7 @@
       :selected-options="selectedOptions"
     >
     </slot>
-    <van-popup v-model:show="popupShow" @click-overlay="handleCancel" position="bottom" round>
+    <van-popup v-bind="computedPopupProps" v-model:show="popupShow" @click-overlay="handleCancel">
       <van-checkbox-group v-model="checkboxModelValue">
         <div class="multi-picker-header van-picker__toolbar">
           <button type="button" :class="['van-picker__cancel', 'van-haptics-feedback']" @click="handleCancel">
@@ -90,6 +90,7 @@ export type TMultiPickerProps = {
   searchDelay?: number;
   // 处理 id 未匹配到选项时展示的值
   processingFallbackOpts?: (p: TMPProcessingFallbackOptsPayload) => any[];
+  popupProps?: Partial<PopupProps>;
 };
 
 export type TConfirmEventPayload = { values: any[]; options: any[] };
@@ -102,6 +103,7 @@ import { useWrapperRef } from '@vmono/vhooks';
 
 import { ref } from 'vue';
 import { isNullOrUndefined } from '@vmono/utils';
+import { PopupProps } from 'vant';
 
 const Props = withDefaults(defineProps<TMultiPickerProps>(), {
   showSearch: false,
@@ -111,8 +113,12 @@ const Props = withDefaults(defineProps<TMultiPickerProps>(), {
   fieldNames: undefined,
   tipTxt: undefined,
   processingFallbackOpts: undefined,
+  popupProps: undefined,
 });
 
+const computedPopupProps = computed(() => {
+  return { position: 'bottom', round: true, ...((Props.popupProps ?? {}) as any) } as PopupProps;
+});
 const computedFieldNames = computed(() => Object.assign({ label: 'label', value: 'value' }, Props?.fieldNames ?? {}));
 
 const Emitter = defineEmits<{
@@ -250,6 +256,7 @@ defineExpose({
   getOptionsIdMapData() {
     return optionsIdMapData.value;
   },
+  handleCancel,
 });
 </script>
 

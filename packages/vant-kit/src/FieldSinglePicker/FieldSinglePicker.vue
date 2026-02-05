@@ -43,7 +43,7 @@ import SinglePicker, { TSinglePickerProps, TSPConfirmDisabledOptionPayload } fro
 import { isNullOrUndefined } from '@vmono/utils';
 import { useWrapperRef } from '@vmono/vhooks';
 import type { FieldProps } from 'vant';
-import { computed, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const Props = defineProps<TFieldSinglePickerProps>();
 
@@ -81,7 +81,10 @@ const updateModelFieldValue = (newValue) => {
   Emitter('update:modelValue', newValue);
 };
 
-defineExpose({});
+const SinglePickerRef = ref<InstanceType<typeof SinglePicker>>();
+defineExpose({
+  handleCancel: computed(() => SinglePickerRef.value?.handleCancel),
+});
 </script>
 
 <style scoped lang="less">

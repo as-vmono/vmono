@@ -7,12 +7,12 @@
       :selected-option="selectedOption"
     >
     </slot>
-    <van-popup v-model:show="popupShow" position="bottom" round>
+    <van-popup v-bind="computedPopupProps" v-model:show="popupShow">
       <van-picker
         v-bind="computedPickerProps"
         :columns="showColumns"
         @confirm="(value: any) => onConfirmPicker(value)"
-        @cancel="setPopupShow(false)"
+        @cancel="handleCancel"
       >
         <!-- 暴露默认支持插槽 -->
         <template v-for="(_slot, name) in $slots" #[name]="slotData" :key="name">
@@ -36,6 +36,7 @@ export type TSPProcessingFallbackOptPayload = {
 export type TSinglePickerProps = {
   modelValue: any;
   pickerProps: Partial<PickerProps>;
+  popupProps?: Partial<PopupProps>;
   processingFallbackOpt?: (p: TSPProcessingFallbackOptPayload) => any;
   showSearch?: boolean;
   searchDelay?: number;
@@ -48,18 +49,22 @@ export type TSPConfirmDisabledOptionPayload = {
 </script>
 
 <script lang="ts" setup>
-import { PickerProps, PickerOption, PickerColumn } from 'vant';
+import { PickerProps, PickerOption, PickerColumn, PopupProps } from 'vant';
 import { computed, watch } from 'vue';
 import { debounce } from 'lodash';
 import { useWrapperRef } from '@vmono/vhooks';
 import { array2Single, isNullOrUndefined, single2Array } from '@vmono/utils';
 
 const Props = withDefaults(defineProps<TSinglePickerProps>(), {
+  popupProps: undefined,
   processingFallbackOpt: undefined,
   showSearch: false,
   searchDelay: 300,
 });
 
+const computedPopupProps = computed(() => {
+  return { position: 'bottom', round: true, ...((Props.popupProps ?? {}) as any) } as PopupProps;
+});
 const columnsFieldNames = computed(() =>
   Object.assign({ text: 'label', value: 'value' }, Props?.pickerProps?.columnsFieldNames ?? {})
 );
@@ -80,6 +85,10 @@ const Emitter = defineEmits<{
 const [popupShow, setPopupShow] = useWrapperRef<boolean>(false);
 const triggerPopupShow = () => {
   setPopupShow(true);
+};
+
+const handleCancel = () => {
+  setPopupShow(false);
 };
 
 const [modelFieldValue, setModelFieldValue] = useWrapperRef<any>(Props.modelValue);
@@ -170,14 +179,14 @@ const onConfirmPicker = (confirmInfo) => {
   if (option.disabled) {
     Emitter('confirmDisabledOption', {
       option,
-      closePopup: () => setPopupShow(false),
+      closePopup: handleCancel,
     });
     return;
   }
   Emitter('confirm', option);
   const newValue = option?.[columnsFieldNames.value.value];
   updateModelFieldValue(newValue);
-  setPopupShow(false);
+  handleCancel();
 };
 
 const [keywords, _] = useWrapperRef<string | undefined>(undefined);
@@ -186,7 +195,7 @@ const onSearch = debounce((keywords: string) => {
   Emitter('search', keywords);
 }, Props.searchDelay);
 
-defineExpose({});
+defineExpose({ handleCancel });
 </script>
 
 <style scoped lang="less">

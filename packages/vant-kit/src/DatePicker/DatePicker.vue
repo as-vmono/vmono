@@ -9,12 +9,12 @@
     </slot>
 
     <!-- 日期选择弹窗 -->
-    <van-popup v-model:show="popupShow" position="bottom" round>
+    <van-popup v-bind="computedPopupProps" v-model:show="popupShow">
       <van-date-picker
         v-bind="computedPickerProps"
         v-model="pickerRealtimeOptions"
         @confirm="onConfirmPicker"
-        @cancel="setPopupShow(false)"
+        @cancel="handleCancel"
       >
         <!-- 暴露默认支持的插槽 -->
         <template v-for="(_slot, name) in $slots" #[name]="slotData" :key="name">
@@ -38,16 +38,21 @@ export type TDatePickerConfirmPayload = {
 export type TDatePickerProps = {
   modelValue: string | undefined;
   pickerProps?: Partial<DatePickerProps>;
+  popupProps?: Partial<PopupProps>;
   showValueFormatter?: (date?: Date) => string | undefined;
 };
 </script>
 
 <script lang="ts" setup>
 import { computed, watch } from 'vue';
-import type { DatePickerProps } from 'vant';
+import type { DatePickerProps, PopupProps } from 'vant';
 import { useWrapperRef } from '@vmono/vhooks';
 
 const Props = defineProps<TDatePickerProps>();
+
+const computedPopupProps = computed(() => {
+  return { position: 'bottom', round: true, ...((Props.popupProps ?? {}) as any) } as PopupProps;
+});
 
 const defaultColumnsFormatter = (type, option) => {
   if (type === 'year') {
@@ -76,6 +81,10 @@ const Emitter = defineEmits<{
 const [popupShow, setPopupShow] = useWrapperRef<boolean>(false);
 const triggerPopupShow = () => {
   setPopupShow(true);
+};
+
+const handleCancel = () => {
+  setPopupShow(false);
 };
 
 // 真实绑定的选项值
@@ -135,11 +144,12 @@ const updateModelFieldValue = (p: TDatePickerConfirmPayload) => {
 const onConfirmPicker = (p: TDatePickerConfirmPayload) => {
   Emitter('confirm', p);
   updateModelFieldValue(p);
-  setPopupShow(false);
+  handleCancel();
 };
 
 defineExpose({
   setPickerRealtimeDate,
+  handleCancel,
 });
 </script>
 

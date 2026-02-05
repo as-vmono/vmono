@@ -9,8 +9,8 @@
     </slot>
 
     <!-- 日期范围选择弹窗 -->
-    <van-popup v-model:show="popupShow" position="bottom" round>
-      <van-picker-group v-bind="computedPickerGroupProps" @confirm="onConfirmPicker" @cancel="setPopupShow(false)">
+    <van-popup v-bind="computedPopupProps" v-model:show="popupShow">
+      <van-picker-group v-bind="computedPickerGroupProps" @confirm="onConfirmPicker" @cancel="handleCancel">
         <!-- 暴露 picker-group 默认支持的插槽-->
         <template v-for="(_slot, name) in $slots" #[name]="slotData" :key="name">
           <slot :name="name" v-bind="slotData" :key="name"> </slot>
@@ -44,6 +44,7 @@ export type TDRPickerShowValueFormatterPayload = { startDate?: Date; endDate?: D
 export type TDateRangePickerProps = {
   modelValue: string[];
   pickerProps?: Partial<DatePickerProps>;
+  popupProps?: Partial<PopupProps>;
   startPickerProps?: Partial<DatePickerProps>;
   endPickerProps?: Partial<DatePickerProps>;
   pickerGroupProps?: Partial<PickerGroupProps>;
@@ -55,12 +56,15 @@ export type TDateRangePickerProps = {
 
 <script lang="ts" setup>
 import { computed, watch } from 'vue';
-import type { DatePickerProps, PickerGroupProps } from 'vant';
+import type { DatePickerProps, PickerGroupProps, PopupProps } from 'vant';
 import { useWrapperRef } from '@vmono/vhooks';
 import dayjs from 'dayjs';
 
 const Props = defineProps<TDateRangePickerProps>();
 
+const computedPopupProps = computed(() => {
+  return { position: 'bottom', round: true, ...((Props.popupProps ?? {}) as any) } as PopupProps;
+});
 const showDateRangeDelimiter = computed(() => Props.showDateRangeDelimiter || defaultShowDateRangeDelimiter);
 
 const defaultColumnsFormatter = (type, option) => {
@@ -110,6 +114,10 @@ const Emitter = defineEmits<{
 const [popupShow, setPopupShow] = useWrapperRef<boolean>(false);
 const triggerPopupShow = () => {
   setPopupShow(true);
+};
+
+const handleCancel = () => {
+  setPopupShow(false);
 };
 
 // 真实绑定的选项值
@@ -204,7 +212,7 @@ const onConfirmPicker = () => {
   }
   Emitter('confirm', { values });
   updateModelFieldValue(values);
-  setPopupShow(false);
+  handleCancel();
 };
 
 defineExpose({
@@ -213,6 +221,7 @@ defineExpose({
     setCurrentFormatedStartDate(start);
     setCurrentFormatedEndDate(end);
   },
+  handleCancel,
 });
 </script>
 

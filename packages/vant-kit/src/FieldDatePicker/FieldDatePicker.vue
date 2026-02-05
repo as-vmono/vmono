@@ -1,10 +1,9 @@
 <template>
   <DatePicker
+    v-bind="Props"
     ref="DatePickerRef"
     v-model="modelFieldValue"
     @update:model-value="(...args) => updateModelFieldValue(...args)"
-    :picker-props="pickerProps"
-    :show-value-formatter="showValueFormatter"
     @confirm="(...args) => Emitter('confirm', ...args)"
   >
     <!-- 暴露所有插槽 -->
@@ -77,6 +76,7 @@ const updateModelFieldValue = (newValue) => {
 const DatePickerRef = ref<InstanceType<typeof DatePicker>>();
 defineExpose({
   setPickerRealtimeDate: computed(() => DatePickerRef?.value?.setPickerRealtimeDate),
+  handleCancel: computed(() => DatePickerRef?.value?.handleCancel),
 });
 </script>
 

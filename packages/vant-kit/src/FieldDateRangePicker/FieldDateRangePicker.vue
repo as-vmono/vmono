@@ -1,7 +1,7 @@
 <template>
   <DateRangePicker
-    ref="DateRangePickerRef"
     v-bind="Props"
+    ref="DateRangePickerRef"
     v-model="modelFieldValue"
     @update:model-value="(...args) => updateModelFieldValue(...args)"
     @confirm="(...args) => Emitter('confirm', ...args)"
@@ -75,6 +75,7 @@ const updateModelFieldValue = (newValue: any[] = []) => {
 const DateRangePickerRef = ref<InstanceType<typeof DateRangePicker>>();
 defineExpose({
   setPickerRealtimeDate: computed(() => DateRangePickerRef.value?.setPickerRealtimeDate),
+  handleCancel: computed(() => DateRangePickerRef.value?.handleCancel),
 });
 </script>
 
