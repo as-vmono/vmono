@@ -1,5 +1,6 @@
 <template>
   <SinglePicker
+    ref="SinglePickerRef"
     v-bind="computedSinglePickerProps"
     v-model="modelFieldValue"
     @update:model-value="(...args) => updateModelFieldValue(...args)"
