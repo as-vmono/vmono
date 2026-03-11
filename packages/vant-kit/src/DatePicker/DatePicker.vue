@@ -12,7 +12,7 @@
     <van-popup v-bind="computedPopupProps" v-model:show="popupShow">
       <van-date-picker
         v-bind="computedPickerProps"
-        v-model="pickerRealtimeOptions"
+        :model-value="pickerRealtimeOptions"
         @confirm="onConfirmPicker"
         @cancel="handleCancel"
       >
@@ -51,7 +51,7 @@ import { useWrapperRef } from '@vmono/vhooks';
 const Props = defineProps<TDatePickerProps>();
 
 const computedPopupProps = computed(() => {
-  return { position: 'bottom', round: true, ...((Props.popupProps ?? {}) as any) } as PopupProps;
+  return { position: 'bottom', round: true, destroyOnClose: true, ...((Props.popupProps ?? {}) as any) } as PopupProps;
 });
 
 const defaultColumnsFormatter = (type, option) => {

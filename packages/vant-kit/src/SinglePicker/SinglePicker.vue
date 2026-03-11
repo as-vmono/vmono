@@ -10,6 +10,7 @@
     <van-popup v-bind="computedPopupProps" v-model:show="popupShow">
       <van-picker
         v-bind="computedPickerProps"
+        :model-value="pickerModelValue"
         :columns="showColumns"
         @confirm="(value: any) => onConfirmPicker(value)"
         @cancel="handleCancel"
@@ -63,7 +64,7 @@ const Props = withDefaults(defineProps<TSinglePickerProps>(), {
 });
 
 const computedPopupProps = computed(() => {
-  return { position: 'bottom', round: true, ...((Props.popupProps ?? {}) as any) } as PopupProps;
+  return { position: 'bottom', round: true, destroyOnClose: true, ...((Props.popupProps ?? {}) as any) } as PopupProps;
 });
 const columnsFieldNames = computed(() =>
   Object.assign({ text: 'label', value: 'value' }, Props?.pickerProps?.columnsFieldNames ?? {})
@@ -131,6 +132,8 @@ watch(
   { immediate: true }
 );
 
+// picker实时选中的值
+const [pickerModelValue, setPickerModelValue] = useWrapperRef<any[]>([]);
 /**
  * selectedOption
  */
@@ -155,7 +158,9 @@ watch(
       setShowColumns([...showColumns.value, ...patchColumns]);
     }
     // 更新选中项
-    setSelectedOption(columnsIdMapData?.[newValue]);
+    const cOption = columnsIdMapData?.[newValue];
+    setSelectedOption(cOption);
+    setPickerModelValue(single2Array(cOption?.[columnsFieldNames.value.value]));
   },
   { immediate: true }
 );
@@ -176,7 +181,7 @@ const onConfirmPicker = (confirmInfo) => {
     const selectedValue = array2Single(selectedValues);
     option = columnsIdMapDataCache.value?.[selectedValue];
   }
-  if (option.disabled) {
+  if (option?.disabled) {
     Emitter('confirmDisabledOption', {
       option,
       closePopup: handleCancel,

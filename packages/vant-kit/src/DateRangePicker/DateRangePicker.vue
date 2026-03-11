@@ -63,7 +63,7 @@ import dayjs from 'dayjs';
 const Props = defineProps<TDateRangePickerProps>();
 
 const computedPopupProps = computed(() => {
-  return { position: 'bottom', round: true, ...((Props.popupProps ?? {}) as any) } as PopupProps;
+  return { position: 'bottom', round: true, destroyOnClose: true, ...((Props.popupProps ?? {}) as any) } as PopupProps;
 });
 const showDateRangeDelimiter = computed(() => Props.showDateRangeDelimiter || defaultShowDateRangeDelimiter);
 
@@ -109,16 +109,6 @@ const Emitter = defineEmits<{
   (e: 'confirm', p: TDateRangePickerConfirmPayload): void;
   (e: 'update:modelValue', value: TDateRangePickerProps['modelValue']): void;
 }>();
-
-// 控制弹窗显示
-const [popupShow, setPopupShow] = useWrapperRef<boolean>(false);
-const triggerPopupShow = () => {
-  setPopupShow(true);
-};
-
-const handleCancel = () => {
-  setPopupShow(false);
-};
 
 // 真实绑定的选项值
 const [modelValue, setModelValue] = useWrapperRef<string[]>(Props.modelValue ?? []);
@@ -203,6 +193,26 @@ function correctingDateRange(range: [string, string]): [string, string] {
   return range;
 }
 
+// picker 默认选中的值
+const [pickerDefaultStartDate, setPickerDefaultStartDate] = useWrapperRef<string[]>([]);
+const [pickerDefaultEndDate, setPickerDefaultEndDate] = useWrapperRef<string[]>([]);
+
+// 控制弹窗显示
+const [popupShow, setPopupShow] = useWrapperRef<boolean>(false);
+const triggerPopupShow = () => {
+  currentStartDate.value = pickerDefaultStartDate.value?.length
+    ? pickerDefaultStartDate.value
+    : Props.modelValue?.[0]?.split?.(dateValueDelimiter);
+  currentEndDate.value = pickerDefaultEndDate.value?.length
+    ? pickerDefaultEndDate.value
+    : Props.modelValue?.[1]?.split?.(dateValueDelimiter);
+  setPopupShow(true);
+};
+
+const handleCancel = () => {
+  setPopupShow(false);
+};
+
 // 确认选择
 const onConfirmPicker = () => {
   const values = correctingDateRange([currentFormatedStartDate.value!, currentFormatedEndDate.value!]);
@@ -218,7 +228,10 @@ const onConfirmPicker = () => {
 defineExpose({
   setPickerRealtimeDate(p: TSetDRPickerRealtimeDatePayload) {
     const { start, end } = p;
+    setPickerDefaultStartDate(start ? start?.split?.(dateValueDelimiter) : []);
     setCurrentFormatedStartDate(start);
+
+    setPickerDefaultEndDate(end ? end?.split?.(dateValueDelimiter) : []);
     setCurrentFormatedEndDate(end);
   },
   handleCancel,
