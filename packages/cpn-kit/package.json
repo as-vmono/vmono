@@ -27,15 +27,15 @@
   "author": "astfn",
   "license": "MIT",
   "devDependencies": {
-    "@vmono/eslint-config": "workspace:*",
-    "@vmono/tsconfig": "workspace:*",
     "@microsoft/api-extractor": "^7.52.9",
     "@vant/auto-import-resolver": "^1.3.0",
     "@vitejs/plugin-vue": "^6.0.0",
+    "@vmono/eslint-config": "workspace:*",
+    "@vmono/tsconfig": "workspace:*",
     "typescript": "^5.8.3",
     "unplugin-dts": "1.0.0-beta.0",
     "unplugin-vue-components": "^28.8.0",
-    "vite": "^7.0.5",
+    "vite": "7.3.2",
     "vue": "^3.5.17",
     "vue-tsc": "^3.0.3"
   },
