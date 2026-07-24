@@ -28,9 +28,7 @@
 </template>
 
 <script lang="ts">
-type TColumnsIdMapDataCache = {
-  string: (PickerOption | PickerColumn)[];
-};
+type TColumnsIdMapDataCache = Record<string, PickerOption | PickerColumn>;
 export type TSPProcessingFallbackOptPayload = {
   prePatchValue: any;
 };
@@ -115,22 +113,13 @@ watch(
 /**
  * idMapData 缓存
  */
-const [columnsIdMapDataCache, setColumnsIdMapDataCache] = useWrapperRef<TColumnsIdMapDataCache>({} as any);
+const [columnsIdMapDataCache, _setColumnsIdMapDataCache] = useWrapperRef<TColumnsIdMapDataCache>({} as any);
 const patchColumnsIdMapDataCache = (columns: (PickerOption | PickerColumn)[]) => {
-  const newColumns = { ...(columnsIdMapDataCache.value ?? {}) };
-  columns.forEach((item) => {
-    const id = item[columnsFieldNames.value.value];
-    newColumns[id] = item;
+  columns?.forEach?.((item) => {
+    columnsIdMapDataCache.value[item[columnsFieldNames.value.value]] = item;
   });
-  setColumnsIdMapDataCache({ ...newColumns });
 };
-watch(
-  () => computedPickerProps.value?.columns,
-  (columns) => {
-    patchColumnsIdMapDataCache(columns! ?? []);
-  },
-  { immediate: true }
-);
+watch(showColumns, patchColumnsIdMapDataCache, { immediate: true });
 
 // picker实时选中的值
 const [pickerModelValue, setPickerModelValue] = useWrapperRef<any[]>([]);
@@ -139,12 +128,10 @@ const [pickerModelValue, setPickerModelValue] = useWrapperRef<any[]>([]);
  */
 const [selectedOption, setSelectedOption] = useWrapperRef<any>(undefined);
 watch(
-  [modelFieldValue, columnsIdMapDataCache],
-  ([newValue, columnsIdMapData]) => {
-    /**
-     *  处理缓存不存在的列: 更新 idMapDataCache 和 showColumns
-     */
-    if (!isNullOrUndefined(newValue) && isNullOrUndefined(columnsIdMapData?.[newValue])) {
+  [modelFieldValue, showColumns],
+  ([newValue, showColumns]) => {
+    // 补丁操作
+    if (!isNullOrUndefined(newValue) && isNullOrUndefined(columnsIdMapDataCache.value?.[newValue])) {
       let patchOpt: any = {
         [columnsFieldNames.value.value]: newValue,
         [columnsFieldNames.value.text]: newValue,
@@ -155,10 +142,10 @@ watch(
 
       const patchColumns = single2Array(patchOpt);
       patchColumnsIdMapDataCache(patchColumns);
-      setShowColumns([...showColumns.value, ...patchColumns]);
+      setShowColumns([...(showColumns ?? []), ...patchColumns]);
     }
     // 更新选中项
-    const cOption = columnsIdMapData?.[newValue];
+    const cOption = columnsIdMapDataCache.value?.[newValue];
     setSelectedOption(cOption);
     setPickerModelValue(single2Array(cOption?.[columnsFieldNames.value.value]));
   },

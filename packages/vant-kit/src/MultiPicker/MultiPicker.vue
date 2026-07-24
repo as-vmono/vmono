@@ -117,7 +117,7 @@ const Props = withDefaults(defineProps<TMultiPickerProps>(), {
 });
 
 const computedPopupProps = computed(() => {
-  return { position: 'bottom', round: true, ...((Props.popupProps ?? {}) as any) } as PopupProps;
+  return { position: 'bottom', round: true, destroyOnClose: true, ...((Props.popupProps ?? {}) as any) } as PopupProps;
 });
 const computedFieldNames = computed(() => Object.assign({ label: 'label', value: 'value' }, Props?.fieldNames ?? {}));
 
@@ -171,13 +171,13 @@ const handleUpdateModelValue = (values: any[]) => {
  * 根据 modelValue 回显 showModelValue
  */
 watch(
-  [() => Props.modelValue, optionsIdMapData],
-  ([newValues, optsIdMapData]) => {
+  [() => Props.modelValue, showOptions],
+  ([newValues, _showOpts]) => {
     // 收集需要补丁的 values
     let prePatchValues: any[] = [];
     for (let i = 0; i < newValues?.length; i++) {
       const newValue = newValues[i];
-      const matchedOption = optsIdMapData?.[newValue];
+      const matchedOption = optionsIdMapData.value?.[newValue];
       if (!isNullOrUndefined(newValue) && isNullOrUndefined(matchedOption)) {
         prePatchValues.push(newValue);
       }
@@ -196,8 +196,8 @@ watch(
         });
       }
 
+      patchIdMapOptionData(patchOpts);
       setShowOptions([...showOptions.value, ...patchOpts]);
-      patchIdMapOptionData(showOptions.value);
     }
 
     setShowValue(
