@@ -27,7 +27,30 @@
             triggerPopupShow();
           }
         "
-      />
+      >
+        <!-- field 组件插槽暴露 -->
+        <template v-if="$slots['field-label']" #label>
+          <slot name="field-label" />
+        </template>
+        <template v-if="$slots['field-input']" #input>
+          <slot name="field-input" />
+        </template>
+        <template v-if="$slots['field-left-icon']" #left-icon>
+          <slot name="field-left-icon" />
+        </template>
+        <template v-if="$slots['field-right-icon']" #right-icon>
+          <slot name="field-right-icon" />
+        </template>
+        <template v-if="$slots['field-button']" #button>
+          <slot name="field-button" />
+        </template>
+        <template v-if="$slots['field-extra']" #extra>
+          <slot name="field-extra" />
+        </template>
+        <template v-if="$slots['field-error-message']" #error-message>
+          <slot name="field-error-message" />
+        </template>
+      </van-field>
     </template>
   </DatePicker>
 </template>

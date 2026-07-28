@@ -6,6 +6,26 @@
     <div class="field-switch-btn-show-content">
       <!-- 显示按钮组 -->
       <van-field v-bind="computedFieldProps" :name="undefined" readonly v-model="showValue">
+        <!-- field 组件插槽暴露 -->
+        <template v-if="$slots['field-label']" #label>
+          <slot name="field-label" />
+        </template>
+        <template v-if="$slots['field-left-icon']" #left-icon>
+          <slot name="field-left-icon" />
+        </template>
+        <template v-if="$slots['field-right-icon']" #right-icon>
+          <slot name="field-right-icon" />
+        </template>
+        <template v-if="$slots['field-button']" #button>
+          <slot name="field-button" />
+        </template>
+        <template v-if="$slots['field-extra']" #extra>
+          <slot name="field-extra" />
+        </template>
+        <template v-if="$slots['field-error-message']" #error-message>
+          <slot name="field-error-message" />
+        </template>
+        <!-- #input 插槽不暴露：按钮组是核心功能 -->
         <template #input>
           <div class="field-switch-btns-container">
             <section

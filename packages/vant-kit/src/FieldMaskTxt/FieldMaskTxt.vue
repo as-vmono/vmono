@@ -12,6 +12,26 @@
         v-model="showFieldValue"
         @input="onInput"
       >
+        <!-- field 组件插槽暴露 -->
+        <template v-if="$slots['field-label']" #label>
+          <slot name="field-label" />
+        </template>
+        <template v-if="$slots['field-input']" #input>
+          <slot name="field-input" />
+        </template>
+        <template v-if="$slots['field-left-icon']" #left-icon>
+          <slot name="field-left-icon" />
+        </template>
+        <template v-if="$slots['field-button']" #button>
+          <slot name="field-button" />
+        </template>
+        <template v-if="$slots['field-extra']" #extra>
+          <slot name="field-extra" />
+        </template>
+        <template v-if="$slots['field-error-message']" #error-message>
+          <slot name="field-error-message" />
+        </template>
+        <!-- #right-icon 插槽不暴露：小眼睛图标是核心功能 -->
         <template #right-icon>
           <!-- 不可编辑态：前端或后端脱敏 -->
           <section v-if="notEditableOriginPreset">
