@@ -13,18 +13,18 @@
       <van-picker-group v-bind="computedPickerGroupProps" @confirm="onConfirmPicker" @cancel="handleCancel">
         <!-- 暴露 picker-group 默认支持的插槽-->
         <template v-for="(_slot, name) in $slots" #[name]="slotData" :key="name">
-          <slot :name="name" v-bind="slotData" :key="name"> </slot>
+          <slot :name="name" v-bind="{ ...slotData, key: name }"> </slot>
         </template>
         <van-date-picker v-bind="startPickerProps" v-model="currentStartDate">
           <!-- 暴露 date-picker 默认支持的插槽(开始时间) 实测 data-picker 的插槽无效(被 picker-group 挤占) -->
           <template v-for="(_slot, name) in $slots" #[name]="slotData" :key="name">
-            <slot :name="`${name}-start`" v-bind="slotData" :key="`${name}-start`"> </slot>
+            <slot :name="`${name}-start`" v-bind="{ ...slotData, key: `${name}-start` }"> </slot>
           </template>
         </van-date-picker>
         <van-date-picker v-bind="endPickerProps" v-model="currentEndDate">
           <!-- 暴露 date-picker 默认支持的插槽(结束时间) 实测 data-picker 的插槽无效(被 picker-group 挤占) -->
           <template v-for="(_slot, name) in $slots" #[name]="slotData" :key="name">
-            <slot :name="`${name}-end`" v-bind="slotData" :key="`${name}-end`"></slot>
+            <slot :name="`${name}-end`" v-bind="{ ...slotData, key: `${name}-end` }"></slot>
           </template>
         </van-date-picker>
       </van-picker-group>

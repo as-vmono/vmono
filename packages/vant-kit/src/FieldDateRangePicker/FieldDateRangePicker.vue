@@ -8,7 +8,7 @@
   >
     <!-- 暴露默认支持的插槽 -->
     <template v-for="(_slot, name) in $slots" #[name]="slotData" :key="name">
-      <slot :name="name" v-bind="slotData" :key="name"></slot>
+      <slot :name="name" v-bind="{ ...slotData, key: name }"></slot>
     </template>
 
     <template #trigger="{ triggerPopupShow, showValue }">
