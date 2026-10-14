@@ -30,7 +30,7 @@
             确定
           </button>
         </div>
-        <div class="multi-picker-main">
+        <div class="multi-picker-main" :style="computedMainStyle">
           <div v-if="tipTxt" class="multi-picker-tip">
             {{ tipTxt }}
           </div>
@@ -91,6 +91,8 @@ export type TMultiPickerProps = {
   // 处理 id 未匹配到选项时展示的值
   processingFallbackOpts?: (p: TMPProcessingFallbackOptsPayload) => any[];
   popupProps?: Partial<PopupProps>;
+  // 内容区自定义样式
+  mainStyle?: CSSProperties;
 };
 
 export type TConfirmEventPayload = { values: any[]; options: any[] };
@@ -102,8 +104,10 @@ import { debounce } from 'lodash';
 import { useWrapperRef } from '@vmono/vhooks';
 
 import { ref } from 'vue';
+import type { CSSProperties } from 'vue';
 import { isNullOrUndefined } from '@vmono/utils';
 import { PopupProps } from 'vant';
+import { CommonPickerMainStyle } from '../common/constants';
 
 const Props = withDefaults(defineProps<TMultiPickerProps>(), {
   showSearch: false,
@@ -114,12 +118,14 @@ const Props = withDefaults(defineProps<TMultiPickerProps>(), {
   tipTxt: undefined,
   processingFallbackOpts: undefined,
   popupProps: undefined,
+  mainStyle: undefined,
 });
 
 const computedPopupProps = computed(() => {
   return { position: 'bottom', round: true, destroyOnClose: true, ...((Props.popupProps ?? {}) as any) } as PopupProps;
 });
 const computedFieldNames = computed(() => Object.assign({ label: 'label', value: 'value' }, Props?.fieldNames ?? {}));
+const computedMainStyle = computed<CSSProperties>(() => ({ ...CommonPickerMainStyle, ...(Props.mainStyle ?? {}) }));
 
 const Emitter = defineEmits<{
   (e: 'search', value: string): void;
@@ -270,8 +276,6 @@ defineExpose({
 }
 
 .multi-picker-main {
-  min-height: 200px;
-  max-height: 60vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
