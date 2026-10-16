@@ -1,5 +1,5 @@
 import { EmptyPlaceholder } from '@/constants';
-import { checkStrIsEmpty, isNullOrUndefined } from '@/validate';
+import { checkStrIsEmpty, isNullOrUndefined, typeOfData } from '@/validate';
 
 /**
  * 单值->数组
@@ -58,4 +58,58 @@ export function handleEmptyDisplay(value: any, preset?: Partial<THandleEmptyDisp
   const { emptyTxt, judgeEmptyLogic } = presetConfig;
   if (judgeEmptyLogic(value)) return emptyTxt;
   return value;
+}
+
+/**
+ * 对象第一层字符串属性值 trim
+ * - 仅处理第一层，嵌套对象不动；返回新对象，不修改入参
+ * - 非纯对象（数组/基本类型/null 等）原样返回
+ */
+export function trimObjectValuesFirstLayer<T extends Record<string, any>>(obj: T): T {
+  if (typeOfData(obj) !== 'Object') return obj;
+  const result = {} as T;
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      result[key] = typeof obj[key] === 'string' ? obj[key].trim() : obj[key];
+    }
+  }
+  return result;
+}
+
+/**
+ * 移除对象中值为 null 或 undefined 的属性（浅层过滤）
+ * - 仅处理第一层；返回新对象，不修改入参
+ */
+export function removeNullishFirstLayer<T extends Record<string, any>>(obj: T): Partial<T> {
+  const result = {} as Partial<T>;
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      const value = obj[key];
+      if (value !== null && value !== undefined) {
+        result[key] = value;
+      }
+    }
+  }
+  return result;
+}
+
+/**
+ * 将一维数组按指定列数转换为二维数组，用于网格布局
+ * @param data - 一维数据源
+ * @param cols - 每行显示的列数
+ * @returns 二维数组，每行最多 cols 个元素
+ */
+export function toGrid<T>(data: T[], cols: number): T[][] {
+  if (!data || data.length === 0 || cols <= 0) {
+    return [];
+  }
+
+  const result: T[][] = [];
+  const length = data.length;
+
+  for (let i = 0; i < length; i += cols) {
+    result.push(data.slice(i, i + cols));
+  }
+
+  return result;
 }

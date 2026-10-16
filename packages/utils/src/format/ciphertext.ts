@@ -95,6 +95,17 @@ export function maskShowStr(p: TMaskShowStrPayload): string {
 }
 
 /**
+ * 生成唯一标识（SHA256(时间戳 + 随机数)）
+ * 注意：基于 Math.random，非加密安全随机源，适用于业务流水号/临时 key 等场景
+ */
+export function generateUid(): string {
+  const timestamp = Date.now().toString();
+  const random = Math.random().toString();
+  const hash = CryptoJS.SHA256(timestamp + random).toString();
+  return hash;
+}
+
+/**
  * 暴露依赖的原始工具
  */
 export { CryptoJS, SmCrypto };
